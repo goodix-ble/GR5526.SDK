@@ -114,8 +114,35 @@ static void security_state_recovery(void)
 #endif
 }
 
-static bool check_image_crc(const uint8_t * p_data,uint32_t len, uint32_t check)
+static bool check_image_crc(const uint8_t * p_data, uint32_t len, uint32_t check)
 {
+
+#if defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
+    uint32_t sum      = 0;
+    uint32_t once_len = 0;
+    uint32_t cksum    = 0;
+    const uint32_t once_max   = sizeof(s_flash_read_buff);
+    const uint32_t start_addr = (uint32_t)p_data;
+
+    while(sum < len) {
+
+        once_len = ((len - sum) >= once_max) ? once_max : (len - sum);
+        dfu_portable_flash_read(start_addr + sum, s_flash_read_buff, once_len);
+        sum += once_len;
+
+        for(int i = 0; i < once_len; i++) {
+            cksum += s_flash_read_buff[i];
+        }
+    }
+
+    if(cksum == check) {
+        return true;
+    }
+    APP_LOG_ERROR("    CheckSum Error, [0x%08x : %d] Expected: 0x%08x, Actual:0x%08x", start_addr, len, check, cksum);
+
+    return false;
+
+#else
     uint32_t cksum=0;
 
     for (int i = 0; i < len; i++)
@@ -124,6 +151,7 @@ static bool check_image_crc(const uint8_t * p_data,uint32_t len, uint32_t check)
     }
 
     return (check == cksum);
+#endif
 }
 
 static uint32_t hal_flash_read_judge_security(const uint32_t addr, uint8_t *buf, const uint32_t size)
@@ -184,9 +212,12 @@ static void bootloader_fw_boot_info_get(void)
 
 static bool bootloader_app_dfu_fw_verify(void)
 {
+
     if (s_dfu_info.dfu_img_info.boot_info.load_addr < (s_bootloader_info.load_addr + s_bootloader_info.bin_size))
     {
-        APP_LOG_DEBUG("    App dfu firmware load address overload bootloader firmware");
+        APP_LOG_DEBUG("    App dfu firmware load address overload bootloader firmware, 0x%08x, 0x%08x, %d",
+
+        s_dfu_info.dfu_img_info.boot_info.load_addr, s_bootloader_info.load_addr, s_bootloader_info.bin_size);
         return false;
     }
 
@@ -253,9 +284,9 @@ SECTION_RAM_CODE static void bootloader_dfu_fw_copy(uint32_t dst_addr, uint32_t 
     {
         copy_page++;
     }
-
+#if !(defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u))
     __disable_irq();
-
+#endif
     bootloader_wdt_refresh();
 
     security_disable();
@@ -270,7 +301,11 @@ SECTION_RAM_CODE static void bootloader_dfu_fw_copy(uint32_t dst_addr, uint32_t 
             copy_size = DFU_FLASH_SECTOR_SIZE;
         }
         hal_flash_erase(dst_addr + i * DFU_FLASH_SECTOR_SIZE, DFU_FLASH_SECTOR_SIZE);
+#if defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
+        dfu_portable_flash_read(src_addr + i * DFU_FLASH_SECTOR_SIZE, s_flash_read_buff, copy_size);
+#else
         hal_flash_read(src_addr + i * DFU_FLASH_SECTOR_SIZE, s_flash_read_buff, copy_size);
+#endif
         hal_flash_write(dst_addr + i * DFU_FLASH_SECTOR_SIZE, s_flash_read_buff, copy_size);
     }
     security_state_recovery();
