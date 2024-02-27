@@ -1,0 +1,42 @@
+#ifndef __LAYOUT_SCENE_MANAGE_H__
+#define __LAYOUT_SCENE_MANAGE_H__
+
+#include "lvgl.h"
+#include "lv_wms.h"
+#include "lv_wms_scene.h"
+
+#if WMS_VERSION == WMS_VERSION_v2
+
+enum {
+    WMS_WIN_INVALID_ID  = _INVALID_WIN_ID,           /* THIS ID Stands for Invalid ONEs, NOT USED BY ANY Window */
+    
+    /* CARD Category */
+    WMS_WIN_CARD_WATCHFACE_ID,
+    WMS_WIN_CARD_MESSAGE_ID,
+    WMS_WIN_CARD_STATUS_ID,
+    WMS_WIN_CARD_LIST_ENTRY_ID,
+    WMS_WIN_CARD_DAY_ACTIVITY_ID,
+    WMS_WIN_CARD_HEARTRATE_ID,
+    WMS_WIN_CARD_SPO2_ID,
+    WMS_WIN_CARD_STRESS_ID,
+    WMS_WIN_CARD_SLEEP_ID,
+    WMS_WIN_CARD_MUSIC_ID,
+    WMS_WIN_CARD_NFC_ID,
+
+    /* Scene */
+    WMS_WIN_LIST_MENU_ID,
+    WMS_WIN_SPORTS_ID,
+} ;
+
+
+enum {
+    WMS_SCENE_INVALID_ID  = _INVALID_SCENE_ID,
+    WMS_SCENE_MAIN_ID ,
+    WMS_SCENE_SECOND_ID ,
+    WMS_SCENE_THIRD_ID ,
+    WMS_SCENE_RUN_SPORT_ID,
+};
+
+#endif
+
+#endif /* __LAYOUT_WINDOW_MANAGE_H__ */

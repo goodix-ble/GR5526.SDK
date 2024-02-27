@@ -1,0 +1,252 @@
+#ifndef __LV_IMG_DSC_LIST_H__ 
+#define __LV_IMG_DSC_LIST_H__
+#define  ADDR_OFFSET_0000  0x00
+#define  ADDR_10_UPGRADE (ADDR_OFFSET_0000 + 0x04)
+#define  ADDR_11_ABOUT  (ADDR_OFFSET_0000 + 0x6408)
+#define  ADDR_12_TAOBAO  (ADDR_OFFSET_0000 + 0xC80C)
+#define  ADDR_13_ENTERTAINMENT  (ADDR_OFFSET_0000 + 0x12C10)
+#define  ADDR_14_PHONEBOOK  (ADDR_OFFSET_0000 + 0x19014)
+#define  ADDR_15_GOOGLEMAP  (ADDR_OFFSET_0000 + 0x1F418)
+#define  ADDR_16_BAIDU  (ADDR_OFFSET_0000 + 0x2581C)
+#define  ADDR_17_IQIYI  (ADDR_OFFSET_0000 + 0x2BC20)
+#define  ADDR_18_NETEASE  (ADDR_OFFSET_0000 + 0x32024)
+#define  ADDR_19_WALLET  (ADDR_OFFSET_0000 + 0x38428)
+#define  ADDR_1_APP_VIEW  (ADDR_OFFSET_0000 + 0x3E82C)
+#define  ADDR_1_SETTING  (ADDR_OFFSET_0000 + 0x3F830)
+#define  ADDR_20_MUSIC  (ADDR_OFFSET_0000 + 0x45C34)
+#define  ADDR_21_CALENDAR  (ADDR_OFFSET_0000 + 0x4C038)
+#define  ADDR_22_CHROME  (ADDR_OFFSET_0000 + 0x5243C)
+#define  ADDR_23_TWITTER  (ADDR_OFFSET_0000 + 0x58840)
+#define  ADDR_24_WHATSAPP  (ADDR_OFFSET_0000 + 0x5EC44)
+#define  ADDR_25_CMBC  (ADDR_OFFSET_0000 + 0x65048)
+#define  ADDR_26_ONLINE_CLASS  (ADDR_OFFSET_0000 + 0x6B44C)
+#define  ADDR_27_MESSAGE  (ADDR_OFFSET_0000 + 0x71850)
+#define  ADDR_28_GOOGLE_MEETTING  (ADDR_OFFSET_0000 + 0x77C54)
+#define  ADDR_29_FACEBOOK  (ADDR_OFFSET_0000 + 0x7E058)
+#define  ADDR_2_ALIPAY  (ADDR_OFFSET_0000 + 0x8445C)
+#define  ADDR_2_FUNCTION_KEY  (ADDR_OFFSET_0000 + 0x8A860)
+#define  ADDR_30_DOUBAN  (ADDR_OFFSET_0000 + 0x8B864)
+#define  ADDR_31_QQ_SPACE  (ADDR_OFFSET_0000 + 0x91C68)
+#define  ADDR_32_GOOGLE_PLUS  (ADDR_OFFSET_0000 + 0x9806C)
+#define  ADDR_33_WEATHER  (ADDR_OFFSET_0000 + 0x9E470)
+#define  ADDR_34_GOOGLE_PLAY  (ADDR_OFFSET_0000 + 0xA4874)
+#define  ADDR_35_APPLICATION_STORE  (ADDR_OFFSET_0000 + 0xAAC78)
+#define  ADDR_36_ICBC  (ADDR_OFFSET_0000 + 0xB107C)
+#define  ADDR_37_QQ_MUSIC  (ADDR_OFFSET_0000 + 0xB7480)
+#define  ADDR_38_FILE_MANAGE  (ADDR_OFFSET_0000 + 0xBD884)
+#define  ADDR_39_QQ  (ADDR_OFFSET_0000 + 0xC3C88)
+#define  ADDR_3_CLOCK_SETTING  (ADDR_OFFSET_0000 + 0xCA08C)
+#define  ADDR_3_WECHAT  (ADDR_OFFSET_0000 + 0xCB090)
+#define  ADDR_40_YAHOO  (ADDR_OFFSET_0000 + 0xD1494)
+#define  ADDR_4_FAVORITE  (ADDR_OFFSET_0000 + 0xD7898)
+#define  ADDR_4_HEART  (ADDR_OFFSET_0000 + 0xD889C)
+#define  ADDR_5_DIANPING  (ADDR_OFFSET_0000 + 0xDECA0)
+#define  ADDR_5_NOTICE_MANAGE  (ADDR_OFFSET_0000 + 0xE50A4)
+#define  ADDR_6_CAMERA  (ADDR_OFFSET_0000 + 0xE60A8)
+#define  ADDR_6_SYSTEM_UPDATE  (ADDR_OFFSET_0000 + 0xEC4AC)
+#define  ADDR_7_GENERAL_SETTING  (ADDR_OFFSET_0000 + 0xED4B0)
+#define  ADDR_7_TIKTOK  (ADDR_OFFSET_0000 + 0xEE4B4)
+#define  ADDR_8_ACTIVITY  (ADDR_OFFSET_0000 + 0xF48B8)
+#define  ADDR_8_AUXILIARY_MEANS  (ADDR_OFFSET_0000 + 0xFACBC)
+#define  ADDR_9_SPO2  (ADDR_OFFSET_0000 + 0xFBCC0)
+#define  ADDR_ACTIVITY  (ADDR_OFFSET_0000 + 0x1020C4)
+#define  ADDR_ACTIVITY1_THUMBNAIL  (ADDR_OFFSET_0000 + 0x109458)
+#define  ADDR_ACTIVITY_COMSUME  (ADDR_OFFSET_0000 + 0x15076C)
+#define  ADDR_ACTIVITY_COMSUME_SMALL  (ADDR_OFFSET_0000 + 0x151BB0)
+#define  ADDR_ACTIVITY_EXERCISE  (ADDR_OFFSET_0000 + 0x151D44)
+#define  ADDR_ACTIVITY_EXERCISE_SMALL  (ADDR_OFFSET_0000 + 0x153188)
+#define  ADDR_ACTIVITY_STEP  (ADDR_OFFSET_0000 + 0x15331C)
+#define  ADDR_ACTIVITY_STEP_SMALL  (ADDR_OFFSET_0000 + 0x154760)
+#define  ADDR_ACTIVITY_THUMBNAIL  (ADDR_OFFSET_0000 + 0x1548F4)
+#define  ADDR_ACTIVITY_TIMES  (ADDR_OFFSET_0000 + 0x19BC08)
+#define  ADDR_ACTIVITY_TIMES_SMALL  (ADDR_OFFSET_0000 + 0x19D04C)
+#define  ADDR_BATTERY  (ADDR_OFFSET_0000 + 0x19D1E0)
+#define  ADDR_DARK_THUMBNAIL  (ADDR_OFFSET_0000 + 0x19E0E4)
+#define  ADDR_DIGITAL1_COMSUME_SMALL  (ADDR_OFFSET_0000 + 0x1E53F8)
+#define  ADDR_DIGITAL1_EXERCISE_SMALL  (ADDR_OFFSET_0000 + 0x1E558C)
+#define  ADDR_DIGITAL1_HEART_SMALL  (ADDR_OFFSET_0000 + 0x1E5720)
+#define  ADDR_DIGITAL1_STEP_SMALL  (ADDR_OFFSET_0000 + 0x1E58B4)
+#define  ADDR_DIGITAL1_WEATHER  (ADDR_OFFSET_0000 + 0x1E5A48)
+#define  ADDR_DIGITAL2_CONSUME_SMALL  (ADDR_OFFSET_0000 + 0x1E792C)
+#define  ADDR_DIGITAL2_EXERCISE_SMALL  (ADDR_OFFSET_0000 + 0x1E8230)
+#define  ADDR_DIGITAL2_HEART_SMALL  (ADDR_OFFSET_0000 + 0x1E8B34)
+#define  ADDR_DIGITAL2_WEATHER  (ADDR_OFFSET_0000 + 0x1E9438)
+#define  ADDR_FLOWER_THUMBNAIL  (ADDR_OFFSET_0000 + 0x1EB31C)
+#define  ADDR_HEARTRATE1  (ADDR_OFFSET_0000 + 0x232630)
+#define  ADDR_HEARTRATE2  (ADDR_OFFSET_0000 + 0x238A34)
+#define  ADDR_HEARTRATE3  (ADDR_OFFSET_0000 + 0x23EE38)
+#define  ADDR_HEARTRATE4  (ADDR_OFFSET_0000 + 0x24523C)
+#define  ADDR_HEARTRATE_BG  (ADDR_OFFSET_0000 + 0x24B640)
+#define  ADDR_HEART_RATE  (ADDR_OFFSET_0000 + 0x287284)
+#define  ADDR_INDICATOR  (ADDR_OFFSET_0000 + 0x2890C8)
+#define  ADDR_LEFT_ARROW  (ADDR_OFFSET_0000 + 0x2893D8)
+#define  ADDR_LIST_MODE  (ADDR_OFFSET_0000 + 0x28961C)
+#define  ADDR_LIST_MODE_SELECT  (ADDR_OFFSET_0000 + 0x28A620)
+#define  ADDR_LIVE_FLOWER_CENTER  (ADDR_OFFSET_0000 + 0x28B624)
+#define  ADDR_LIVE_FLOWER_HOUR  (ADDR_OFFSET_0000 + 0x28BC68)
+#define  ADDR_LIVE_FLOWER_MINUTE  (ADDR_OFFSET_0000 + 0x28DA68)
+#define  ADDR_LIVE_FLOWER_SECOND  (ADDR_OFFSET_0000 + 0x2904EC)
+#define  ADDR_LIVE_FLOWER_WATCHFACE  (ADDR_OFFSET_0000 + 0x291210)
+#define  ADDR_LIVE_FLOWER_WATCHFACE1  (ADDR_OFFSET_0000 + 0x358A54)
+#define  ADDR_LIVE_WALLPAER_FLOWER  (ADDR_OFFSET_0000 + 0x421EE8)
+#define  ADDR_LIVE_WALLPAPER_MARS_1  (ADDR_OFFSET_0000 + 0x463F2C)
+#define  ADDR_LIVE_WALLPAPER_MARS_2  (ADDR_OFFSET_0000 + 0x479EC0)
+#define  ADDR_LIVE_WALLPAPER_MARS_3  (ADDR_OFFSET_0000 + 0x48FE54)
+#define  ADDR_LIVE_WALLPAPER_MARS_4  (ADDR_OFFSET_0000 + 0x4A5DE8)
+#define  ADDR_LIVE_WALLPAPER_MARS_5  (ADDR_OFFSET_0000 + 0x4BBD7C)
+#define  ADDR_LIVE_WALLPAPER_MARS_6  (ADDR_OFFSET_0000 + 0x4D1D10)
+#define  ADDR_LIVE_WALLPAPER_MARS_7  (ADDR_OFFSET_0000 + 0x4E7CA4)
+#define  ADDR_LIVE_WALLPAPER_MARS_8  (ADDR_OFFSET_0000 + 0x4FDC38)
+#define  ADDR_MAPMARKER  (ADDR_OFFSET_0000 + 0x513BCC)
+#define  ADDR_MARS_THUMBNAIL  (ADDR_OFFSET_0000 + 0x5146D0)
+#define  ADDR_MESSAGE  (ADDR_OFFSET_0000 + 0x55B9E4)
+#define  ADDR_PLANET_VIEW  (ADDR_OFFSET_0000 + 0x55C9E8)
+#define  ADDR_PLANET_VIEW_SELECT  (ADDR_OFFSET_0000 + 0x55D9EC)
+#define  ADDR_RADIO_BUTTON_SELECT  (ADDR_OFFSET_0000 + 0x55E9F0)
+#define  ADDR_RADIO_BUTTON_UNSELECT  (ADDR_OFFSET_0000 + 0x55F9F4)
+#define  ADDR_STENCIL_LOGO_200P  (ADDR_OFFSET_0000 + 0x5609F8)
+#define  ADDR_STENCIL_MASK_200P  (ADDR_OFFSET_0000 + 0x587AFC)
+#define  ADDR_STEP2  (ADDR_OFFSET_0000 + 0x5AEC00)
+#define  ADDR_STEP3  (ADDR_OFFSET_0000 + 0x5B0020)
+#define  ADDR_SUDOKU_VIEW  (ADDR_OFFSET_0000 + 0x5B1440)
+#define  ADDR_SUDOKU_VIEW_SELECT  (ADDR_OFFSET_0000 + 0x5B2444)
+#define  ADDR_SUN2  (ADDR_OFFSET_0000 + 0x5B3448)
+#define  ADDR_SUN3  (ADDR_OFFSET_0000 + 0x5B444C)
+#define  ADDR_WATCH1_CENTER_POINT  (ADDR_OFFSET_0000 + 0x5B5450)
+#define  ADDR_WATCH1_HOUR1  (ADDR_OFFSET_0000 + 0x5B5C98)
+#define  ADDR_WATCH1_MINITE1  (ADDR_OFFSET_0000 + 0x5B78F8)
+#define  ADDR_WATCH1_SECOND1  (ADDR_OFFSET_0000 + 0x5B9EB8)
+#define  ADDR_WATCH2_CENTER_POINT  (ADDR_OFFSET_0000 + 0x5BAE84)
+#define  ADDR_WATCH2_HOUR1  (ADDR_OFFSET_0000 + 0x5BB6CC)
+#define  ADDR_WATCH2_MINITE1  (ADDR_OFFSET_0000 + 0x5BD32C)
+#define  ADDR_WATCH2_SECOND1  (ADDR_OFFSET_0000 + 0x5BF8EC)
+#define  ADDR_WATCH3_CENTER_POINT  (ADDR_OFFSET_0000 + 0x5C08B8)
+#define  ADDR_WATCHFACES2_1  (ADDR_OFFSET_0000 + 0x5C0BCC)
+#define  ADDR_WATCH_FACE_2  (ADDR_OFFSET_0000 + 0x68A060)
+#define  ADDR_WECHAT  (ADDR_OFFSET_0000 + 0x7534F4)
+#define  ADDR_WHITE_THUMBNAIL  (ADDR_OFFSET_0000 + 0x7544F8)
+LV_IMG_DECLARE(wd_img_10_compass);
+LV_IMG_DECLARE(wd_img_11_About);
+LV_IMG_DECLARE(wd_img_12_taobao);
+LV_IMG_DECLARE(wd_img_13_entertainment);
+LV_IMG_DECLARE(wd_img_14_phonebook);
+LV_IMG_DECLARE(wd_img_15_Googlemap);
+LV_IMG_DECLARE(wd_img_16_baidu);
+LV_IMG_DECLARE(wd_img_17_iqiyi);
+LV_IMG_DECLARE(wd_img_18_netease);
+LV_IMG_DECLARE(wd_img_19_wallet);
+LV_IMG_DECLARE(wd_img_1_App_view);
+LV_IMG_DECLARE(wd_img_1_setting);
+LV_IMG_DECLARE(wd_img_20_music);
+LV_IMG_DECLARE(wd_img_21_calendar);
+LV_IMG_DECLARE(wd_img_22_Chrome);
+LV_IMG_DECLARE(wd_img_23_twitter);
+LV_IMG_DECLARE(wd_img_24_WhatsApp);
+LV_IMG_DECLARE(wd_img_25_cmbc);
+LV_IMG_DECLARE(wd_img_26_online_class);
+LV_IMG_DECLARE(wd_img_27_message);
+LV_IMG_DECLARE(wd_img_28_Google_meetting);
+LV_IMG_DECLARE(wd_img_29_facebook);
+LV_IMG_DECLARE(wd_img_2_alipay);
+LV_IMG_DECLARE(wd_img_2_function_key);
+LV_IMG_DECLARE(wd_img_30_douban);
+LV_IMG_DECLARE(wd_img_31_QQ_space);
+LV_IMG_DECLARE(wd_img_32_google_plus);
+LV_IMG_DECLARE(wd_img_33_weather);
+LV_IMG_DECLARE(wd_img_34_google_play);
+LV_IMG_DECLARE(wd_img_35_application_store);
+LV_IMG_DECLARE(wd_img_36_icbc);
+LV_IMG_DECLARE(wd_img_37_QQ_music);
+LV_IMG_DECLARE(wd_img_38_file_manage);
+LV_IMG_DECLARE(wd_img_39_QQ);
+LV_IMG_DECLARE(wd_img_3_clock_setting);
+LV_IMG_DECLARE(wd_img_3_wechat);
+LV_IMG_DECLARE(wd_img_40_yahoo);
+LV_IMG_DECLARE(wd_img_4_favorite);
+LV_IMG_DECLARE(wd_img_4_heart);
+LV_IMG_DECLARE(wd_img_5_dianping);
+LV_IMG_DECLARE(wd_img_5_notice_manage);
+LV_IMG_DECLARE(wd_img_6_camera);
+LV_IMG_DECLARE(wd_img_6_system_update);
+LV_IMG_DECLARE(wd_img_7_general_setting);
+LV_IMG_DECLARE(wd_img_7_tiktok);
+LV_IMG_DECLARE(wd_img_8_activity);
+LV_IMG_DECLARE(wd_img_8_auxiliary_means);
+LV_IMG_DECLARE(wd_img_9_spo2);
+LV_IMG_DECLARE(wd_img_activity);
+LV_IMG_DECLARE(wd_img_activity1_thumbnail);
+LV_IMG_DECLARE(wd_img_activity_comsume);
+LV_IMG_DECLARE(wd_img_activity_comsume_small);
+LV_IMG_DECLARE(wd_img_activity_exercise);
+LV_IMG_DECLARE(wd_img_activity_exercise_small);
+LV_IMG_DECLARE(wd_img_activity_step);
+LV_IMG_DECLARE(wd_img_activity_step_small);
+LV_IMG_DECLARE(wd_img_activity_thumbnail);
+LV_IMG_DECLARE(wd_img_activity_times);
+LV_IMG_DECLARE(wd_img_activity_times_small);
+LV_IMG_DECLARE(wd_img_battery);
+LV_IMG_DECLARE(wd_img_dark_thumbnail);
+LV_IMG_DECLARE(wd_img_digital1_comsume_small);
+LV_IMG_DECLARE(wd_img_digital1_exercise_small);
+LV_IMG_DECLARE(wd_img_digital1_heart_small);
+LV_IMG_DECLARE(wd_img_digital1_step_small);
+LV_IMG_DECLARE(wd_img_digital1_weather);
+LV_IMG_DECLARE(wd_img_digital2_consume_small);
+LV_IMG_DECLARE(wd_img_digital2_exercise_small);
+LV_IMG_DECLARE(wd_img_digital2_heart_small);
+LV_IMG_DECLARE(wd_img_digital2_weather);
+LV_IMG_DECLARE(wd_img_flower_thumbnail);
+LV_IMG_DECLARE(wd_img_heartrate1);
+LV_IMG_DECLARE(wd_img_heartrate2);
+LV_IMG_DECLARE(wd_img_heartrate3);
+LV_IMG_DECLARE(wd_img_heartrate4);
+LV_IMG_DECLARE(wd_img_heartrate_bg);
+LV_IMG_DECLARE(wd_img_heart_rate);
+LV_IMG_DECLARE(wd_img_indicator);
+LV_IMG_DECLARE(wd_img_left_arrow);
+LV_IMG_DECLARE(wd_img_list_mode);
+LV_IMG_DECLARE(wd_img_list_mode_select);
+LV_IMG_DECLARE(wd_img_live_flower_center);
+LV_IMG_DECLARE(wd_img_live_flower_hour);
+LV_IMG_DECLARE(wd_img_live_flower_minute);
+LV_IMG_DECLARE(wd_img_live_flower_second);
+LV_IMG_DECLARE(wd_img_live_flower_watchface);
+LV_IMG_DECLARE(wd_img_live_flower_watchface1);
+LV_IMG_DECLARE(wd_img_live_wallpaer_flower);
+LV_IMG_DECLARE(wd_img_live_wallpaper_mars_1);
+LV_IMG_DECLARE(wd_img_live_wallpaper_mars_2);
+LV_IMG_DECLARE(wd_img_live_wallpaper_mars_3);
+LV_IMG_DECLARE(wd_img_live_wallpaper_mars_4);
+LV_IMG_DECLARE(wd_img_live_wallpaper_mars_5);
+LV_IMG_DECLARE(wd_img_live_wallpaper_mars_6);
+LV_IMG_DECLARE(wd_img_live_wallpaper_mars_7);
+LV_IMG_DECLARE(wd_img_live_wallpaper_mars_8);
+LV_IMG_DECLARE(wd_img_mapmarker);
+LV_IMG_DECLARE(wd_img_mars_thumbnail);
+LV_IMG_DECLARE(wd_img_message);
+LV_IMG_DECLARE(wd_img_planet_view);
+LV_IMG_DECLARE(wd_img_planet_view_select);
+LV_IMG_DECLARE(wd_img_radio_button_select);
+LV_IMG_DECLARE(wd_img_radio_button_unselect);
+LV_IMG_DECLARE(wd_img_stencil_logo_200p);
+LV_IMG_DECLARE(wd_img_stencil_mask_200p);
+LV_IMG_DECLARE(wd_img_step2);
+LV_IMG_DECLARE(wd_img_step3);
+LV_IMG_DECLARE(wd_img_sudoku_view);
+LV_IMG_DECLARE(wd_img_sudoku_view_select);
+LV_IMG_DECLARE(wd_img_sun2);
+LV_IMG_DECLARE(wd_img_sun3);
+LV_IMG_DECLARE(wd_img_watch1_center_point);
+LV_IMG_DECLARE(wd_img_watch1_hour1);
+LV_IMG_DECLARE(wd_img_watch1_minite1);
+LV_IMG_DECLARE(wd_img_watch1_second1);
+LV_IMG_DECLARE(wd_img_watch2_center_point);
+LV_IMG_DECLARE(wd_img_watch2_hour1);
+LV_IMG_DECLARE(wd_img_watch2_minite1);
+LV_IMG_DECLARE(wd_img_watch2_second1);
+LV_IMG_DECLARE(wd_img_watch3_center_point);
+LV_IMG_DECLARE(wd_img_watchfaces2_1);
+LV_IMG_DECLARE(wd_img_watch_face_2);
+LV_IMG_DECLARE(wd_img_wechat);
+LV_IMG_DECLARE(wd_img_white_thumbnail);
+#endif  
