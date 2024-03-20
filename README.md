@@ -1,6 +1,5 @@
 # GR5526 Series SoC
 
-[TOC]
 
 
 ## 1. Introduction
