@@ -309,7 +309,7 @@ static void lv_enhanced_list_event(const lv_obj_class_t *class_p, lv_event_t *ev
                 }
                 // Check if Y-Pos hit
                 const lv_img_dsc_t *icon = list->items[i].icon;
-                if ((y_ofs + icon->header.h) < click_pos.y)
+                if ((y_ofs + (lv_coord_t)icon->header.h) < click_pos.y)
                 {
                     y_ofs += LIST_ITEM_LINE_GAP + icon->header.h;
                     continue;

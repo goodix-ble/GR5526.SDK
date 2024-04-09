@@ -155,7 +155,7 @@ lv_transit_frame_t * lv_wms_transit_frame_render(void * dest_address, const lv_t
     uint32_t _cb_address_1 = (uint32_t)_trans_env._scrn_cache_1;
     uint32_t _cb_address_2 = (uint32_t)_trans_env._scrn_cache_2;
     bool slide_direct_hor  = false;
-    hal_gfx_transition_t transit ;
+    hal_gfx_transition_t transit = HAL_GFX_TRANS_NONE;
 
     void * p_dest_buff = dest_address;
 
