@@ -118,6 +118,7 @@ void bsp_itm_send(uint8_t *p_data, uint16_t length)
 {
     for(uint16_t i = 0; i < length; i++)
     {
+        CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
         ITM_SendChar(p_data[i]);
     }
 }
