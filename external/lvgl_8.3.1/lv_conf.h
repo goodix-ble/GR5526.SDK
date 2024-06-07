@@ -411,6 +411,7 @@
 
 #define LV_FONT_MONTSERRAT_48_GDX   1u
 #define LV_FONT_MSYH_26_GR552X      1u
+#define LV_FONT_MSYH_20_GR552X      1u
 
 /*Demonstrate special features*/
 #define LV_FONT_MONTSERRAT_12_SUBPX      0
@@ -796,8 +797,14 @@
  * Expend Defines
  *==================*/
 
-#define DISP_HOR_RES                454u
-#define DISP_VER_RES                454u
+#ifndef DISP_HOR_RES
+    #define DISP_HOR_RES                454u
+#endif
+
+#ifndef DISP_VER_RES
+    #define DISP_VER_RES                454u
+#endif
+
 #define DISP_PIXEL_DEPTH            2u
 
 #define LV_GDX_PATCH_CUSTOM_SCROLL          1   /* Enable custom scroll support */

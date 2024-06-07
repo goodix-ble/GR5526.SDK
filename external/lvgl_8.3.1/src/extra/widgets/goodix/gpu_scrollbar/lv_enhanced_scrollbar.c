@@ -19,24 +19,6 @@
 
 #define AUTO_DETACH_ON_TARGET_DELETE 1
 
-#define SCROLLBAR_TYPE SCROLLBAR_TYPE_ARC
-
-#if SCROLLBAR_TYPE == SCROLLBAR_TYPE_ARC
-
-// ARC scrollbar styles
-#define ARC_SCROLLBAR_START_ANGLE 315
-#define ARC_SCROLLBAR_END_ANGLE   405
-#define ARC_SCROLLBAR_RADIUS      202
-
-#elif SCROLLBAR_TYPE == SCROLLBAR_TYPE_VERTICAL
-
-// Vertical scrollbar styles
-#define VERT_SCROLLBAR_POS_X  350
-#define VERT_SCROLLBAR_POS_Y  177
-#define VERT_SCROLLBAR_LENGTH 100
-
-#endif // SCROLLBAR_TYPE == SCROLLBAR_TYPE_ARC
-
 // General Style
 #define SCROLLBAR_IND_COLOR   lv_color_make(192, 192, 192)
 #define SCROLLBAR_BG_COLOR    lv_color_make(32, 32, 32)
@@ -106,6 +88,11 @@ void lv_enhanced_scrollbar_set_target(lv_obj_t *obj, lv_obj_t *target)
 #endif // AUTO_DETACH_ON_TARGET_DELETE
 }
 
+void lv_enhanced_scrollbar_set_style(lv_obj_t *obj, lv_enhanced_scrollbar_style_t *style)
+{
+    memcpy(&(AS_BAR(obj)->styles), style, sizeof(*style));
+}
+
 /**********************
  *   STATIC FUNCTIONS
  **********************/
@@ -157,11 +144,14 @@ static void lv_enhanced_scrollbar_event(const lv_obj_class_t *class_p, lv_event_
                     bar->total_height = lv_obj_get_scroll_top(bar->target_obj) + lv_obj_get_scroll_bottom(bar->target_obj) - bar->pad_top - lv_obj_get_style_pad_bottom(bar->target_obj, 0) + bar->ind_height;
                 }
                 float ind_perc = (float)bar->ind_height / (float)bar->total_height;
-#if SCROLLBAR_TYPE == SCROLLBAR_TYPE_ARC
-                bar->ind_param = ind_perc * (ARC_SCROLLBAR_END_ANGLE - ARC_SCROLLBAR_START_ANGLE);
-#elif SCROLLBAR_TYPE == SCROLLBAR_TYPE_VERTICAL
-                bar->ind_param = ind_perc * VERT_SCROLLBAR_LENGTH;
-#endif // SCROLLBAR_TYPE == SCROLLBAR_TYPE_ARC
+                if (bar->styles.type == SCROLLBAR_TYPE_ARC)
+                {
+                    bar->ind_param = ind_perc * (bar->styles.styles.arc.end_angle - bar->styles.styles.arc.start_angle);
+                }
+                else if (bar->styles.type == SCROLLBAR_TYPE_VERTICAL)
+                {
+                    bar->ind_param = ind_perc * bar->styles.styles.vertical.length;
+                }
             }
         }
     }
@@ -202,58 +192,60 @@ static void draw_scrollbar(lv_event_t *evt)
         scroll_offset = -bar->target_obj->spec_attr->scroll.y - bar->pad_top;
     }
 
-#if SCROLLBAR_TYPE == SCROLLBAR_TYPE_ARC
-    lv_draw_arc_dsc_t arc_dsc;
-    lv_draw_arc_dsc_init(&arc_dsc);
-    arc_dsc.width = SCROLLBAR_WIDTH;
-    arc_dsc.rounded = 1;
-
-    // Draw background
-    arc_dsc.color = SCROLLBAR_BG_COLOR;
-    lv_draw_gr5526_arc(draw_ctx, &arc_dsc, &bar->center, ARC_SCROLLBAR_RADIUS, ARC_SCROLLBAR_START_ANGLE, ARC_SCROLLBAR_END_ANGLE);
-
-    uint16_t start_angle = ARC_SCROLLBAR_START_ANGLE + (ARC_SCROLLBAR_END_ANGLE - ARC_SCROLLBAR_START_ANGLE) * scroll_offset / bar->total_height;
-    uint16_t end_angle = start_angle + bar->ind_param;
-
-    start_angle = LV_MAX(start_angle, ARC_SCROLLBAR_START_ANGLE);
-    end_angle = LV_MIN(end_angle, ARC_SCROLLBAR_END_ANGLE);
-
-    // Only draw indicator if valid
-    if (end_angle > start_angle)
+    if (bar->styles.type == SCROLLBAR_TYPE_ARC)
     {
-        // Draw Indicator
-        arc_dsc.color = SCROLLBAR_IND_COLOR;
-        lv_draw_gr5526_arc(draw_ctx, &arc_dsc, &bar->center, ARC_SCROLLBAR_RADIUS, start_angle, end_angle);
+        lv_draw_arc_dsc_t arc_dsc;
+        lv_draw_arc_dsc_init(&arc_dsc);
+        arc_dsc.width = SCROLLBAR_WIDTH;
+        arc_dsc.rounded = 1;
+
+        // Draw background
+        arc_dsc.color = SCROLLBAR_BG_COLOR;
+        lv_draw_gr5526_arc(draw_ctx, &arc_dsc, &bar->center, bar->styles.styles.arc.radius, bar->styles.styles.arc.start_angle, bar->styles.styles.arc.end_angle);
+
+        uint16_t start_angle = bar->styles.styles.arc.start_angle + (bar->styles.styles.arc.end_angle - bar->styles.styles.arc.start_angle) * scroll_offset / bar->total_height;
+        uint16_t end_angle = start_angle + bar->ind_param;
+
+        start_angle = LV_MAX(start_angle, bar->styles.styles.arc.start_angle);
+        end_angle = LV_MIN(end_angle, bar->styles.styles.arc.end_angle);
+
+        // Only draw indicator if valid
+        if (end_angle > start_angle)
+        {
+            // Draw Indicator
+            arc_dsc.color = SCROLLBAR_IND_COLOR;
+            lv_draw_gr5526_arc(draw_ctx, &arc_dsc, &bar->center, bar->styles.styles.arc.radius, start_angle, end_angle);
+        }
     }
-#elif SCROLLBAR_TYPE == SCROLLBAR_TYPE_VERTICAL
-    lv_point_t start = {VERT_SCROLLBAR_POS_X, VERT_SCROLLBAR_POS_Y};
-    lv_point_t end = {VERT_SCROLLBAR_POS_X, VERT_SCROLLBAR_POS_Y + VERT_SCROLLBAR_LENGTH};
-
-    lv_draw_line_dsc_t line_dsc;
-    lv_draw_line_dsc_init(&line_dsc);
-    line_dsc.width = SCROLLBAR_WIDTH;
-    line_dsc.round_start = 1;
-    line_dsc.round_end = 1;
-
-    // Draw background
-    line_dsc.color = SCROLLBAR_BG_COLOR;
-    lv_draw_gr5526_line(draw_ctx, &line_dsc, &start, &end);
-
-    uint16_t start_y = VERT_SCROLLBAR_POS_Y + VERT_SCROLLBAR_LENGTH * scroll_offset / bar->total_height;
-    uint16_t end_y = start_y + bar->ind_param;
-
-    start_y = LV_MAX(start_y, VERT_SCROLLBAR_POS_Y);
-    end_y = LV_MIN(end_y, VERT_SCROLLBAR_POS_Y + VERT_SCROLLBAR_LENGTH);
-
-    if (end_y > start_y)
+    else if(bar->styles.type == SCROLLBAR_TYPE_VERTICAL)
     {
-        line_dsc.color = SCROLLBAR_IND_COLOR;
-        start.y = start_y;
-        end.y = end_y;
+        lv_point_t start = {bar->styles.styles.vertical.pos.x, bar->styles.styles.vertical.pos.y};
+        lv_point_t end = {bar->styles.styles.vertical.pos.x, bar->styles.styles.vertical.pos.y + bar->styles.styles.vertical.length};
+
+        lv_draw_line_dsc_t line_dsc;
+        lv_draw_line_dsc_init(&line_dsc);
+        line_dsc.width = SCROLLBAR_WIDTH;
+        line_dsc.round_start = 1;
+        line_dsc.round_end = 1;
+
+        // Draw background
+        line_dsc.color = SCROLLBAR_BG_COLOR;
         lv_draw_gr5526_line(draw_ctx, &line_dsc, &start, &end);
-    }
 
-#endif // SCROLLBAR_TYPE == SCROLLBAR_TYPE_ARC
+        uint16_t start_y = bar->styles.styles.vertical.pos.y + bar->styles.styles.vertical.length * scroll_offset / bar->total_height;
+        uint16_t end_y = start_y + bar->ind_param;
+
+        start_y = LV_MAX(start_y, bar->styles.styles.vertical.pos.y);
+        end_y = LV_MIN(end_y, bar->styles.styles.vertical.pos.y + bar->styles.styles.vertical.length);
+
+        if (end_y > start_y)
+        {
+            line_dsc.color = SCROLLBAR_IND_COLOR;
+            start.y = start_y;
+            end.y = end_y;
+            lv_draw_gr5526_line(draw_ctx, &line_dsc, &start, &end);
+        }
+    }
 }
 
 #if AUTO_DETACH_ON_TARGET_DELETE

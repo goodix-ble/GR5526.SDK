@@ -29,6 +29,27 @@ extern "C" {
 
 typedef struct
 {
+    uint8_t type;
+
+    union
+    {
+        struct
+        {
+            int16_t start_angle;
+            int16_t end_angle;
+            lv_coord_t radius;
+        } arc;
+
+        struct
+        {
+            lv_point_t pos;
+            lv_coord_t length;
+        } vertical;
+    } styles;
+} lv_enhanced_scrollbar_style_t;
+
+typedef struct
+{
     lv_obj_t obj;
     lv_point_t center;
     lv_coord_t total_height;
@@ -36,6 +57,7 @@ typedef struct
     lv_coord_t pad_top;
     uint16_t ind_param;
     lv_obj_t *target_obj;
+    lv_enhanced_scrollbar_style_t styles;
 } lv_enhanced_scrollbar_t;
 
 /**********************
@@ -47,6 +69,8 @@ lv_obj_t *lv_enhanced_scrollbar_create(lv_obj_t *parent);
 void lv_enhanced_scrollbar_set_center(lv_obj_t *obj, lv_coord_t x, lv_coord_t y);
 
 void lv_enhanced_scrollbar_set_target(lv_obj_t *obj, lv_obj_t *target);
+
+void lv_enhanced_scrollbar_set_style(lv_obj_t *obj, lv_enhanced_scrollbar_style_t *style);
 
 #ifdef __cplusplus
 }
