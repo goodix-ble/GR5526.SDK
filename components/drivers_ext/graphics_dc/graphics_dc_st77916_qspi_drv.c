@@ -115,14 +115,6 @@ void graphics_dc_st77916_init(uint16_t screen_w, uint16_t screen_h)
     app_io_init(DISPLAY_RESET_IO_TYPE, &io_init);
     app_io_write_pin(DISPLAY_RESET_IO_TYPE, DISPLAY_RESET_IO_PIN, APP_IO_PIN_SET);
 
-    // Blacklight
-    io_init.pin = DISPLAY_BL_IO_PIN;
-    io_init.mode = APP_IO_MODE_OUTPUT;
-    io_init.pull = APP_IO_NOPULL;
-    io_init.mux = DISPLAY_BL_IO_MUX;
-    app_io_init(DISPLAY_BL_IO_TYPE, &io_init);
-    app_io_write_pin(DISPLAY_BL_IO_TYPE, DISPLAY_BL_IO_PIN, APP_IO_PIN_SET);
-
     // TE
     io_init.pin = DISPLAY_TE_IO_PIN;
     io_init.mode = APP_IO_MODE_IT_FALLING;
@@ -133,6 +125,14 @@ void graphics_dc_st77916_init(uint16_t screen_w, uint16_t screen_h)
 
     // perform ST77916 initialization sequence
     st77916_init_sequence();
+
+    // Enable Blacklight finally
+    io_init.pin = DISPLAY_BL_IO_PIN;
+    io_init.mode = APP_IO_MODE_OUTPUT;
+    io_init.pull = APP_IO_NOPULL;
+    io_init.mux = DISPLAY_BL_IO_MUX;
+    app_io_init(DISPLAY_BL_IO_TYPE, &io_init);
+    app_io_write_pin(DISPLAY_BL_IO_TYPE, DISPLAY_BL_IO_PIN, APP_IO_PIN_SET);
 }
 
 void graphics_dc_st77916_deinit(void)
