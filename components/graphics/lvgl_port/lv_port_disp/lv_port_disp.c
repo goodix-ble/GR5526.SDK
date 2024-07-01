@@ -117,9 +117,9 @@ void lv_port_disp_debug_enable(bool enable) {
 
 
 uint32_t lv_port_get_fb_format(void) {
-#if LVGL_FRAMEBUFFER_SIZE == 16
+#if DISP_PIXEL_DEPTH == 2
     return HAL_GFX_RGB565;
-#elif LVGL_FRAMEBUFFER_SIZE == 32
+#elif DISP_PIXEL_DEPTH == 4
     return HAL_GFX_RGBA8888;
 #else
     #error "Not Support Now"
