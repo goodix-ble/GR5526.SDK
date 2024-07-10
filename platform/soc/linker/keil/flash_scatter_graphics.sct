@@ -23,26 +23,40 @@ LR_FLASH APP_CODE_RUN_ADDR FLASH_SIZE {
         .ANY(+RO)
       }
 
+    #if defined(XIP_MODE)
     ; Ram code space AREA
     RAM_CODE (RAM_CODE_SPACE_START) RAM_CODE_SPACE_SIZE {
         .ANY(RAM_CODE)
     }
+    #endif
 
-    ; FPB space
-    FPB_TABLE (FPB_DATA_SPACE_START) FPB_DATA_SPACE_SIZE {
-        .ANY(FPB)
-    }
-
+    #if defined(HMIRROR_MODE)
     ; Ram data
     RAM_RW (+0) APP_RAM_SIZE {
         .ANY(+RW)
+    }
+    RAM_ZI (+0) APP_RAM_SIZE {
         .ANY(+ZI)
+    }
+    #else
+    ; Ram data
+    RAM_RW (+HIGH_RAM_OFFSET) APP_RAM_SIZE {
+        .ANY(+RW)
+    }
+    RAM_ZI (+0) APP_RAM_SIZE {
+        .ANY(+ZI)
+    }
+    #endif
+
+    ; FPB space
+    FPB_TABLE AlignExpr(+0, 128) FPB_DATA_SPACE_SIZE {
+        .ANY(FPB)
     }
 
     ; Ram heap
-    ARM_LIB_HEAP  AlignExpr(+0, ALIGN_DWORD) EMPTY SYSTEM_HEAP_SIZE {}
+    ARM_LIB_HEAP  AlignExpr(STACK_END_ADDR - SYSTEM_STACK_SIZE - SYSTEM_HEAP_SIZE, ALIGN_DWORD) EMPTY SYSTEM_HEAP_SIZE {}
     ; Ram stack
-    ARM_LIB_STACK AlignExpr(+0, ALIGN_DWORD) EMPTY SYSTEM_STACK_SIZE {}
+    ARM_LIB_STACK AlignExpr(STACK_END_ADDR, ALIGN_DWORD) EMPTY -SYSTEM_STACK_SIZE {}
 
     ; ASSERT the RAM used address smaller the sram end address
     ScatterAssert(ImageBase(ARM_LIB_STACK) < 0x20080000)
