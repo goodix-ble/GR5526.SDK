@@ -11,6 +11,12 @@
 
 #include "qrcodegen.h"
 
+#if LV_USE_GPU_GR552x
+#include "hal_gfx_graphics.h"
+#include "hal_gfx_blender.h"
+#include "hal_gfx_cmdlist.h"
+#endif // LV_USE_GPU_GR552x
+
 /*********************
  *      DEFINES
  *********************/
@@ -26,6 +32,13 @@
 static void lv_qrcode_constructor(const lv_obj_class_t * class_p, lv_obj_t * obj);
 static void lv_qrcode_destructor(const lv_obj_class_t * class_p, lv_obj_t * obj);
 
+#if LV_USE_GPU_GR552x
+static void lv_qrcode_event(const lv_obj_class_t * class_p, lv_event_t *event);
+static void draw_qrcode_gpu(lv_event_t *event);
+extern hal_gfx_cmdlist_t * lv_port_get_current_cl(void);
+extern uint32_t lv_port_get_fb_format(void);
+#endif // LV_USE_GPU_GR552x
+
 /**********************
  *  STATIC VARIABLES
  **********************/
@@ -34,6 +47,9 @@ const lv_obj_class_t lv_qrcode_class = {
     .constructor_cb = lv_qrcode_constructor,
     .destructor_cb = lv_qrcode_destructor,
     .base_class = &lv_canvas_class
+#if LV_USE_GPU_GR552x
+    ,.event_cb = lv_qrcode_event,
+#endif // LV_USE_GPU_GR552x
 };
 
 static lv_coord_t size_param;
@@ -211,5 +227,50 @@ static void lv_qrcode_destructor(const lv_obj_class_t * class_p, lv_obj_t * obj)
     lv_mem_free((void *)img->data);
     img->data = NULL;
 }
+
+#if LV_USE_GPU_GR552x
+static void lv_qrcode_event(const lv_obj_class_t * class_p, lv_event_t *event)
+{
+    if (event->code == LV_EVENT_DRAW_MAIN)
+    {
+        draw_qrcode_gpu(event);
+    }
+    else
+    {
+        lv_obj_event_base(MY_CLASS, event);
+    }
+}
+
+static void draw_qrcode_gpu(lv_event_t *event)
+{
+    lv_obj_t *obj = event->current_target;
+    lv_img_dsc_t *img = lv_canvas_get_img(obj);
+
+    lv_draw_ctx_t *draw_ctx = lv_event_get_draw_ctx(event);
+
+    hal_gfx_cmdlist_t *cl = lv_port_get_current_cl();
+    void *disp_buf = draw_ctx->buf;
+    const lv_area_t *disp_area = draw_ctx->buf_area;
+    const lv_area_t *clip_area = draw_ctx->clip_area;
+    hal_gfx_bind_dst_tex((uintptr_t)disp_buf,
+                         disp_area->x2 - disp_area->x1 + 1,
+                         disp_area->y2 - disp_area->y1 + 1,
+                         lv_port_get_fb_format(),
+                         -1);
+
+    hal_gfx_set_clip(clip_area->x1, clip_area->y1, clip_area->x2 - clip_area->x1 + 1, clip_area->y2 - clip_area->y1 + 1);
+
+    uint32_t color0 = *((uint32_t *)img->data);
+    uint32_t color1 = *(((uint32_t *)img->data) + 1);
+    hal_gfx_clear(color0);
+    hal_gfx_set_tex_color(color1);
+    hal_gfx_bind_src_tex(((uintptr_t)img->data) + 8, img->header.w, img->header.h, HAL_GFX_A1, -1, 0);
+    hal_gfx_set_blend_blit(HAL_GFX_BL_SIMPLE);
+    hal_gfx_blit(clip_area->x1, clip_area->y1);
+
+    hal_gfx_cl_submit(cl);
+    hal_gfx_cl_wait(cl);
+}
+#endif // LV_USE_GPU_GR552x
 
 #endif /*LV_USE_QRCODE*/
