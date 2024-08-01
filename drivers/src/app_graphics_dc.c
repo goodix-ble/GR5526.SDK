@@ -217,7 +217,7 @@ void app_graphics_dc_set_power_state(graphics_dc_power_state_e state) {
             _dc_irq_sem_give();
 #if !CONFIG_ZEPHYR_OS
             GLOBAL_EXCEPTION_DISABLE();
-            hal_pwr_mgmt_set_extra_device_state(EXTRA_DEVICE_NUM_DC, IDLE);  
+            hal_pwr_mgmt_set_extra_device_state(EXTRA_DEVICE_NUM_DC, IDLE);
             GLOBAL_EXCEPTION_ENABLE();
 #endif
             break;
@@ -385,6 +385,40 @@ app_graphics_dc_frame_result_e app_graphics_dc_send_single_frame(uint32_t which_
                     hal_gdc_MIPI_CFG_out(s_graphics_dc_env.clock_mode | MIPICFG_SPI4 | s_graphics_dc_env.init_params.mipicfg_format | MIPICFG_DBI_EN | MIPICFG_RESX | MIPICFG_SPI_HOLD);
                     hal_gdc_MIPI_out    ( MIPI_DBIB_CMD | MIPI_MASK_QSPI | dc_cmd->command);
                     hal_gdc_MIPI_out    ( MIPI_DBIB_CMD | MIPI_MASK_QSPI | dc_cmd->address_width | dc_cmd->address);
+                    dc_enable_frame_irq();
+                    hal_gdc_set_mode(HAL_GDC_ONE_FRAME);                      /* trigger the frame transmission to start */
+                    if(GDC_ACCESS_TYPE_SYNC == access_type) {
+                        s_graphics_dc_env.is_async_mark = 0;
+                        dc_wait_frame_end();
+                        hal_gdc_reg_write(HAL_GDC_REG_DBIB_CFG, (hal_gdc_reg_read(HAL_GDC_REG_DBIB_CFG) & (~MIPICFG_SPI_HOLD)));
+                        res = GDC_FRAME_RES_SUCCESS;
+                    } else {
+                        s_graphics_dc_env.is_async_mark = FRAME_ASYNC_MARK_SPI_HOLD;
+                        res = GDC_FRAME_RES_ASYNC_WAIT;
+                    }
+                }
+                break;
+
+                default:
+                {
+                    GDC_DBG_PRINTF("Err: NOT SUPPORT!\r\n");
+                    res = GDC_FRAME_RES_UNSUPPORT;
+                }
+                break;
+            }
+        }
+        break;
+
+        case GDC_SPI_FRAME_TIMING_1:
+        case GDC_SPI_FRAME_TIMING_2:
+        {
+            switch(dc_get_out_pixel_bits()) {
+                case GDC_OUT_PIXEL_BITS_08:
+                {
+                    const uint32_t spi_mode = (GDC_SPI_FRAME_TIMING_1 == dc_cmd->frame_timing) ? MIPICFG_SPI3 : MIPICFG_SPI4;
+                    /* Trigger frame transmission */
+                    hal_gdc_MIPI_CFG_out(s_graphics_dc_env.clock_mode | spi_mode | s_graphics_dc_env.init_params.mipicfg_format | MIPICFG_DBI_EN | MIPICFG_RESX | MIPICFG_SPI_HOLD);
+                    hal_gdc_MIPI_out    ( MIPI_DBIB_CMD | MIPI_MASK_QSPI | dc_cmd->command);
                     dc_enable_frame_irq();
                     hal_gdc_set_mode(HAL_GDC_ONE_FRAME);                      /* trigger the frame transmission to start */
                     if(GDC_ACCESS_TYPE_SYNC == access_type) {
@@ -719,6 +753,12 @@ static graphics_dc_out_pixel_bits_e dc_get_out_pixel_bits(void) {
         case GDC_MIPICFG_QSPI_RGB888_OPT0 :
         {
             o_pixel_bits = GDC_OUT_PIXEL_BITS_24;
+        }
+        break;
+
+        case GDC_MIPICFG_SPI_RGB332_OPT0  :
+        {
+            o_pixel_bits = GDC_OUT_PIXEL_BITS_08;
         }
         break;
 
