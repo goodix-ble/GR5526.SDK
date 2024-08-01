@@ -214,7 +214,7 @@ typedef struct _usb_handle
   * @brief HAL_USB Callback function definition
   */
 
-typedef struct _usb_callback
+typedef struct _hal_usb_callback
 {
     void (*usb_msp_init)(usb_handle_t *p_usb);                                  /**< USB init MSP callback                                      */
     void (*usb_msp_deinit)(usb_handle_t *p_usb);                                /**< USB de-init MSP callback                                   */
@@ -246,7 +246,7 @@ typedef struct _usb_callback
     void (*usb_ep5_timer_out_err_callback)(usb_handle_t *p_usb);                /**< USB ep5 timer out error callback                           */
     void (*usb_attach_callback)(usb_handle_t *p_usb);                           /**< USB attatch callback                                       */
     void (*usb_detach_callback)(usb_handle_t *p_usb);                           /**< USB detatch callback                                       */
-} usb_callback_t;
+} hal_usb_callback_t;
 /** @} */
 
 /** @} */

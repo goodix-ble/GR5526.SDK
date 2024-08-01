@@ -21,7 +21,7 @@
 #include "lv_wms_tileview.h"
 #include "../../../../core/lv_indev.h"
 #include "../../../../lvgl.h"
-#include "./lv_wms_surface_flinger.h"
+#include "lv_wms_surface_flinger.h"
 #include "app_graphics_mem.h"
 #include "hal_gfx_graphics.h"
 #include "hal_gfx_transitions.h"

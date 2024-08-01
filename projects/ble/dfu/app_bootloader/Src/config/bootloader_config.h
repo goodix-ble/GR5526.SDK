@@ -64,12 +64,12 @@
 // <o> Whether to enable the watchdog
 // <0=> Disable
 // <1=> enable
-#define BOOTLOADER_WDT_ENABLE                   0
+#define BOOTLOADER_WDT_ENABLE                   1
 
 // <o> Whether to enable the signature verification function
 // <0=> Disable
 // <1=> enable
-#define BOOTLOADER_SIGN_ENABLE                  0
+#define BOOTLOADER_SIGN_ENABLE                  1
 
 // Application firmware comments definition
 // Must match the user app
@@ -80,7 +80,7 @@
 #define DFU_FW_SAVE_ADDR                        (FLASH_START_ADDR + 0x40000)
 
 //Hash value of the signed public key
-#define BOOTLOADER_PUBLIC_KEY_HASH              0xFE,0xD2,0x4B,0xEF,0x11,0x7C,0xB9,0xF9,0x6A,0x5A,0x6D,0xF7,0xEF,0xE0,0xA4,0xFC
+#define BOOTLOADER_PUBLIC_KEY_HASH              0x77,0x20,0x28,0x95,0xB2,0xE1,0xD5,0x5F,0xAD,0xAA,0x81,0x7C,0xA6,0x7E,0xE3,0x95
 
 #endif
 

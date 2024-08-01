@@ -203,7 +203,7 @@ typedef struct _uart_handle
   * @brief HAL_UART Callback function definition
   */
 
-typedef struct _uart_callback
+typedef struct _hal_uart_callback
 {
     void (*uart_msp_init)(uart_handle_t *p_uart);               /**< UART init MSP callback                     */
     void (*uart_msp_deinit)(uart_handle_t *p_uart);             /**< UART de-init MSP callback                  */
@@ -213,7 +213,7 @@ typedef struct _uart_callback
     void (*uart_abort_cplt_callback)(uart_handle_t *p_uart);    /**< UART abort completed callback              */
     void (*uart_abort_tx_cplt_callback)(uart_handle_t *p_uart); /**< UART abort tansmit complete callback       */
     void (*uart_abort_rx_cplt_callback)(uart_handle_t *p_uart); /**< UART abort receive complete callback       */
-} uart_callback_t;
+} hal_uart_callback_t;
 
 /** @} */
 

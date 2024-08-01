@@ -183,13 +183,15 @@ TIMER_HANDLER(1, APP_TIM_ID_1)
  */
 uint16_t app_tim_init(app_tim_params_t *p_params, app_tim_evt_handler_t evt_handler)
 {
-    app_tim_id_t id = p_params->id;
+    app_tim_id_t id;
     hal_status_t  hal_err_code;
 
     if (NULL == p_params)
     {
         return APP_DRV_ERR_POINTER_NULL;
     }
+
+    id = p_params->id;
 
     if (id >= APP_TIM_ID_MAX)
     {

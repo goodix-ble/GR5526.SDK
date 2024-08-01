@@ -117,7 +117,8 @@ extern "C" {
 #define LL_CGC_FRC_BLE_BRG_HCLK                                     MCU_SUB_FORCE_BLE_BRG_HCLK                      /**< Hclk for BLE MCU bridge                    */
 #define LL_CGC_FRC_APB_SUB_HCLK                                     MCU_SUB_FORCE_APB_SUB_HCLK                      /**< Hclk for APB subsystem                     */
 #define LL_CGC_FRC_SERIAL_HCLK                                      MCU_SUB_FORCE_SERIAL_HCLK                       /**< Hclk for serial blocks                     */
-#define LL_CGC_FRC_ALL_HCLK0                                        ((uint32_t)0x00000777U)                         /**< All clock group 0                          */
+#define LL_CGC_FRC_USB_HCLK                                         MCU_SUB_FORCE_USB_HCLK                          /**< Hclk for USB                               */
+#define LL_CGC_FRC_ALL_HCLK0                                        ((uint32_t)0x0000177FU)                         /**< All clock group 0                          */
 /** @} */
 
 /** @defgroup LL_CGC_EC_FRC_CLK1 Block1 Clock During FRC 
@@ -3201,6 +3202,47 @@ __STATIC_INLINE uint32_t ll_cgc_is_enabled_force_off_vttbl_hclk(void)
     return (BIT_SEGMENT_VALUE((uint32_t)&MCU_RET->MCU_PERIPH_PCLK_OFF, MCU_SUB_FORCE_VTTBL_PCLK_Pos) == (CGC_CLOCK_ENABLE));
 }
 
+/**
+  * @brief  Enabling force to turn off the clock for PSRAM ctrl.
+  *
+  *  Register  | BitsName
+  *  ----------|--------
+  *  PERIPH_GC | PSRAM_PCLK
+  *
+  * @retval None
+  */
+__STATIC_INLINE void ll_cgc_enable_force_off_psram_pclk(void)
+{
+    BIT_SEGMENT_VALUE((uint32_t)&MCU_RET->MCU_PERIPH_PCLK_OFF, MCU_SUB_FORCE_PSRAM_PCLK_Pos) = CGC_CLOCK_ENABLE;
+}
+
+/**
+  * @brief  Disabling force to turn off the clock for PSRAM ctrl.
+  *
+  *  Register  | BitsName
+  *  ----------|--------
+  *  PERIPH_GC | PSRAM_PCLK
+  *
+  * @retval None
+  */
+__STATIC_INLINE void ll_cgc_disable_force_off_psram_pclk(void)
+{
+    BIT_SEGMENT_VALUE((uint32_t)&MCU_RET->MCU_PERIPH_PCLK_OFF, MCU_SUB_FORCE_PSRAM_PCLK_Pos) = CGC_CLOCK_DISABLE;
+}
+
+/**
+  * @brief  Indicate whether the clock for PSRAM ctrl is forced to close.
+  *
+  *  Register  | BitsName
+  *  ----------|--------
+  *  PERIPH_GC | PSRAM_PCLK
+  *
+  * @retval State of bit (1 or 0).
+  */
+__STATIC_INLINE uint32_t ll_cgc_is_enabled_force_off_psram_pclk(void)
+{
+    return (BIT_SEGMENT_VALUE((uint32_t)&MCU_RET->MCU_PERIPH_PCLK_OFF, MCU_SUB_FORCE_PSRAM_PCLK_Pos) == (CGC_CLOCK_ENABLE));
+}
 /**
   * @brief Some peripherals has low power feature. (Include: UART/I2S/SPIM/SPIS/I2C/AHB BUS)
   *

@@ -473,7 +473,17 @@ static void lv_wms_slide_inside_outside_update(lv_obj_t* obj, lv_dir_t dir){
     lv_win_manager_t* p_current_manager = (lv_win_manager_t*)obj->wms_data;
     if(NULL == p_current_manager) return; // never transit when switch manager not set
     lv_coord_t left, right, top, bottom;
-    lv_obj_get_scroll_boundary(obj, &left, &right, &top, &bottom);
+
+    //NOT need to check boundary when obj has no LV_OBJ_FLAG_SCROLLABLE attribute
+    if(lv_obj_has_flag_any(obj, LV_OBJ_FLAG_SCROLLABLE)) {
+        lv_obj_get_scroll_boundary(obj, &left, &right, &top, &bottom);
+    } else {
+        left   =  obj->coords.x1;
+        right  =  obj->coords.x2;
+        top    =  obj->coords.y1;
+        bottom =  obj->coords.y2;
+    }
+
     if(dir & LV_DIR_VER & p_current_manager->inside_scroll_dir){
         if((top >= obj->coords.y1) &&
            (p_current_manager->top_create_func)){

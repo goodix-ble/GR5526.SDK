@@ -241,6 +241,7 @@ uint16_t app_adc_conversion_sync(uint16_t *p_data, uint32_t length, uint32_t tim
  *
  * @param[in]  p_data: Pointer to data buffer which to storage ADC conversion results.
  * @param[in]  length: Length of data buffer,  ranging between 0 and 4095.
+ * Note: Length must be aligned on a four-byte boundary.
  *
  * @return Result of operation.
  ****************************************************************************************

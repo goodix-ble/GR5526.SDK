@@ -53,9 +53,7 @@
 #define _APP_QSPI_H_
 
 #include "app_drv_config.h"
-#if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5332X)
-#include "gr533x_hal.h"
-#else
+#if (APP_DRIVER_CHIP_TYPE != APP_DRIVER_GR5405) && (APP_DRIVER_CHIP_TYPE != APP_DRIVER_GR5332X)
 #include "gr55xx_hal.h"
 #endif
 
@@ -100,6 +98,44 @@ extern "C" {
 
 //#define APP_STORAGE_RAM_ID    0xf                  /**< Special ID to handle RAM Source */
 #endif
+
+/** @addtogroup QSPI_SMART_CS_ENABLE smart cs enable defines. NOTE: If QSPI_DATA_MODE_SPI, enable smart cs
+  * @{
+  */
+#ifndef QSPI_SMART_CS_ENABLE
+  #if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR551X)
+    #define  QSPI_SMART_CS_ENABLE  1  /**< CS pin is controlled by software */
+  #else
+    #define  QSPI_SMART_CS_ENABLE  0  /**< CS pin is controlled by hardware */
+  #endif
+#endif
+
+#if QSPI_SMART_CS_ENABLE
+  #define QSPI_SMART_CS_LOW(id)                                           \
+      do {                                                                \
+              if(p_qspi_env[id]->p_pin_cfg->cs.enable == APP_QSPI_PIN_ENABLE) \
+              {                                                           \
+                  app_io_write_pin(p_qspi_env[id]->p_pin_cfg->cs.type,    \
+                                  p_qspi_env[id]->p_pin_cfg->cs.pin,      \
+                                  APP_IO_PIN_RESET);                      \
+              }                                                           \
+          } while(0)
+
+  #define QSPI_SMART_CS_HIGH(id)                                          \
+      do {                                                                \
+              if(p_qspi_env[id]->p_pin_cfg->cs.enable == APP_QSPI_PIN_ENABLE) \
+              {                                                           \
+                  app_io_write_pin(p_qspi_env[id]->p_pin_cfg->cs.type,    \
+                                  p_qspi_env[id]->p_pin_cfg->cs.pin,      \
+                                  APP_IO_PIN_SET);                        \
+              }                                                           \
+      } while(0)
+#else
+  #define QSPI_SMART_CS_LOW(id)
+  #define QSPI_SMART_CS_HIGH(id)
+#endif /* QSPI_SMART_CS_ENABLE */
+/** @} */
+
 /** @} */
 
 /** @} */

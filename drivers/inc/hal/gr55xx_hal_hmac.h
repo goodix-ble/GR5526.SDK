@@ -166,13 +166,13 @@ typedef struct _hmac_handle
   * @brief HAL_HMAC Callback function definition
   */
 
-typedef struct _hmac_callback
+typedef struct _hal_hmac_callback
 {
     void (*hmac_msp_init)(hmac_handle_t *p_hmac);               /**< HMAC init MSP callback             */
     void (*hmac_msp_deinit)(hmac_handle_t *p_hmac);             /**< HMAC de-init MSP callback          */
     void (*hmac_done_callback)(hmac_handle_t *p_hmac);          /**< HMAC digest done callback          */
     void (*hmac_error_callback)(hmac_handle_t *p_hmac);         /**< HMAC error callback                */
-} hmac_callback_t;
+} hal_hmac_callback_t;
 
 /** @} */
 

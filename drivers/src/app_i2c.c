@@ -270,8 +270,7 @@ static void app_i2c_event_call(i2c_handle_t *p_i2c, app_i2c_evt_type_t evt_type)
  */
 uint16_t app_i2c_init(app_i2c_params_t *p_params, app_i2c_evt_handler_t evt_handler)
 {
-
-    app_i2c_id_t  id = p_params->id;
+    app_i2c_id_t  id;
     app_drv_err_t app_err_code;
     hal_status_t  hal_err_code;
 
@@ -279,6 +278,8 @@ uint16_t app_i2c_init(app_i2c_params_t *p_params, app_i2c_evt_handler_t evt_hand
     {
         return APP_DRV_ERR_POINTER_NULL;
     }
+
+    id = p_params->id;
 
     if (id >= APP_I2C_ID_MAX)
     {
@@ -431,6 +432,11 @@ uint16_t app_i2c_receive_sync(app_i2c_id_t id, uint16_t target_address, uint8_t 
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     i2c_wake_up(id);
 #endif
@@ -481,11 +487,11 @@ uint16_t app_i2c_receive_async(app_i2c_id_t id, uint16_t target_address, uint8_t
     i2c_wake_up(id);
 #endif
 
-    p_i2c_env[id]->slv_dev_addr = target_address;
 
     if(p_i2c_env[id]->start_flag == false)
     {
         p_i2c_env[id]->start_flag = true;
+        p_i2c_env[id]->slv_dev_addr = target_address;
         switch(p_i2c_env[id]->role)
         {
             case APP_I2C_ROLE_MASTER:
@@ -529,6 +535,11 @@ uint16_t app_i2c_transmit_sync(app_i2c_id_t id, uint16_t target_address, uint8_t
     }
 
     if (p_data == NULL || size == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }
@@ -584,11 +595,11 @@ uint16_t app_i2c_transmit_async(app_i2c_id_t id, uint16_t target_address, uint8_
     i2c_wake_up(id);
 #endif
 
-    p_i2c_env[id]->slv_dev_addr = target_address;
 
     if (p_i2c_env[id]->start_flag == false)
     {
         p_i2c_env[id]->start_flag = true;
+        p_i2c_env[id]->slv_dev_addr = target_address;
         switch(p_i2c_env[id]->role)
         {
             case APP_I2C_ROLE_MASTER:
@@ -643,6 +654,11 @@ uint16_t app_i2c_mem_read_sync(app_i2c_id_t id,
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     i2c_wake_up(id);
 #endif
@@ -681,11 +697,10 @@ uint16_t app_i2c_mem_read_async(app_i2c_id_t id, uint16_t dev_address, uint16_t 
     i2c_wake_up(id);
 #endif
 
-    p_i2c_env[id]->slv_dev_addr = dev_address;
-
     if(p_i2c_env[id]->start_flag == false)
     {
         p_i2c_env[id]->start_flag = true;
+        p_i2c_env[id]->slv_dev_addr = dev_address;
         err_code = hal_i2c_mem_read_it(&p_i2c_env[id]->handle, dev_address, mem_address, mem_addr_size, p_data, size);
         if (err_code != HAL_OK)
         {
@@ -722,6 +737,11 @@ uint16_t app_i2c_mem_write_sync(app_i2c_id_t id,
     }
 
     if (p_data == NULL || size == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }
@@ -764,11 +784,12 @@ uint16_t app_i2c_mem_write_async(app_i2c_id_t id, uint16_t dev_address, uint16_t
     i2c_wake_up(id);
 #endif
 
-    p_i2c_env[id]->slv_dev_addr = dev_address;
 
     if(p_i2c_env[id]->start_flag == false)
     {
         p_i2c_env[id]->start_flag = true;
+        p_i2c_env[id]->slv_dev_addr = dev_address;
+
         err_code = hal_i2c_mem_write_it(&p_i2c_env[id]->handle, dev_address, mem_address, mem_addr_size, p_data, size);
         if (err_code != HAL_OK)
         {
@@ -800,6 +821,11 @@ uint16_t app_i2c_transmit_receive_sync(app_i2c_id_t id, uint16_t dev_address, ui
     }
 
     if (p_tdata == NULL || p_rdata == NULL || tsize == 0 || rsize == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }

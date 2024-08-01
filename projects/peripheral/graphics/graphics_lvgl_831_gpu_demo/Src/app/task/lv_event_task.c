@@ -129,9 +129,9 @@ void app_key_evt_handler(uint8_t key_id, app_key_click_type_t key_click_type)
         lv_gui_evt_send(WMS_GUI_EVT_KEY0_PRESSED, NULL);
     } else if((key_id == 0) && (APP_KEY_LONG_CLICK == key_click_type)) {
         lv_gui_evt_send(WMS_GUI_EVT_KEY0_LONG_PRESSED, NULL);
-    } else if((key_id == 0) && (APP_KEY_SINGLE_CLICK == key_click_type)) {
+    } else if((key_id == 1) && (APP_KEY_SINGLE_CLICK == key_click_type)) {
         lv_gui_evt_send(WMS_GUI_EVT_KEY1_PRESSED, NULL);
-    } else if((key_id == 0) && (APP_KEY_LONG_CLICK == key_click_type)) {
+    } else if((key_id == 1) && (APP_KEY_LONG_CLICK == key_click_type)) {
         lv_gui_evt_send(WMS_GUI_EVT_KEY1_LONG_PRESSED, NULL);
     }
 

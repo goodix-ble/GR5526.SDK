@@ -159,7 +159,7 @@ typedef struct _ll_bod_init
   *  RF_REG_3 | bod_en_lv
   *
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_bod_enable(void)
+__STATIC_FORCEINLINE void ll_bod_enable(void)
 {
 #if defined(BIT_BAND_SUPPORT)
     BIT_ADDR((uint32_t)&AON_PMU->RF_REG_3, AON_PMU_RF_REG_3_BOD_EN_Pos) = 1;
@@ -176,7 +176,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_bod_enable(void)
   *  RF_REG_3 | bod_en_lv
   *
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_bod_disable(void)
+__STATIC_FORCEINLINE void ll_bod_disable(void)
 {
 #if defined(BIT_BAND_SUPPORT)
     BIT_ADDR((uint32_t)&AON_PMU->RF_REG_3, AON_PMU_RF_REG_3_BOD_EN_Pos) = 0;

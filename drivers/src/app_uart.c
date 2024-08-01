@@ -297,13 +297,15 @@ static uint16_t app_uart_start_transmit_async(app_uart_id_t id)
  */
 uint16_t app_uart_init(app_uart_params_t *p_params, app_uart_evt_handler_t evt_handler, app_uart_tx_buf_t *tx_buffer)
 {
-    app_uart_id_t    id = p_params->id;
+    app_uart_id_t id;
     app_drv_err_t err_code = APP_DRV_SUCCESS;
 
     if ((p_params == NULL) || (tx_buffer == NULL))
     {
         return APP_DRV_ERR_POINTER_NULL;
     }
+
+    id = p_params->id;
 
     if (id >= APP_UART_ID_MAX)
     {
@@ -469,6 +471,11 @@ uint16_t app_uart_receive_sync(app_uart_id_t id, uint8_t *p_data, uint16_t size,
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     uart_wake_up(id);
 #endif
@@ -555,6 +562,11 @@ uint16_t app_uart_transmit_sync(app_uart_id_t id, uint8_t *p_data, uint16_t size
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     uart_wake_up(id);
 #endif
@@ -602,7 +614,10 @@ void app_uart_flush(app_uart_id_t id)
     uart_wake_up(id);
 #endif
 
-    if (p_uart_env[id]->uart_state == APP_UART_ACTIVITY)
+    /* Can not flush when using sync tx. start_tx_flag only set by async tx */
+    if ((p_uart_env[id]->uart_state == APP_UART_ACTIVITY)
+        && (p_uart_env[id]->start_tx_flag == true)
+        && (p_uart_env[id]->start_flush_flag == false))
     {
         p_uart_env[id]->start_flush_flag = true;
 
@@ -631,7 +646,7 @@ void app_uart_flush(app_uart_id_t id)
             {
                 tx_wait_count++;
             }
-            while (HAL_UART_STATE_READY != hal_uart_get_state(&p_uart_env[id]->handle) &&
+            while (HAL_UART_STATE_READY != p_uart_env[id]->handle.tx_state &&
                    (tx_wait_count <= data_width * TX_ONCE_MAX_SIZE * (SystemCoreClock/p_uart_env[id]->handle.init.baud_rate)));
         }
 
@@ -660,6 +675,7 @@ void app_uart_flush(app_uart_id_t id)
             __HAL_UART_ENABLE_IT(p_uart, UART_IT_THRE);
         }
 
+        p_uart_env[id]->start_tx_flag = false;
         p_uart_env[id]->start_flush_flag = false;
         GLOBAL_EXCEPTION_ENABLE();
     }

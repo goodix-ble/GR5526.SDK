@@ -43,7 +43,7 @@
 #include <string.h>
 #include "gr_soc.h"
 
-#ifdef HAL_CALENDAR_MODULE_ENABLED
+#ifdef HAL_PWM_MODULE_ENABLED
 
 /*
  * STRUCT DEFINE
@@ -156,7 +156,7 @@ static uint16_t pwm_gpio_config(app_pwm_pin_cfg_t *p_pin_cfg)
     app_io_init_t io_init = APP_IO_DEFAULT_CONFIG;
     app_drv_err_t err_code = APP_DRV_SUCCESS;
 
-    io_init.pull = APP_IO_PULLUP;
+    io_init.pull = APP_IO_NOPULL;
     io_init.mode = APP_IO_MODE_MUX;
 
     if (p_pin_cfg->channel_a.enable == APP_PWM_PIN_ENABLE)
@@ -224,7 +224,7 @@ uint16_t app_pwm_init(app_pwm_params_t *p_params, app_pwm_evt_handler_t evt_hand
 uint16_t app_pwm_init(app_pwm_params_t *p_params)
 #endif
 {
-    app_pwm_id_t id = p_params->id;
+    app_pwm_id_t id;
     app_drv_err_t app_err_code;
     hal_status_t  hal_err_code;
 
@@ -232,6 +232,8 @@ uint16_t app_pwm_init(app_pwm_params_t *p_params)
     {
         return APP_DRV_ERR_POINTER_NULL;
     }
+
+    id = p_params->id;
 
     if (id >= APP_PWM_ID_MAX)
     {
@@ -247,8 +249,6 @@ uint16_t app_pwm_init(app_pwm_params_t *p_params)
     NVIC_EnableIRQ(PWM0_IRQn);
 #endif
 
-    app_err_code = pwm_gpio_config(&p_params->pin_cfg);
-    APP_DRV_ERR_CODE_CHECK(app_err_code);
     memcpy(&p_pwm_env[id]->handle.init, &p_params->init, sizeof(pwm_init_t));
 
     p_pwm_env[id]->p_pin_cfg = &p_params->pin_cfg;
@@ -263,6 +263,9 @@ uint16_t app_pwm_init(app_pwm_params_t *p_params)
 
     hal_err_code = hal_pwm_init(&p_pwm_env[id]->handle);
     HAL_ERR_CODE_CHECK(hal_err_code);
+
+    app_err_code = pwm_gpio_config(&p_params->pin_cfg);
+    APP_DRV_ERR_CODE_CHECK(app_err_code);
 
     pwr_register_sleep_cb(&pwm_sleep_cb, APP_DRIVER_PWM_WAKEUP_PRIORITY, PWM_PWR_ID);
 
@@ -561,6 +564,11 @@ uint16_t app_pwm_set_coding_data_in_one_channel(app_pwm_id_t id, uint32_t coding
         return APP_DRV_ERR_NOT_INIT;
     }
 
+    if(p_pwm_env[id]->handle.init.coding_mode_cfg.coding_channel_select == PWM_CODING_CHANNEL_ALL)
+    {
+        return APP_DRV_ERR_INVALID_MODE;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     pwm_wake_up(id);
 #endif
@@ -583,6 +591,11 @@ uint16_t app_pwm_set_coding_data_in_three_channels(app_pwm_id_t id, uint32_t cod
     if ((p_pwm_env[id] == NULL) || (p_pwm_env[id]->pwm_state == APP_PWM_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
+    }
+
+    if(p_pwm_env[id]->handle.init.coding_mode_cfg.coding_channel_select == PWM_CODING_CHANNEL_A)
+    {
+        return APP_DRV_ERR_INVALID_MODE;
     }
 
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
@@ -609,6 +622,11 @@ uint16_t app_pwm_start_coding_in_one_channel(app_pwm_id_t id, uint32_t coding_da
         return APP_DRV_ERR_NOT_INIT;
     }
 
+    if(p_pwm_env[id]->handle.init.coding_mode_cfg.coding_channel_select == PWM_CODING_CHANNEL_ALL)
+    {
+        return APP_DRV_ERR_INVALID_MODE;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     pwm_wake_up(id);
 #endif
@@ -633,6 +651,11 @@ uint16_t app_pwm_start_coding_in_three_channels(app_pwm_id_t id, uint32_t coding
     if ((p_pwm_env[id] == NULL) || (p_pwm_env[id]->pwm_state == APP_PWM_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
+    }
+
+    if(p_pwm_env[id]->handle.init.coding_mode_cfg.coding_channel_select == PWM_CODING_CHANNEL_A)
+    {
+        return APP_DRV_ERR_INVALID_MODE;
     }
 
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN

@@ -3044,7 +3044,7 @@ TaskHandle_t pvTaskIncrementMutexHeldCount( void ) PRIVILEGED_FUNCTION;
  */
 void vTaskInternalSetTimeOutState( TimeOut_t * const pxTimeOut ) PRIVILEGED_FUNCTION;
 
-#if 1 /* SOC_GRxxx */
+#if ( configUSE_GOODIX_EXTENSION_FEATURE == 1 ) /* SOC_GRxxx */
     /*
      * Get Stack top of current task
      */

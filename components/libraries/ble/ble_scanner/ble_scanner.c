@@ -51,7 +51,6 @@
 struct ble_scanner_env_t
 {
     bool                      connect_auto;
-    bool                      is_matched;
     ble_gap_scan_param_t      scan_param;
     ble_gap_init_param_t      conn_param;
     ble_scanner_evt_handler_t evt_handler;
@@ -60,6 +59,7 @@ struct ble_scanner_env_t
     uint8_t                   filter_type;
     ble_scanner_filter_mode_t filter_mode;
     ble_scanner_filter_data_t target_data;
+    bool                      is_matched;
 };
 
 /*

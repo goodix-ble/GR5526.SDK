@@ -194,11 +194,11 @@ typedef struct
   * @brief HAL_PWM Callback function definition
   */
 
-typedef struct _pwm_callback
+typedef struct _hal_pwm_callback
 {
     void (*pwm_msp_init)(pwm_handle_t *p_pwm);      /**< PWM init MSP callback                  */
     void (*pwm_msp_deinit)(pwm_handle_t *p_pwm);    /**< PWM de-init MSP callback               */
-} pwm_callback_t;
+} hal_pwm_callback_t;
 
 /** @} */
 

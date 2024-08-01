@@ -73,7 +73,9 @@
 #define BLE_SEC_KDIST_ENCKEY   (1 << 0)      /**< Distribute encryption and master identification info. */
 #define BLE_SEC_KDIST_IDKEY    (1 << 1)      /**< Distribute identity and address info. */
 #define BLE_SEC_KDIST_SIGNKEY  (1 << 2)      /**< Distribute signing info. */
+#define BLE_SEC_KDIST_LINKKEY  (1 << 3)      /**< Distribute BR/EDR link key info. This flag only used for LE/BREDR. */
 #define BLE_SEC_KDIST_ALL      (BLE_SEC_KDIST_ENCKEY | BLE_SEC_KDIST_IDKEY | BLE_SEC_KDIST_SIGNKEY)  /**< Distribute all info. */
+#define BLE_BT_SEC_KDIST_ALL   (BLE_SEC_KDIST_ALL | BLE_SEC_KDIST_LINKKEY)  /**< Distribute all info for LE/BREDR. */
 
 /**@} */
 /**@} */

@@ -4,7 +4,7 @@
 
 #include "lv_conf.h"
 #include "lv_disp.h"
-#include "../tileview/lv_wms_surface_flinger.h"
+#include "lv_wms_surface_flinger.h"
 
 
 /*

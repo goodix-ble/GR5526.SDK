@@ -425,7 +425,7 @@ typedef struct _ll_xqspi_init_t
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_cache(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_cache(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_DIS);
     __NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();
@@ -442,7 +442,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_cache(xqspi_regs_t *XQSPIx
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_cache(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_cache(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_DIS);
     __NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();
@@ -458,7 +458,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_cache(xqspi_regs_t *XQSPI
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_cache(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_cache(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_DIS) != (XQSPI_CACHE_CTRL0_DIS));
 }
@@ -474,7 +474,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_cache(xqspi_regs_t
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_cache_direct_map_enable(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_cache_direct_map_enable(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_DIRECT_MAP_EN);
     __NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();
@@ -491,7 +491,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_cache_direct_map_enable(xqspi_reg
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_cache_direct_map_disable(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_cache_direct_map_disable(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_DIRECT_MAP_EN);
     __NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();
@@ -507,7 +507,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_cache_direct_map_disable(xqspi_re
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_cache_direct_map_is_enabled(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_cache_direct_map_is_enabled(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_DIRECT_MAP_EN));
 }
@@ -523,7 +523,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_cache_direct_map_is_enabled(x
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_cache_flush(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_cache_flush(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_FLUSH);
 }
@@ -539,7 +539,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_cache_flush(xqspi_regs_t *
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_cache_flush(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_cache_flush(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_FLUSH);
 }
@@ -554,7 +554,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_cache_flush(xqspi_regs_t 
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_cache_flush(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_cache_flush(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_FLUSH) == (XQSPI_CACHE_CTRL0_FLUSH));
 }
@@ -569,7 +569,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_cache_flush(xqspi_
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cache_clk_force_en(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_set_cache_clk_force_en(xqspi_regs_t *XQSPIx)
 {
     MODIFY_REG(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_CLK_FORCE_EN, XQSPI_CACHE_CTRL0_CLK_FORCE_EN);
 }
@@ -588,7 +588,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cache_clk_force_en(xqspi_regs
   *         @arg @ref LL_XQSPI_CACHE_FIFO_CLEAR
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cache_fifo(xqspi_regs_t *XQSPIx, uint32_t mode)
+__STATIC_FORCEINLINE void ll_xqspi_set_cache_fifo(xqspi_regs_t *XQSPIx, uint32_t mode)
 {
     MODIFY_REG(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_FIFO, mode);
 }
@@ -606,7 +606,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cache_fifo(xqspi_regs_t *XQSP
   *         @arg @ref LL_XQSPI_CACHE_FIFO_NORMAL
   *         @arg @ref LL_XQSPI_CACHE_FIFO_CLEAR
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_fifo(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_cache_fifo(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_FIFO));
 }
@@ -625,7 +625,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_fifo(xqspi_regs_t *
   *         @arg @ref LL_XQSPI_CACHE_HITMISS_CLEAR
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cache_hitmiss(xqspi_regs_t *XQSPIx, uint32_t mode)
+__STATIC_FORCEINLINE void ll_xqspi_set_cache_hitmiss(xqspi_regs_t *XQSPIx, uint32_t mode)
 {
     MODIFY_REG(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_HITMISS, mode);
 }
@@ -643,7 +643,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cache_hitmiss(xqspi_regs_t *X
   *         @arg @ref LL_XQSPI_CACHE_HITMISS_NORMAL
   *         @arg @ref LL_XQSPI_CACHE_HITMISS_CLEAR
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_hitmiss(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_cache_hitmiss(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->CACHE.CTRL0, XQSPI_CACHE_CTRL0_HITMISS));
 }
@@ -660,7 +660,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_hitmiss(xqspi_regs_
   * @param  sel This parameter can between: 0 ~ 0x7
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cache_dbgbus(xqspi_regs_t *XQSPIx, uint32_t sel)
+__STATIC_FORCEINLINE void ll_xqspi_set_cache_dbgbus(xqspi_regs_t *XQSPIx, uint32_t sel)
 {
     MODIFY_REG(XQSPIx->CACHE.CTRL1, XQSPI_CACHE_CTRL1_DBGBUS_SEL, sel << XQSPI_CACHE_CTRL1_DBGBUS_SEL_Pos);
 }
@@ -675,7 +675,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cache_dbgbus(xqspi_regs_t *XQ
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 0x7
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_dbgbus(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_cache_dbgbus(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->CACHE.CTRL1, XQSPI_CACHE_CTRL1_DBGBUS_SEL) >> XQSPI_CACHE_CTRL1_DBGBUS_SEL_Pos);
 }
@@ -691,7 +691,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_dbgbus(xqspi_regs_t
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_cache_dbgmux(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_cache_dbgmux(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->CACHE.CTRL1, XQSPI_CACHE_CTRL1_DBGMUX_EN);
 }
@@ -707,7 +707,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_cache_dbgmux(xqspi_regs_t 
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_cache_dbgmux(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_cache_dbgmux(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->CACHE.CTRL1, XQSPI_CACHE_CTRL1_DBGMUX_EN);
 }
@@ -722,7 +722,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_cache_dbgmux(xqspi_regs_t
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_cache_dbgmux(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_cache_dbgmux(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->CACHE.CTRL1, XQSPI_CACHE_CTRL1_DBGMUX_EN) != (XQSPI_CACHE_CTRL1_DBGMUX_EN));
 }
@@ -738,7 +738,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_cache_dbgmux(xqspi
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 0xFFFFFFFF
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_hitcount(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_cache_hitcount(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_REG(XQSPIx->CACHE.HIT_COUNT));
 }
@@ -754,7 +754,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_hitcount(xqspi_regs
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 0xFFFFFFFF
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_misscount(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_cache_misscount(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_REG(XQSPIx->CACHE.MISS_COUNT));
 }
@@ -770,7 +770,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_misscount(xqspi_reg
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 1
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_flag(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_cache_flag(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->CACHE.STAT, XQSPI_CACHE_STAT));
 }
@@ -799,7 +799,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_cache_flag(xqspi_regs_t *
   *         @arg @ref LL_XQSPI_XIP_CMD_QUAD_IO_READ
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_cmd(xqspi_regs_t *XQSPIx, uint32_t cmd)
+__STATIC_FORCEINLINE void ll_xqspi_set_xip_cmd(xqspi_regs_t *XQSPIx, uint32_t cmd)
 {
     MODIFY_REG(XQSPIx->XIP.CTRL0, XQSPI_XIP_CFG_CMD, cmd);
 }
@@ -820,7 +820,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_cmd(xqspi_regs_t *XQSPIx,
   *         @arg @ref LL_XQSPI_XIP_CMD_QUAD_OUT_READ
   *         @arg @ref LL_XQSPI_XIP_CMD_QUAD_IO_READ
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_cmd(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_cmd(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.CTRL0, XQSPI_XIP_CFG_CMD));
 }
@@ -836,12 +836,12 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_cmd(xqspi_regs_t *XQS
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_xip_hp(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_xip_hp(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_HPEN);
 }
 
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_soft_rst_req(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_soft_rst_req(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->XIP.SOFT_RST, XQSPI_XIP_SOFT_RST);
 }
@@ -857,7 +857,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_soft_rst_req(xqspi_regs_t *XQSPIx
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_xip_hp(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_xip_hp(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_HPEN);
 }
@@ -872,7 +872,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_xip_hp(xqspi_regs_t *XQSP
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_xip_hp(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_xip_hp(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_HPEN) == (XQSPI_XIP_CFG_HPEN));
 }
@@ -893,7 +893,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_xip_hp(xqspi_regs_
   *         @arg @ref LL_XQSPI_XIP_SS3
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_ss(xqspi_regs_t *XQSPIx, uint32_t ss)
+__STATIC_FORCEINLINE void ll_xqspi_set_xip_ss(xqspi_regs_t *XQSPIx, uint32_t ss)
 {
     MODIFY_REG(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_SS, ss);
 }
@@ -912,7 +912,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_ss(xqspi_regs_t *XQSPIx, 
   *         @arg @ref LL_XQSPI_XIP_SS2
   *         @arg @ref LL_XQSPI_XIP_SS3
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_ss(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_ss(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_SS));
 }
@@ -931,7 +931,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_ss(xqspi_regs_t *XQSP
   *         @arg @ref LL_XQSPI_SCPHA_2EDGE
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_cpha(xqspi_regs_t *XQSPIx, uint32_t cpha)
+__STATIC_FORCEINLINE void ll_xqspi_set_xip_cpha(xqspi_regs_t *XQSPIx, uint32_t cpha)
 {
     MODIFY_REG(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_CPHA, cpha << XQSPI_XIP_CFG_CPHA_Pos);
 }
@@ -948,7 +948,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_cpha(xqspi_regs_t *XQSPIx
   *         @arg @ref LL_XQSPI_SCPHA_1EDGE
   *         @arg @ref LL_XQSPI_SCPHA_2EDGE
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_cpha(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_cpha(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_CPHA) >> XQSPI_XIP_CFG_CPHA_Pos);
 }
@@ -967,7 +967,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_cpha(xqspi_regs_t *XQ
   *         @arg @ref LL_XQSPI_SCPOL_HIGH
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_cpol(xqspi_regs_t *XQSPIx, uint32_t cpol)
+__STATIC_FORCEINLINE void ll_xqspi_set_xip_cpol(xqspi_regs_t *XQSPIx, uint32_t cpol)
 {
     MODIFY_REG(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_CPOL, cpol << XQSPI_XIP_CFG_CPOL_Pos);
 }
@@ -984,7 +984,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_cpol(xqspi_regs_t *XQSPIx
   *         @arg @ref LL_XQSPI_SCPOL_LOW
   *         @arg @ref LL_XQSPI_SCPOL_HIGH
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_cpol(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_cpol(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_CPOL) >> XQSPI_XIP_CFG_CPOL_Pos);
 }
@@ -1003,7 +1003,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_cpol(xqspi_regs_t *XQ
   *         @arg @ref LL_XQSPI_XIP_ADDR_4BYTES
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_addr_size(xqspi_regs_t *XQSPIx, uint32_t size)
+__STATIC_FORCEINLINE void ll_xqspi_set_xip_addr_size(xqspi_regs_t *XQSPIx, uint32_t size)
 {
     MODIFY_REG(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_ADDR4, size);
 }
@@ -1020,7 +1020,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_addr_size(xqspi_regs_t *X
   *         @arg @ref LL_XQSPI_XIP_ADDR_3BYTES
   *         @arg @ref LL_XQSPI_XIP_ADDR_4BYTES
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_addr_size(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_addr_size(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_ADDR4));
 }
@@ -1039,7 +1039,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_addr_size(xqspi_regs_
   *         @arg @ref LL_XQSPI_XIP_ENDIAN_LITTLE
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_endian(xqspi_regs_t *XQSPIx, uint32_t endian)
+__STATIC_FORCEINLINE void ll_xqspi_set_xip_endian(xqspi_regs_t *XQSPIx, uint32_t endian)
 {
     MODIFY_REG(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_LE32, endian);
 }
@@ -1056,7 +1056,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_endian(xqspi_regs_t *XQSP
   *         @arg @ref LL_XQSPI_XIP_ENDIAN_BIG
   *         @arg @ref LL_XQSPI_XIP_ENDIAN_LITTLE
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_endian(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_endian(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.CTRL1, XQSPI_XIP_CFG_LE32));
 }
@@ -1074,7 +1074,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_endian(xqspi_regs_t *
   *                to activate HP mode in dual I/O and Quad I/O access. This parameter can between: 0 ~ 0xFF.
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_hp_cmd(xqspi_regs_t *XQSPIx, uint32_t cmd)
+__STATIC_FORCEINLINE void ll_xqspi_set_xip_hp_cmd(xqspi_regs_t *XQSPIx, uint32_t cmd)
 {
     MODIFY_REG(XQSPIx->XIP.CTRL2, XQSPI_XIP_CFG_HPMODE, cmd << XQSPI_XIP_CFG_HPMODE_Pos);
 }
@@ -1089,7 +1089,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_hp_cmd(xqspi_regs_t *XQSP
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 0xFF.
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_hp_cmd(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_hp_cmd(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.CTRL2, XQSPI_XIP_CFG_HPMODE) >> XQSPI_XIP_CFG_HPMODE_Pos);
 }
@@ -1110,7 +1110,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_hp_cmd(xqspi_regs_t *
   * @param  cycles This parameter can between: 0 ~ 0xF.
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_dummycycles(xqspi_regs_t *XQSPIx, uint32_t cycles)
+__STATIC_FORCEINLINE void ll_xqspi_set_xip_dummycycles(xqspi_regs_t *XQSPIx, uint32_t cycles)
 {
     MODIFY_REG(XQSPIx->XIP.CTRL2, XQSPI_XIP_CFG_DUMMYCYCLES, cycles << XQSPI_XIP_CFG_DUMMYCYCLES_Pos);
 }
@@ -1129,7 +1129,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_dummycycles(xqspi_regs_t 
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 0xF.
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_dummycycles(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_dummycycles(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.CTRL2, XQSPI_XIP_CFG_DUMMYCYCLES) >> XQSPI_XIP_CFG_DUMMYCYCLES_Pos);
 }
@@ -1145,7 +1145,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_dummycycles(xqspi_reg
   * @param  cycles This parameter can between: 0 ~ 3.
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_dummy_hp(xqspi_regs_t *XQSPIx, uint32_t cycles)
+__STATIC_FORCEINLINE void ll_xqspi_set_xip_dummy_hp(xqspi_regs_t *XQSPIx, uint32_t cycles)
 {
     MODIFY_REG(XQSPIx->XIP.CTRL2, XQSPI_XIP_CFG_ENDDUMMY, cycles << XQSPI_XIP_CFG_ENDDUMMY_Pos);
 }
@@ -1160,7 +1160,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_xip_dummy_hp(xqspi_regs_t *XQ
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 3.
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_dummy_hp(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_dummy_hp(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.CTRL2, XQSPI_XIP_CFG_ENDDUMMY) >> XQSPI_XIP_CFG_ENDDUMMY_Pos);
 }
@@ -1175,7 +1175,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_dummy_hp(xqspi_regs_t
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_xip(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_xip(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->XIP.CTRL3, XQSPI_XIP_EN_REQ);
 }
@@ -1190,7 +1190,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_xip(xqspi_regs_t *XQSPIx)
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_xip(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_xip(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->XIP.CTRL3, XQSPI_XIP_EN_REQ);
 }
@@ -1206,7 +1206,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_xip(xqspi_regs_t *XQSPIx)
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_xip(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_xip(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->XIP.CTRL3, XQSPI_XIP_EN_REQ) == (XQSPI_XIP_EN_REQ));
 }
@@ -1222,7 +1222,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_xip(xqspi_regs_t *
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 1
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_flag(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_xip_flag(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.STAT, XQSPI_XIP_EN_OUT));
 }
@@ -1238,7 +1238,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_xip_flag(xqspi_regs_t *XQ
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 1
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_xip_it(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_xip_it(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.INTEN, XQSPI_XIP_INT_EN));
 }
@@ -1254,7 +1254,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_xip_it(xqspi_regs_
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 1
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_flag_xip_it(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_flag_xip_it(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.INTSTAT, XQSPI_XIP_INT_STAT));
 }
@@ -1270,7 +1270,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_flag_xip_it(xqspi_regs_t 
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 1
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_req_xip_it(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_req_xip_it(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->XIP.INTREQ, XQSPI_XIP_INT_REQ));
 }
@@ -1286,7 +1286,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_req_xip_it(xqspi_regs_t *
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_xip_it(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_xip_it(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->XIP.INTSET, XQSPI_XIP_INT_SET);
 }
@@ -1302,7 +1302,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_xip_it(xqspi_regs_t *XQSPI
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_xip_it(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_xip_it(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->XIP.INTCLR, XQSPI_XIP_INT_CLR);
 }
@@ -1324,7 +1324,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_xip_it(xqspi_regs_t *XQSP
   * @param  tx_data This parameter can between: 0x00 ~ 0xFF
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_qspi_transmit_data8(xqspi_regs_t *XQSPIx, uint8_t tx_data)
+__STATIC_FORCEINLINE void ll_xqspi_qspi_transmit_data8(xqspi_regs_t *XQSPIx, uint8_t tx_data)
 {
     *((__IOM uint8_t *)&XQSPIx->QSPI.TX_DATA) = tx_data;
 }
@@ -1340,7 +1340,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_qspi_transmit_data8(xqspi_regs_t 
   * @param  tx_data This parameter can between: 0x00 ~ 0xFFFF
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_qspi_transmit_data16(xqspi_regs_t *XQSPIx, uint16_t tx_data)
+__STATIC_FORCEINLINE void ll_xqspi_qspi_transmit_data16(xqspi_regs_t *XQSPIx, uint16_t tx_data)
 {
     *((__IOM uint16_t *)&XQSPIx->QSPI.TX_DATA) = tx_data;
 }
@@ -1356,7 +1356,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_qspi_transmit_data16(xqspi_regs_t
   * @param  tx_data This parameter can between: 0x00 ~ 0xFFFFFFFF
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_qspi_transmit_data32(xqspi_regs_t *XQSPIx, uint32_t tx_data)
+__STATIC_FORCEINLINE void ll_xqspi_qspi_transmit_data32(xqspi_regs_t *XQSPIx, uint32_t tx_data)
 {
     *((__IOM uint32_t *)&XQSPIx->QSPI.TX_DATA) = tx_data;
 }
@@ -1371,7 +1371,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_qspi_transmit_data32(xqspi_regs_t
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value between: 0x00 ~ 0xFF
   */
-SECTION_RAM_CODE __STATIC_INLINE uint8_t ll_xqspi_qspi_receive_data8(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint8_t ll_xqspi_qspi_receive_data8(xqspi_regs_t *XQSPIx)
 {
     return (uint8_t)(READ_REG(XQSPIx->QSPI.RX_DATA));
 }
@@ -1386,7 +1386,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint8_t ll_xqspi_qspi_receive_data8(xqspi_regs_
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value between: 0x00 ~ 0xFFFF
   */
-SECTION_RAM_CODE __STATIC_INLINE uint16_t ll_xqspi_qspi_receive_data16(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint16_t ll_xqspi_qspi_receive_data16(xqspi_regs_t *XQSPIx)
 {
     return (uint16_t)(READ_REG(XQSPIx->QSPI.RX_DATA));
 }
@@ -1401,7 +1401,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint16_t ll_xqspi_qspi_receive_data16(xqspi_reg
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value between: 0x00 ~ 0xFFFFFFFF
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_qspi_receive_data32(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_qspi_receive_data32(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_REG(XQSPIx->QSPI.RX_DATA));
 }
@@ -1422,7 +1422,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_qspi_receive_data32(xqspi_reg
   *         @arg @ref LL_XQSPI_QSPI_FIFO_WATERMARK_3_4
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_tft(xqspi_regs_t *XQSPIx, uint32_t threshold)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_tft(xqspi_regs_t *XQSPIx, uint32_t threshold)
 {
     MODIFY_REG(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_TXWMARK, threshold << XQSPI_QSPI_CTRL_TXWMARK_Pos);
 }
@@ -1442,7 +1442,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_tft(xqspi_regs_t *XQSPIx
   *         @arg @ref LL_XQSPI_QSPI_FIFO_WATERMARK_1_2
   *         @arg @ref LL_XQSPI_QSPI_FIFO_WATERMARK_3_4
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_tft(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_tft(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_TXWMARK) >> XQSPI_QSPI_CTRL_TXWMARK_Pos);
 }
@@ -1463,7 +1463,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_tft(xqspi_regs_t *XQ
   *         @arg @ref LL_XQSPI_QSPI_FIFO_WATERMARK_3_4
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_rft(xqspi_regs_t *XQSPIx, uint32_t threshold)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_rft(xqspi_regs_t *XQSPIx, uint32_t threshold)
 {
     MODIFY_REG(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_RXWMARK, threshold << XQSPI_QSPI_CTRL_RXWMARK_Pos);
 }
@@ -1483,7 +1483,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_rft(xqspi_regs_t *XQSPIx
   *         @arg @ref LL_XQSPI_QSPI_FIFO_WATERMARK_1_2
   *         @arg @ref LL_XQSPI_QSPI_FIFO_WATERMARK_3_4
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_rft(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_rft(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_RXWMARK) >> XQSPI_QSPI_CTRL_RXWMARK_Pos);
 }
@@ -1498,7 +1498,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_rft(xqspi_regs_t *XQ
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_dummy(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_qspi_dummy(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_MWAITEN);
 }
@@ -1513,7 +1513,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_dummy(xqspi_regs_t *X
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_dummy(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_qspi_dummy(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_MWAITEN);
 }
@@ -1528,7 +1528,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_dummy(xqspi_regs_t *
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_dummy(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_qspi_dummy(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_MWAITEN) == (XQSPI_QSPI_CTRL_MWAITEN));
 }
@@ -1543,7 +1543,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_dummy(xqspi_r
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_dma(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_qspi_dma(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_DMA);
 }
@@ -1558,7 +1558,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_dma(xqspi_regs_t *XQS
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_dma(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_qspi_dma(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_DMA);
 }
@@ -1573,7 +1573,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_dma(xqspi_regs_t *XQ
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_dma(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_qspi_dma(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_DMA) == (XQSPI_QSPI_CTRL_DMA));
 }
@@ -1592,7 +1592,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_dma(xqspi_reg
   *         @arg @ref LL_XQSPI_SCPOL_HIGH
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_cpol(xqspi_regs_t *XQSPIx, uint32_t cpol)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_cpol(xqspi_regs_t *XQSPIx, uint32_t cpol)
 {
     MODIFY_REG(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_CPOL, cpol << XQSPI_QSPI_CTRL_CPOL_Pos);
 }
@@ -1609,7 +1609,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_cpol(xqspi_regs_t *XQSPI
   *         @arg @ref LL_XQSPI_SCPOL_LOW
   *         @arg @ref LL_XQSPI_SCPOL_HIGH
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_cpol(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_cpol(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_CPOL) >> XQSPI_QSPI_CTRL_CPOL_Pos);
 }
@@ -1628,7 +1628,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_cpol(xqspi_regs_t *X
   *         @arg @ref LL_XQSPI_SCPHA_2EDGE
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_cpha(xqspi_regs_t *XQSPIx, uint32_t cpha)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_cpha(xqspi_regs_t *XQSPIx, uint32_t cpha)
 {
     MODIFY_REG(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_CPHA, cpha << XQSPI_QSPI_CTRL_CPHA_Pos);
 }
@@ -1645,7 +1645,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_cpha(xqspi_regs_t *XQSPI
   *         @arg @ref LL_XQSPI_SCPHA_1EDGE
   *         @arg @ref LL_XQSPI_SCPHA_2EDGE
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_cpha(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_cpha(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_CPHA) >> XQSPI_QSPI_CTRL_CPHA_Pos);
 }
@@ -1663,7 +1663,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_cpha(xqspi_regs_t *X
   *         @arg @ref LL_XQSPI_QSPI_MSB
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_data_order(xqspi_regs_t *XQSPIx, uint32_t order)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_data_order(xqspi_regs_t *XQSPIx, uint32_t order)
 {
     MODIFY_REG(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_MSB1ST, order);
 }
@@ -1680,7 +1680,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_data_order(xqspi_regs_t 
   *         @arg @ref LL_XQSPI_QSPI_LSB
   *         @arg @ref LL_XQSPI_QSPI_MSB
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_data_order(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_data_order(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_MSB1ST));
 }
@@ -1695,7 +1695,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_data_order(xqspi_reg
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_contxfer(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_qspi_contxfer(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_CONTXFER);
 }
@@ -1710,7 +1710,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_contxfer(xqspi_regs_t
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_contxfer(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_qspi_contxfer(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_CONTXFER);
 }
@@ -1725,7 +1725,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_contxfer(xqspi_regs_
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_contxfer(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_qspi_contxfer(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->QSPI.CTRL, XQSPI_QSPI_CTRL_CONTXFER) == (XQSPI_QSPI_CTRL_CONTXFER));
 }
@@ -1740,7 +1740,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_contxfer(xqsp
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_contxfer_extend(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_qspi_contxfer_extend(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_CONTXFERX);
 }
@@ -1755,7 +1755,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_contxfer_extend(xqspi
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_contxfer_extend(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_qspi_contxfer_extend(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_CONTXFERX);
 }
@@ -1770,7 +1770,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_contxfer_extend(xqsp
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_contxfer_extend(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_qspi_contxfer_extend(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_CONTXFERX) == (XQSPI_QSPI_AUXCTRL_CONTXFERX));
 }
@@ -1795,7 +1795,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_contxfer_exte
   *         @arg @ref LL_XQSPI_QSPI_DATASIZE_32BIT
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_datasize(xqspi_regs_t *XQSPIx, uint32_t szie)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_datasize(xqspi_regs_t *XQSPIx, uint32_t szie)
 {
     MODIFY_REG(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_BITSIZE, szie);
 }
@@ -1818,7 +1818,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_datasize(xqspi_regs_t *X
   *         @arg @ref LL_XQSPI_QSPI_DATASIZE_28BIT
   *         @arg @ref LL_XQSPI_QSPI_DATASIZE_32BIT
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_datasize(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_datasize(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_BITSIZE));
 }
@@ -1833,7 +1833,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_datasize(xqspi_regs_
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_inhibt_rx(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_inhibt_rx(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_INHIBITDIN);
 }
@@ -1848,7 +1848,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_inhibt_rx(xqspi_regs_t *XQ
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_inhibt_rx(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_inhibt_rx(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_INHIBITDIN);
 }
@@ -1863,7 +1863,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_inhibt_rx(xqspi_regs_t *X
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_inhibt_rx(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_inhibt_rx(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_INHIBITDIN) == XQSPI_QSPI_AUXCTRL_INHIBITDIN);
 }
@@ -1878,7 +1878,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_inhibt_rx(xqspi_re
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_inhibt_tx(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_inhibt_tx(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_INHIBITDOUT);
 }
@@ -1893,7 +1893,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_inhibt_tx(xqspi_regs_t *XQ
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_inhibt_tx(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_inhibt_tx(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_INHIBITDOUT);
 }
@@ -1908,7 +1908,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_inhibt_tx(xqspi_regs_t *X
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_inhibt_tx(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_inhibt_tx(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_INHIBITDOUT) == XQSPI_QSPI_AUXCTRL_INHIBITDOUT);
 }
@@ -1928,7 +1928,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_inhibt_tx(xqspi_re
   *         @arg @ref LL_XQSPI_QSPI_FRF_QUADSPI
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_frf(xqspi_regs_t *XQSPIx, uint32_t format)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_frf(xqspi_regs_t *XQSPIx, uint32_t format)
 {
     MODIFY_REG(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_QMODE, format);
 }
@@ -1946,7 +1946,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_frf(xqspi_regs_t *XQSPIx
   *         @arg @ref LL_XQSPI_QSPI_FRF_DUALSPI
   *         @arg @ref LL_XQSPI_QSPI_FRF_QUADSPI
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_frf(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_frf(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.AUX_CTRL, XQSPI_QSPI_AUXCTRL_QMODE));
 }
@@ -1968,7 +1968,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_frf(xqspi_regs_t *XQ
   *         @arg @ref LL_XQSPI_QSPI_STAT_TFE
   *         @arg @ref LL_XQSPI_QSPI_STAT_BUSY
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_status(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_status(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_REG(XQSPIx->QSPI.STAT));
 }
@@ -1991,7 +1991,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_status(xqspi_regs_t 
   *         @arg @ref LL_XQSPI_QSPI_STAT_BUSY
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_active_qspi_flag(xqspi_regs_t *XQSPIx, uint32_t flag)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_active_qspi_flag(xqspi_regs_t *XQSPIx, uint32_t flag)
 {
     return (READ_BITS(XQSPIx->QSPI.STAT, flag) == (flag));
 }
@@ -2007,7 +2007,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_active_qspi_flag(xqspi_reg
   * @param  ssout This parameter can between: 0 ~ 0xFF
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_ssout(xqspi_regs_t *XQSPIx, uint32_t ssout)
+__STATIC_FORCEINLINE void ll_xqspi_enable_qspi_ssout(xqspi_regs_t *XQSPIx, uint32_t ssout)
 {
     SET_BITS(XQSPIx->QSPI.SLAVE_SEL, ssout);
 }
@@ -2023,7 +2023,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_ssout(xqspi_regs_t *X
   * @param  ssout This parameter can between: 0 ~ 0xFF
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_ssout(xqspi_regs_t *XQSPIx, uint32_t ssout)
+__STATIC_FORCEINLINE void ll_xqspi_disable_qspi_ssout(xqspi_regs_t *XQSPIx, uint32_t ssout)
 {
     CLEAR_BITS(XQSPIx->QSPI.SLAVE_SEL, ssout);
 }
@@ -2039,7 +2039,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_ssout(xqspi_regs_t *
   * @param  sspol This parameter can between: 0 ~ 0xFF
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_sspol(xqspi_regs_t *XQSPIx, uint32_t sspol)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_sspol(xqspi_regs_t *XQSPIx, uint32_t sspol)
 {
     SET_BITS(XQSPIx->QSPI.SLAVE_SEL_POL, sspol);
 }
@@ -2054,7 +2054,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_sspol(xqspi_regs_t *XQSP
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 0xFF
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_sspol(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_sspol(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_REG(XQSPIx->QSPI.SLAVE_SEL_POL));
 }
@@ -2069,7 +2069,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_sspol(xqspi_regs_t *
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 16
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_tx_fifo_level(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_tx_fifo_level(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.TX_FIFO_LVL, XQSPI_QSPI_TXFIFOLVL));
 }
@@ -2084,7 +2084,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_tx_fifo_level(xqspi_
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 16
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_rx_fifo_level(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_rx_fifo_level(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.RX_FIFO_LVL, XQSPI_QSPI_RXFIFOLVL));
 }
@@ -2106,7 +2106,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_rx_fifo_level(xqspi_
   *         @arg @ref LL_XQSPI_QSPI_IM_TFE
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_it(xqspi_regs_t *XQSPIx, uint32_t mask)
+__STATIC_FORCEINLINE void ll_xqspi_enable_qspi_it(xqspi_regs_t *XQSPIx, uint32_t mask)
 {
     SET_BITS(XQSPIx->QSPI.INTEN, mask);
 }
@@ -2128,7 +2128,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi_it(xqspi_regs_t *XQSP
   *         @arg @ref LL_XQSPI_QSPI_IM_TFE
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_it(xqspi_regs_t *XQSPIx, uint32_t mask)
+__STATIC_FORCEINLINE void ll_xqspi_disable_qspi_it(xqspi_regs_t *XQSPIx, uint32_t mask)
 {
     CLEAR_BITS(XQSPIx->QSPI.INTEN, mask);
 }
@@ -2149,7 +2149,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi_it(xqspi_regs_t *XQS
   *         @arg @ref LL_XQSPI_QSPI_IM_TFE
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_it(xqspi_regs_t *XQSPIx, uint32_t mask)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_qspi_it(xqspi_regs_t *XQSPIx, uint32_t mask)
 {
     return (READ_BITS(XQSPIx->QSPI.INTEN, mask) == (mask));
 }
@@ -2169,7 +2169,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi_it(xqspi_regs
   *         @arg @ref LL_XQSPI_QSPI_IS_TFTF
   *         @arg @ref LL_XQSPI_QSPI_IS_TFE
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_it_flag(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_it_flag(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_REG(XQSPIx->QSPI.INTSTAT));
 }
@@ -2194,7 +2194,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_it_flag(xqspi_regs_t *XQS
   *         @arg @ref LL_XQSPI_QSPI_IS_TFE
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_qspi_it_flag(xqspi_regs_t *XQSPIx, uint32_t flag)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_qspi_it_flag(xqspi_regs_t *XQSPIx, uint32_t flag)
 {
     return (READ_BITS(XQSPIx->QSPI.INTSTAT, flag) == (flag));
 }
@@ -2216,7 +2216,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_qspi_it_flag(xqspi_regs_t 
   *         @arg @ref LL_XQSPI_QSPI_IM_TFE
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_clear_qspi_flag(xqspi_regs_t *XQSPIx, uint32_t flag)
+__STATIC_FORCEINLINE void ll_xqspi_clear_qspi_flag(xqspi_regs_t *XQSPIx, uint32_t flag)
 {
     WRITE_REG(XQSPIx->QSPI.INTCLR, flag);
 }
@@ -2232,7 +2232,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_clear_qspi_flag(xqspi_regs_t *XQS
   * @param  wait This parameter can between: 0 ~ 255
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_wait(xqspi_regs_t *XQSPIx, uint32_t wait)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_wait(xqspi_regs_t *XQSPIx, uint32_t wait)
 {
     MODIFY_REG(XQSPIx->QSPI.MSTR_IT_DELAY, XQSPI_QSPI_MWAIT_MWAIT, wait << XQSPI_QSPI_MWAIT_MWAIT_Pos);
 }
@@ -2247,7 +2247,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_wait(xqspi_regs_t *XQSPI
   * @param  XQSPIx XQSPI instance
   * @retval Returned Value can between: 0 ~ 255
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_wait(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_wait(xqspi_regs_t *XQSPIx)
 {
     return (uint32_t)(READ_BITS(XQSPIx->QSPI.MSTR_IT_DELAY, XQSPI_QSPI_MWAIT_MWAIT) >> XQSPI_QSPI_MWAIT_MWAIT_Pos);
 }
@@ -2263,7 +2263,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_wait(xqspi_regs_t *X
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_qspi(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.SPIEN, XQSPI_QSPI_EN_EN);
 }
@@ -2278,7 +2278,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_qspi(xqspi_regs_t *XQSPIx)
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_qspi(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.SPIEN, XQSPI_QSPI_EN_EN);
 }
@@ -2293,7 +2293,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_qspi(xqspi_regs_t *XQSPIx
   * @param  XQSPIx XQSPI instance
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enabled_qspi(xqspi_regs_t *XQSPIx)
 {
     return (READ_BITS(XQSPIx->QSPI.SPIEN, XQSPI_QSPI_EN_EN) == (XQSPI_QSPI_EN_EN));
 }
@@ -2311,7 +2311,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enabled_qspi(xqspi_regs_t 
   *         @arg @ref LL_XQSPI_FLASH_WRITE_32BIT
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_flash_write(xqspi_regs_t *XQSPIx, uint32_t bits)
+__STATIC_FORCEINLINE void ll_xqspi_set_flash_write(xqspi_regs_t *XQSPIx, uint32_t bits)
 {
     WRITE_REG(XQSPIx->QSPI.FLASH_WRITE, bits);
 }
@@ -2328,7 +2328,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_flash_write(xqspi_regs_t *XQS
   *         @arg @ref LL_XQSPI_FLASH_WRITE_128BIT
   *         @arg @ref LL_XQSPI_FLASH_WRITE_32BIT
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_flash_write(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_flash_write(xqspi_regs_t *XQSPIx)
 {
     //GR551xx_C0 and future version.
     return READ_REG(XQSPIx->QSPI.FLASH_WRITE);
@@ -2347,7 +2347,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_flash_write(xqspi_regs_t 
   *         @arg @ref LL_XQSPI_DISABLE_PRESENT
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_present_bypass(xqspi_regs_t *XQSPIx, uint32_t bypass)
+__STATIC_FORCEINLINE void ll_xqspi_set_present_bypass(xqspi_regs_t *XQSPIx, uint32_t bypass)
 {
     WRITE_REG(XQSPIx->QSPI.BYPASS, bypass);
 }
@@ -2364,7 +2364,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_present_bypass(xqspi_regs_t *
   *         @arg @ref LL_XQSPI_ENABLE_PRESENT
   *         @arg @ref LL_XQSPI_DISABLE_PRESENT
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_present_bypass(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_present_bypass(xqspi_regs_t *XQSPIx)
 {
     return READ_REG(XQSPIx->QSPI.BYPASS);
 }
@@ -2380,7 +2380,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_present_bypass(xqspi_regs
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cs_idle_valid(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_set_cs_idle_valid(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.CS_IDLE_UNVLD_EN, XQSPI_QSPI_CS_IDLE_UNVLD_EN);
 }
@@ -2396,7 +2396,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cs_idle_valid(xqspi_regs_t *X
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cs_idle_invalid(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_set_cs_idle_invalid(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.CS_IDLE_UNVLD_EN, XQSPI_QSPI_CS_IDLE_UNVLD_EN);
 }
@@ -2412,7 +2412,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_cs_idle_invalid(xqspi_regs_t 
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_1st_prefecth(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_1st_prefecth(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.CS_IDLE_UNVLD_EN, XQSPI_QSPI_1ST_PRETETCH_DIS);
 }
@@ -2428,7 +2428,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_1st_prefecth(xqspi_regs_t 
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_1st_prefecth(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_1st_prefecth(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.CS_IDLE_UNVLD_EN, XQSPI_QSPI_1ST_PRETETCH_DIS);
 }
@@ -2444,7 +2444,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_1st_prefecth(xqspi_regs_t
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_key_pulse(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_enable_key_pulse(xqspi_regs_t *XQSPIx)
 {
     CLEAR_BITS(XQSPIx->QSPI.CS_IDLE_UNVLD_EN, XQSPI_QSPI_KEY_PULSE_DIS);
 }
@@ -2460,7 +2460,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_key_pulse(xqspi_regs_t *XQ
   * @param  XQSPIx XQSPI instance
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_key_pulse(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_disable_key_pulse(xqspi_regs_t *XQSPIx)
 {
     SET_BITS(XQSPIx->QSPI.CS_IDLE_UNVLD_EN, XQSPI_QSPI_KEY_PULSE_DIS);
 }
@@ -2474,7 +2474,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_key_pulse(xqspi_regs_t *X
   *
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_reset(xqspi_regs_t *XQSPIx)
+__STATIC_FORCEINLINE void ll_xqspi_reset(xqspi_regs_t *XQSPIx)
 {
     CLEAR_REG(XQSPIx->XIP.SOFT_RST);
     __NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();__NOP();
@@ -2490,7 +2490,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_reset(xqspi_regs_t *XQSPIx)
   *
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_exflash_power(void)
+__STATIC_FORCEINLINE void ll_xqspi_enable_exflash_power(void)
 {
     SET_BITS(AON_CTL->FLASH_PSRAM_PAD_PWR, AON_CTL_FLASH_CACHE_PAD_EN);
 }
@@ -2505,7 +2505,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_exflash_power(void)
   *
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_exflash_power(void)
+__STATIC_FORCEINLINE void ll_xqspi_disable_exflash_power(void)
 {
     CLEAR_BITS(AON_CTL->FLASH_PSRAM_PAD_PWR, AON_CTL_FLASH_CACHE_PAD_EN);
 }
@@ -2519,7 +2519,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_exflash_power(void)
   *
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enable_exflash_power(void)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enable_exflash_power(void)
 {
     return (READ_BITS(AON_CTL->FLASH_PSRAM_PAD_PWR, AON_CTL_FLASH_CACHE_PAD_EN) == (AON_CTL_FLASH_CACHE_PAD_EN));
 }
@@ -2539,7 +2539,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enable_exflash_power(void)
   *         @arg @ref LL_XQSPI_BAUD_RATE_16M
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_speed(uint32_t speed)
+__STATIC_FORCEINLINE void ll_xqspi_set_qspi_speed(uint32_t speed)
 {
     MODIFY_REG(AON_CTL->FLASH_CACHE_CTRL0, AON_CTL_FLASH_CACHE_XF_SCK_CLK_SEL, speed);
 }
@@ -2558,7 +2558,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_set_qspi_speed(uint32_t speed)
   *         @arg @ref LL_XQSPI_BAUD_RATE_24M
   *         @arg @ref LL_XQSPI_BAUD_RATE_16M
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_speed(void)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_get_qspi_speed(void)
 {
     return (uint32_t)(READ_BITS(AON_CTL->FLASH_CACHE_CTRL0, AON_CTL_FLASH_CACHE_XF_SCK_CLK_SEL));
 }
@@ -2573,7 +2573,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_get_qspi_speed(void)
   *
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_cache_retention(void)
+__STATIC_FORCEINLINE void ll_xqspi_enable_cache_retention(void)
 {
     SET_BITS(AON_CTL->FLASH_CACHE_CTRL0, AON_CTL_FLASH_CACHE_XF_TAG_RET);
 }
@@ -2588,7 +2588,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_enable_cache_retention(void)
   *
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_cache_retention(void)
+__STATIC_FORCEINLINE void ll_xqspi_disable_cache_retention(void)
 {
     CLEAR_BITS(AON_CTL->FLASH_CACHE_CTRL0, AON_CTL_FLASH_CACHE_XF_TAG_RET);
 }
@@ -2602,7 +2602,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_xqspi_disable_cache_retention(void)
   *
   * @retval State of bit (1 or 0).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_xqspi_is_enable_cache_retention(void)
+__STATIC_FORCEINLINE uint32_t ll_xqspi_is_enable_cache_retention(void)
 {
     return (READ_BITS(AON_CTL->FLASH_CACHE_CTRL0, AON_CTL_FLASH_CACHE_XF_TAG_RET) == (AON_CTL_FLASH_CACHE_XF_TAG_RET));
 }

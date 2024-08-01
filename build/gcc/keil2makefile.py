@@ -8,7 +8,7 @@
 #       1. python3
 #       2. linux/shell or linux/shell-like (such as mingw64, cygwin, msys2 ...)
 #
-#  Copyright(C) 2019, Shenzhen Goodix Technology Co., Ltd
+#  Copyright(C) 2023, Shenzhen Goodix Technology Co., Ltd
 ######################################################################################################################
 
 
@@ -19,7 +19,7 @@ import sys, platform
 import xml.etree.ElementTree as XmlParser
 
 global g_makefile_path
-g_makefile_path = "../make_gcc/"
+g_makefile_path = "../GCC/"
 
 # Optional : "0" - gr5515, "1" - gr5513
 ##global g_target_chip_type
@@ -68,7 +68,7 @@ IS_WIN_OS := '''
     g_makefile_template_head_str = \
 '''#########################################################################################################
 # GNU Compiler makefile for Goodix BLE Application Project
-# Copyright(C) 2019, Shenzhen Goodix Technology Co., Ltd
+# Copyright(C) 2023, Shenzhen Goodix Technology Co., Ltd
 #
 # Default Location of GCC Compile Ref Files
 #
@@ -78,7 +78,6 @@ IS_WIN_OS := '''
 #   2. symbol file for gcc      : {APP_ROOT_DIR}/platform/soc/linker/gcc/rom_symbol_gcc.txt
 #   3. link file for gcc        : {APP_ROOT_DIR}/platform/soc/linker/gcc/gcc_linker.lds & gcc_linker_graphics.lds
 #   4. startup asemmbly file    : (APP_ROOT_DIR)/platform/arch/arm/cortex-m/gcc/startup_gr55xx.s
-#   5. gcc Makefile Template    : (APP_ROOT_DIR)/tools/windows/gcc/Makefile.template
 #########################################################################################################
 
 
@@ -146,7 +145,7 @@ endif
 
 ## Set LDFLAGS
 LDFLAGS += -Wl,--gc-sections
-LDFLAGS += -specs=nano.specs
+#LDFLAGS += -specs=nano.specs
 LDFLAGS += -L../../../../../platform/soc/linker/gcc/ -lble_sdk
 # LDFLAGS += -L../../../../../platform/soc/linker/gcc/ -lgraphics_lvgl
 # LDFLAGS += -L../../../../../platform/soc/linker/gcc/ -lgraphics_sdk
@@ -215,9 +214,10 @@ mk_path :
 	mkdir -p  $(BUILD_OBJ)
 	mkdir -p  $(BUILD_LST)
 
-flash: $(BUILD)/$(MAKE_TARGET_APP).bin
+flash: $(BUILD)/$(MAKE_TARGET_NAME).bin
 	$(ECHO) "Writing $< to the GR55xx-SK board"
-	programer -t fw -p burn -i $(BUILD)/$(MAKE_TARGET_APP).bin
+	GR5xxx_console.exe eraseall 1 0
+	GR5xxx_console.exe program $(BUILD)/$(MAKE_TARGET_NAME).bin 'y' 0x200000 1024 1 0
 
 clean:
 	rm -rf $(BUILD)
@@ -403,6 +403,10 @@ class KEIL5_PARSER():
                 d = ds.strip()
                 if d :
                     d = d.replace(" ", "")
+                if d :
+                    d = d.replace("<", "\"<")
+                if d :
+                    d = d.replace(">", ">\"")
                 if d :
                     defs_dict.append(d)
         return defs_dict

@@ -1090,6 +1090,9 @@
 <file>
 <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\app_assert\app_assert.c</name>
 </file>
+<file>
+<name>$PROJ_DIR$\..\..\..\..\..\components\sdk\ble.c</name>
+</file>
 </group>
 <group>
 <name>user_app</name>

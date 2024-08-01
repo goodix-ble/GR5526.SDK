@@ -679,6 +679,44 @@ void ble_gatts_service_changed(void);
  */
 uint16_t ble_gatts_mult_noti(uint8_t conn_idx, const ble_gatts_noti_multiple_t *p_param);
 
+/**
+ ****************************************************************************************
+ * @brief Set a service discoverable or not.
+ *
+ * @param[in] conn_idx:       Current connection index.
+ * @param[in] start_hdl:      Start handle of the service.
+ * @param[in] discoverable:   Flag for discoverable(true: discoverable, false: hide)
+ *
+ * @retval ::SDK_SUCCESS: Set this service hide or not successfully.
+ * @retval ::SDK_ERR_INVALID_CONN_IDX: Conidx is invalid.
+ ****************************************************************************************
+ */
+uint16_t ble_gatts_service_discoverable_set(uint8_t conn_idx, uint16_t start_hdl, bool discoverable);
+
+/**
+ ****************************************************************************************
+ * @brief Set all service discoverable.
+ *
+ * @param[in] conn_idx:       Current connection index.
+ *
+ * @retval ::SDK_SUCCESS:  Set all service discoverable successfully.
+ * @retval ::SDK_ERR_INVALID_CONN_IDX: Conidx is invalid.
+ ****************************************************************************************
+ */
+uint16_t ble_gatts_service_discover_all(uint8_t conn_idx);
+
+/**
+ ****************************************************************************************
+ * @brief Hide all service.
+ *
+ * @param[in] conn_idx:       Current connection index.
+ *
+ * @retval ::SDK_SUCCESS:  Hide all service successfully.
+ * @retval ::SDK_ERR_INVALID_CONN_IDX: Conidx is invalid.
+ ****************************************************************************************
+ */
+uint16_t ble_gatts_service_hide_all(uint8_t conn_idx);
+
 /** @} */
 
 #endif // BLE_SDK_GATTS_H_

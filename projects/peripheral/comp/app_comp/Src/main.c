@@ -124,7 +124,8 @@ int main(void)
     printf("* Please connect signal to MSIOAN.                    *\r\n");
     printf("* If the Input single is higher than the Reference,   *\r\n");
     printf("* the comparator interrupt will be triggered.         *\r\n");
-    printf("* GR5332x GR5526 Reference = 7.5mv * ref_value.       *\r\n");
+    printf("* GR5526 Reference = 7.5mv * ref_value.               *\r\n");
+    printf("* GR533x Reference = 50.82nA * (166K * ref_value).    *\r\n");
     printf("* GR551x Reference = 30mv * ref_value.                *\r\n");
     printf("*******************************************************\r\n");
     printf("\r\n");

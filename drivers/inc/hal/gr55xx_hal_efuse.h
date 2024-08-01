@@ -164,11 +164,11 @@ typedef struct _keyram_mask
   * @brief HAL_EFUSE Callback function definition
   */
 
-typedef struct _efuse_callback
+typedef struct _hal_efuse_callback
 {
     void (*efuse_msp_init)(efuse_handle_t *p_efuse);        /**< EFUSE init MSP callback            */
     void (*efuse_msp_deinit)(efuse_handle_t *p_efuse);      /**< EFUSE de-init MSP callback         */
-} efuse_callback_t;
+} hal_efuse_callback_t;
 
 /** @} */
 

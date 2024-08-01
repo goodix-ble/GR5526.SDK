@@ -301,6 +301,9 @@ void app_pwm_coding_dma(void)
     uint16_t ret = APP_DRV_SUCCESS;
     pwm_params.init.mode = PWM_CODING_MODE;
     pwm_params.init.prd_cycles = 32;
+
+    /* Please initialize DMA in the following order. */
+    /* Note: Initialization is not allowed during the transmission process. */
     ret = app_pwm_init(&pwm_params, app_pwm_event_handler);
     if (ret != APP_DRV_SUCCESS)
     {
@@ -316,6 +319,7 @@ void app_pwm_coding_dma(void)
     app_pwm_start_coding_with_dma(APP_PWM_ID_0, pwm_test_data, sizeof(pwm_test_data));
     while(g_done_cnt == 0);
 
+    /* Please deinitialize DMA in the following order. */
     app_pwm_dma_deinit(APP_PWM0_MODULE);
     app_pwm_deinit(APP_PWM0_MODULE);
 }

@@ -112,7 +112,7 @@ typedef struct
 
 #endif
 
-#if defined(SOC_GR5526) || defined(SOC_GR5525)
+#if defined(SOC_GR5526) || defined(SOC_GR5X25)
 /**@brief Boot information definition. */
 typedef struct
 {
@@ -175,8 +175,7 @@ typedef struct
 
 #endif
 
- 
-#ifdef SOC_GR5332
+#if defined(SOC_GR533X) || defined(SOC_GR5405)
 /**@brief Boot information definition. */
 typedef struct
 {   
@@ -286,7 +285,7 @@ typedef void(*dfu_receive_cmd_handler_t)(dfu_receive_frame_t *p_frame);
 void dfu_init(dfu_func_t *p_app_dfu_func, uint8_t* p_dfu_buffer, dfu_pro_callback_t *p_dfu_callback);
 #endif
 
-#if defined(SOC_GR5526) || defined(SOC_GR5525)
+#if defined(SOC_GR5526) || defined(SOC_GR5X25)
 /**
  *****************************************************************************************
  * @brief Function for initializing the DFU Used and Program State Callback.
@@ -303,7 +302,7 @@ void dfu_init(dfu_func_t *p_app_dfu_func, uint8_t* p_dfu_buffer, dfu_pro_callbac
 void dfu_init(dfu_func_t *p_app_dfu_func, dfu_buffer_t *p_dfu_buffer, dfu_pro_callback_t *p_dfu_callback);
 #endif
 
-#ifdef SOC_GR5332
+#if defined(SOC_GR533X) || defined(SOC_GR5405)
 /**
  *****************************************************************************************
  * @brief Function for initializing the DFU Used and Program State Callback.

@@ -34,7 +34,7 @@
   POSSIBILITY OF SUCH DAMAGE.
  *****************************************************************************************
  */
- 
+
 /*
  * INCLUDE FILES
  *****************************************************************************************
@@ -47,10 +47,12 @@
  * LOCAL VARIABLE DEFINITIONS
  *****************************************************************************************
  */
+/* Slow crystal oscillator needs time to become stable, so calibre it after stable */
+#define FIRST_TIMER_MS   1000
+
 static app_timer_id_t s_pmu_calibration_timer_id;
-static uint32_t g_pmu_interval_ms = 30 * 1000;
-static uint32_t g_pmu_initial_interval_ms = 1000;
-static uint32_t g_pmu_timer_cb_count = 0;
+static uint32_t s_pmu_interval_ms = 30 * 1000;
+static uint8_t  s_pmu_timer_cb_count = 0;
 
 /*
  * LOCAL FUNCTION DEFINITIONS
@@ -59,15 +61,15 @@ static uint32_t g_pmu_timer_cb_count = 0;
 void pmu_timer_handler(void* p_arg)
 {
     pmu_calibration_handler(p_arg);
-    ++g_pmu_timer_cb_count;
-    if (g_pmu_timer_cb_count > 1)
+    if (s_pmu_timer_cb_count > 0)
     {
         return;
     }
+    ++s_pmu_timer_cb_count;
 
     app_timer_delete(&s_pmu_calibration_timer_id);
     app_timer_create(&s_pmu_calibration_timer_id, ATIMER_REPEAT, pmu_timer_handler);
-    app_timer_start(s_pmu_calibration_timer_id, g_pmu_interval_ms, NULL);
+    app_timer_start(s_pmu_calibration_timer_id, s_pmu_interval_ms, NULL);
 }
 
 /*
@@ -78,11 +80,10 @@ void system_pmu_calibration_init(uint32_t interval)
 {
     if (interval)
     {
-        g_pmu_interval_ms = interval;
-
+        s_pmu_interval_ms = interval;
         app_timer_delete(&s_pmu_calibration_timer_id);
         app_timer_create(&s_pmu_calibration_timer_id, ATIMER_REPEAT, pmu_timer_handler);
-        app_timer_start(s_pmu_calibration_timer_id, g_pmu_initial_interval_ms, NULL);
+        app_timer_start(s_pmu_calibration_timer_id, FIRST_TIMER_MS, NULL);
     }
     return;
 }

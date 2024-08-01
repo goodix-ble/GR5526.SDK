@@ -43,6 +43,7 @@
 #include "app_pwr_mgmt.h"
 #include "gr_soc.h"
 #include <string.h>
+#include "app_drv.h"
 
 #ifdef HAL_DSPI_MODULE_ENABLED
 
@@ -335,6 +336,11 @@ uint16_t app_dspi_command_transmit_sync(app_dspi_command_t *p_cmd, uint8_t *p_da
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     dspi_wake_up();
 #endif
@@ -402,6 +408,11 @@ uint16_t app_dspi_command_sync(app_dspi_command_t *p_cmd, uint32_t timeout)
         return APP_DRV_ERR_POINTER_NULL;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     dspi_wake_up();
 #endif
@@ -465,6 +476,11 @@ uint16_t app_dspi_transmit_sync(uint8_t *p_data, uint32_t length, uint32_t timeo
     }
 
     if (p_data == NULL || length == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }

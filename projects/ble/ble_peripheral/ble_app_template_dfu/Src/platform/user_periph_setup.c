@@ -60,7 +60,7 @@ static app_uart_params_t dfu_uart_param;
 #define DFU_UART_RX_BUFF_SIZE  0x400
 #define DFU_UART_TX_BUFF_SIZE  0x400
 
-#ifdef SOC_GR5332
+#ifdef SOC_GR533X
 #define DFU_FW_SAVE_ADDR       (FLASH_START_ADDR + 0x40000)
 #else
 #define DFU_FW_SAVE_ADDR       (FLASH_START_ADDR + 0x60000)

@@ -46,7 +46,7 @@
 #include "custom_config.h"
 #include "flash_scatter_config.h"
 
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
 #if (BOOTLOADER_SIGN_ENABLE && !BOOTLOADER_BOOT_PORT_ENABLE)
 #include "drv_common.h"
 

@@ -61,20 +61,22 @@
 /**@brief Stack global variables for Bluetooth protocol stack. */
 STACK_HEAP_INIT(heaps_table);
 
-#if (defined SOC_GR5525) || (defined SOC_GR5332)
-extern void rwip_reset(void);
 extern void ble_sdk_patch_env_init(void);
-#endif
+extern void ble_test_evn_init(void);
 
 int main (void)
 {
     pwr_mgmt_mode_set(PMR_MGMT_IDLE_MODE);
     ble_hci_uart_init();
 
-    #if (defined SOC_GR5525) || (defined SOC_GR5332)
-    ble_stack_controller_init(&heaps_table);
+    #if(defined SOC_GR533X)
+    ble_rf_tx_mode_set((ble_rf_tx_mode_t)RF_TX_PA_SELECT);
+    #endif
+
+    #if (defined SOC_GR5X25) || (defined SOC_GR533X)
     ble_sdk_patch_env_init();
-    rwip_reset();
+    ble_test_evn_init();
+    ble_stack_controller_init(&heaps_table);
     #else
     ble_stack_init(ble_evt_handler, &heaps_table);
     #endif

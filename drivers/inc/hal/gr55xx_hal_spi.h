@@ -248,7 +248,7 @@ typedef struct _spi_handle
   * @brief HAL_SPI Callback function definition
   */
 
-typedef struct _spi_callback
+typedef struct _hal_spi_callback
 {
     void (*spi_msp_init)(spi_handle_t *p_spi);              /**< SPI init MSP callback                      */
     void (*spi_msp_deinit)(spi_handle_t *p_spi);            /**< SPI de-init MSP callback                   */
@@ -259,7 +259,7 @@ typedef struct _spi_callback
     void (*spi_tx_rx_cplt_callback)(spi_handle_t *p_spi);   /**< SPI tx/rx transfer completed callback      */
     void (*spi_soft_cs_assert)(spi_handle_t *p_spi, uint32_t state);   /**< assert the cs signal by software setting */
     void (*spi_soft_cs_deassert)(spi_handle_t *p_spi, uint32_t state);   /**< deassert the cs signal by software setting */
-} spi_callback_t;
+} hal_spi_callback_t;
 
 /** @} */
 

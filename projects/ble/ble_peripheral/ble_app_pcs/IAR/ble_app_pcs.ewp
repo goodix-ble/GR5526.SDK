@@ -1078,6 +1078,9 @@
 <file>
 <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\pmu_calibration\pmu_calibration.c</name>
 </file>
+<file>
+<name>$PROJ_DIR$\..\..\..\..\..\components\sdk\ble.c</name>
+</file>
 </group>
 <group>
 <name>gr_profiles</name>

@@ -123,11 +123,14 @@ void app_uart_callback(app_uart_evt_t *p_evt)
 
 void app_uart_dma_demo(void)
 {
-    uint16_t ret = 0;
+    uint16_t ret = APP_DRV_SUCCESS;
     app_uart_tx_buf_t uart_buffer = {0};
 
     uart_buffer.tx_buf = g_ring_buffer;
     uart_buffer.tx_buf_size = sizeof(g_ring_buffer);
+
+    /* Please initialize DMA in the following order. */
+    /* Note: Initialization is not allowed during the transmission process. */
     ret = app_uart_init(&uart_params, app_uart_callback, &uart_buffer);
     if (ret != APP_DRV_SUCCESS)
     {

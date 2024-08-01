@@ -42,6 +42,7 @@
 #include "app_pwr_mgmt.h"
 #include "gr_soc.h"
 #include <string.h>
+#include "app_drv.h"
 
 #ifdef HAL_SPI_MODULE_ENABLED
 
@@ -322,13 +323,15 @@ static inline app_spi_id_t spi_get_id(spi_handle_t *p_spi)
  */
 uint16_t app_spi_init(app_spi_params_t *p_params, app_spi_evt_handler_t evt_handler)
 {
-    app_spi_id_t    id = p_params->id;
+    app_spi_id_t id;
     app_drv_err_t err_code = APP_DRV_SUCCESS;
 
     if (NULL == p_params)
     {
         return APP_DRV_ERR_POINTER_NULL;
     }
+
+    id = p_params->id;
 
     if (id >= APP_SPI_ID_MAX)
     {
@@ -595,6 +598,11 @@ uint16_t app_spi_receive_sync(app_spi_id_t id, uint8_t *p_data, uint16_t size, u
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     spi_wake_up(id);
 #endif
@@ -784,6 +792,11 @@ uint16_t app_spi_transmit_sync(app_spi_id_t id, uint8_t *p_data, uint16_t size, 
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     spi_wake_up(id);
 #endif
@@ -815,6 +828,11 @@ uint16_t app_spi_transmit_receive_sync(app_spi_id_t id, uint8_t *p_tx_data, uint
     }
 
     if (p_tx_data == NULL || p_rx_data == NULL || size == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }
@@ -936,6 +954,11 @@ uint16_t app_spi_read_eeprom_sync(app_spi_id_t id, uint8_t *p_tx_data, uint8_t *
     }
 
     if (p_tx_data == NULL || p_rx_data == NULL || tx_size == 0 || rx_size == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }

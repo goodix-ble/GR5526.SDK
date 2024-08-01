@@ -143,7 +143,7 @@ static uint8_t user_fw_img_info_get(dfu_img_info_t s_fw_img_info[])
     uint8_t once_img_size = 40;
     uint8_t read_buffer[FW_IMG_INFO_SIZE];
 
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     bool flash_security_status = false;
     uint32_t sys_security = sys_security_enable_status_check();
     if(sys_security)
@@ -155,7 +155,7 @@ static uint8_t user_fw_img_info_get(dfu_img_info_t s_fw_img_info[])
 
     hal_flash_read(FW_IMG_INFO_ADDR, read_buffer, FW_IMG_INFO_SIZE);//read decoded data
 
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     if(sys_security)
     {
         hal_flash_set_security(flash_security_status);

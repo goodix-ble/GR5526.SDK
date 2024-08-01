@@ -159,7 +159,7 @@ lv_obj_t* lv_message_layout_create(void)
     if(NULL != g_message_layout_view) return g_message_layout_view;
     g_message_layout_view = lv_obj_create(NULL);
     lv_obj_set_scrollbar_mode(g_message_layout_view, LV_SCROLLBAR_MODE_OFF);
-    lv_obj_set_size(g_message_layout_view, 454, 454);
+    lv_obj_set_size(g_message_layout_view, DISP_HOR_RES, DISP_VER_RES);
     lv_obj_set_flex_flow(g_message_layout_view, LV_FLEX_FLOW_COLUMN);
     lv_obj_set_flex_align(g_message_layout_view, LV_FLEX_ALIGN_START, LV_FLEX_ALIGN_CENTER, LV_FLEX_ALIGN_CENTER);
 

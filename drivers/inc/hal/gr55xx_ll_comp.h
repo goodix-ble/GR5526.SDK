@@ -525,7 +525,7 @@ __STATIC_INLINE uint32_t ll_comp_is_enable_falling_wakeup(void)
   *
   * @retval State of bit (1 or o).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_comp_is_rising_triger_flag_it(void)
+__STATIC_FORCEINLINE uint32_t ll_comp_is_rising_triger_flag_it(void)
 {
     return (READ_BITS(AON_CTL->AON_SLP_EVENT, AON_CTL_SLP_EVENT_CMP_RISE) == AON_CTL_SLP_EVENT_CMP_RISE);
 }
@@ -539,7 +539,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_comp_is_rising_triger_flag_it(void)
   *
   * @retval None.
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_comp_clear_rising_triger_flag_it(void)
+__STATIC_FORCEINLINE void ll_comp_clear_rising_triger_flag_it(void)
 {
     WRITE_REG(AON_CTL->AON_SLP_EVENT, ~AON_CTL_SLP_EVENT_CMP_RISE);
 }
@@ -553,7 +553,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_comp_clear_rising_triger_flag_it(void)
   *
   * @retval State of bit (1 or o).
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_comp_is_falling_triger_flag_it(void)
+__STATIC_FORCEINLINE uint32_t ll_comp_is_falling_triger_flag_it(void)
 {
     return (READ_BITS(AON_CTL->AON_SLP_EVENT, AON_CTL_SLP_EVENT_CMP_FALL) == AON_CTL_SLP_EVENT_CMP_FALL);
 }
@@ -567,7 +567,7 @@ SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_comp_is_falling_triger_flag_it(void
   *
   * @retval None.
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_comp_clear_falling_triger_flag_it(void)
+__STATIC_FORCEINLINE void ll_comp_clear_falling_triger_flag_it(void)
 {
     WRITE_REG(AON_CTL->AON_SLP_EVENT, ~AON_CTL_SLP_EVENT_CMP_FALL);
 }

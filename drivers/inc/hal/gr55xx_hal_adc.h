@@ -162,13 +162,13 @@ typedef struct _adc_handle
 /**
   * @brief HAL ADC Callback function definition
   */
-typedef struct _adc_callback
+typedef struct _hal_adc_callback
 {
     void (*adc_msp_init)(adc_handle_t *p_adc);                  /**< ADC init MSP callback                  */
     void (*adc_msp_deinit)(adc_handle_t *p_adc);                /**< ADC de-init MSP callback               */
     void (*adc_conv_cplt_callback)(adc_handle_t *p_adc);        /**< ADC conversion completed callback      */
     uint16_t (*adc_get_trim_func)(adc_trim_info_t *p_adc_trim); /**< ADC get trim information callback(must return 0x0000 when successful)*/
-} adc_callback_t;
+} hal_adc_callback_t;
 
 /** @} */
 

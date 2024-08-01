@@ -50,7 +50,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
-#include "grx_hal.h"
+#include "grx_soc_reg.h"
 
 /**
  *@addtogroup GR55XX_FPB_ENUMERATIONS Enumerations
@@ -81,12 +81,37 @@ void gr5xx_svc_process(void);
 void svc_func_register(uint8_t svc_num, uint32_t user_func);
 
 
+/** @brief Disable interrupts globally in the system(apart from the NMI).
+ *  This macro must be used in conjunction with the @ref GLOBAL_EXCEPTION_ENABLE macro
+ *  since this last one will close the brace that the current macro opens.  This means
+ *  that both macros must be located at the same scope level.
+ */
+#define GLOBAL_EXCEPTION_DISABLE_LOCAL()                         \
+do {                                                       \
+    uint32_t __l_irq_rest = __get_PRIMASK();               \
+    __set_PRIMASK(1)
+
+
+/** @brief Restore interrupts from the previous global disable(apart from the NMI).
+ *  @sa GLOBAL_EXCEPTION_ENABLE
+ */
+#define GLOBAL_EXCEPTION_ENABLE_LOCAL()                          \
+    if(__l_irq_rest == 0)                                  \
+    {                                                      \
+        __set_PRIMASK(0);                                  \
+    }                                                      \
+    else                                                   \
+    {                                                      \
+        __set_PRIMASK(1);                                  \
+    }                                                      \
+} while(0)
+
 #define FPB_SAVE()       fpb_t __fpb_state_local_var=fpb_save_state()
 #define FPB_LOAD()       fpb_load_state(__fpb_state_local_var)
 #define FPB_PATCH_ON()   fpb_save_state();
 #define FPB_PATCH_OFF()  fpb_load_state(FPB_PATCH_OFF)
-#define FPB_MGMT_LOCK    GLOBAL_EXCEPTION_DISABLE
-#define FPB_MGMT_UNLOCK  GLOBAL_EXCEPTION_ENABLE
+#define FPB_MGMT_LOCK    GLOBAL_EXCEPTION_DISABLE_LOCAL
+#define FPB_MGMT_UNLOCK  GLOBAL_EXCEPTION_ENABLE_LOCAL
 #define FPB_LOG(...)     //printf(__VA_ARGS__)
 
 

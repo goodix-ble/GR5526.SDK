@@ -89,13 +89,13 @@ typedef struct _bod_handle
 /**
   * @brief HAL BOD Callback function definition
   */
-typedef struct _bod_callback
+typedef struct _hal_bod_callback
 {
     void (*bod_msp_init)(bod_handle_t *p_bod);              /**< BOD init MSP callback            */
     void (*bod_msp_deinit)(bod_handle_t *p_bod);            /**< BOD de-init MSP callback         */
     void (*bod_fedge_callback)(bod_handle_t *p_bod);        /**< BOD conversion completed callback*/
     void (*bod_redge_callback)(bod_handle_t *p_bod);		/**< BOD conversion completed callback*/
-} bod_callback_t;
+} hal_bod_callback_t;
 
 /** @} */
 

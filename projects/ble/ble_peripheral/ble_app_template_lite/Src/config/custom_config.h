@@ -335,6 +335,13 @@
 #endif
 // </h>
 
+// <o>  Support ranging
+// <0=> NOT SUPPORT
+// <1=> SUPPORT
+#ifndef CFG_RANGING_SUPPORT
+#define CFG_RANGING_SUPPORT             0
+#endif
+
 // <<< end of configuration section >>>
 #endif //__CUSTOM_CONFIG_H__
 

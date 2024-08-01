@@ -7,7 +7,6 @@
 #include "hal_flash.h"
 #include "platform_sdk.h"
 #include "pmu_calibration.h"
-#include "patch_tab.h"
 #include "app_pwr_mgmt.h"
 
 #define PUYA_FLASH_HP_CMD              (0xA3)
@@ -17,10 +16,26 @@
 #define FLASH_HP_END_DUMMY             PUYA_FLASH_HP_END_DUMMY
 #define SOFTWARE_REG_WAKEUP_FLAG_POS   (8)
 
+#define AON_PWR_SOFTWARE_REG3_ULTRA_DEEP_SLEEP_FLAG_POS 0
+
+#define SDK_VER_MAJOR                   1
+#define SDK_VER_MINOR                   0
+#define SDK_VER_BUILD                   3
+#define COMMIT_ID                       0xf9971010
+
+static const sdk_version_t sdk_version = {SDK_VER_MAJOR,
+                                          SDK_VER_MINOR,
+                                          SDK_VER_BUILD,
+                                          COMMIT_ID,};//sdk version
+
 extern uint8_t g_short_digcore_aon_flag;
 
 
 /******************************************************************************/
+void sys_sdk_verison_get(sdk_version_t *p_version)
+{
+    memcpy(p_version, &sdk_version, sizeof(sdk_version_t));
+}
 
 #if (CFG_LCP_SUPPORT)
 static uint8_t lcp_buf[280] __attribute__((section (".ARM.__at_0x20070000"), zero_init));
@@ -111,6 +126,7 @@ bool platform_flash_init(void)
     g_xqspi_handle.init.cache_direct_map_en = 0;
     bool status = hal_flash_init();
     g_xqspi_handle.init.cache_flush = LL_XQSPI_CACHE_FLUSH_DIS;
+    GR_SOC_ASSERT(!ll_xqspi_cache_direct_map_is_enabled(XQSPI));
     return status;
 }
 
@@ -160,6 +176,25 @@ void first_class_task(void)
     platform_sdk_init();
 }
 
+extern bool clock_calibration_is_done(void);
+static bool wait_for_clock_calibration_done(uint32_t timeout)//unit:us
+{
+    bool ret = true;
+    uint32_t wait_time = 0;
+
+    while(!clock_calibration_is_done())
+    {
+        delay_us(1);
+        if(++wait_time >= timeout)
+        {
+            ret = false;
+            break;
+        }
+    }
+
+    return ret;
+}
+
 void second_class_task(void)
 {
     /* To choose the System clock source and set the accuracy of OSC. */
@@ -192,6 +227,10 @@ void second_class_task(void)
     }
     /* Init peripheral sleep management */
     app_pwr_mgmt_init();
+    if(!CHECK_IS_ON_FPGA())
+    {
+        wait_for_clock_calibration_done(1000000);
+    }
 }
 
 static void patch_init(void)
@@ -233,11 +272,6 @@ void platform_init(void)
     return ;
 }
 
-uint32_t get_wakeup_flag(void)
-{
-    return (AON_CTL->SOFTWARE_REG0 & (1 << SOFTWARE_REG_WAKEUP_FLAG_POS));
-}
-
 void warm_boot_process(void)
 {
     vector_table_init();
@@ -252,62 +286,26 @@ void vector_table_init(void)
     __DSB(); // Data Synchronization Barrier to ensure all
 }
 
-void soc_init(void)
+/**
+ ****************************************************************************************
+ * @brief  Check whether the system wakes up from ultra deep sleep. If it wakes up from ultra
+ *         deep sleep, reset the entire system. If not, do nothing.
+ * @retval: void
+ ****************************************************************************************
+ */
+static void ultra_deep_sleep_wakeup_handle(void)
 {
-    platform_init();
+    if (AON_PWR->SOFTWARE_REG_3 & (0x1 << AON_PWR_SOFTWARE_REG3_ULTRA_DEEP_SLEEP_FLAG_POS))
+    {
+        // Reset the whole system by register
+        MCU_SUB->AON_SW_RST = 0xC5A10100;
+        while (true)
+            ;
+    }
 }
 
-void ble_sdk_patch_env_init(void)
+void soc_init(void)
 {
-    // register the ke msg handler for patch
-    uint16_t ke_msg_cnt = sizeof(ke_msg_tab) / sizeof(ke_msg_tab_item_t);
-    reg_ke_msg_patch_tab(ke_msg_tab, ke_msg_cnt);
-
-    // register the llm hci cmd handler for patch
-    uint16_t llm_hci_cmd_cnt = sizeof(llm_hci_cmd_tab) / sizeof(llm_hci_cmd_tab_item_t);
-    reg_llm_hci_cmd_patch_tab(llm_hci_cmd_tab, llm_hci_cmd_cnt);
-
-    // register the gapm hci evt handler for patch
-    uint16_t gapm_hci_evt_cnt = sizeof(gapm_hci_evt_tab) / sizeof(gapm_hci_evt_tab_item_t);
-    reg_gapm_hci_evt_patch_tab(gapm_hci_evt_tab, gapm_hci_evt_cnt);
-
-    #if CFG_ISO_SUPPORT
-    uint16_t lli_hci_cmd_cnt = sizeof(lli_hci_cmd_tab) / sizeof(lli_hci_cmd_tab_item_t);
-    reg_lli_hci_cmd_patch_tab(lli_hci_cmd_tab, lli_hci_cmd_cnt);
-    #endif
-
-    ble_common_env_init();
-
-    #if CFG_MAX_CONNECTIONS
-    ble_con_env_init();
-    //ble_adv_param_init(CFG_MAX_CONNECTIONS);
-    #endif
-
-    #if CFG_MAX_SCAN
-    ble_scan_env_init();
-    #endif
-
-    #if CFG_MAX_ADVS
-    ble_adv_env_init();
-    #endif
-
-    #if CFG_ISO_SUPPORT
-    ble_iso_env_init();
-    #endif
-
-    #if CFG_EATT_SUPPORT
-    ble_eatt_evn_init();
-    #endif
-
-    #if CFG_MUL_LINK_WITH_SAME_DEV
-    ble_mul_link_env_init();
-    #endif
-
-    #if CFG_CAR_KEY_SUPPORT
-    ble_car_key_env_init();
-    #endif
-
-    #if CFG_BT_BREDR
-    ble_bt_bredr_env_init();
-    #endif
+    ultra_deep_sleep_wakeup_handle();
+    platform_init();
 }

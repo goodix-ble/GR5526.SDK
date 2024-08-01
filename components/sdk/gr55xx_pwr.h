@@ -310,7 +310,8 @@ void pwr_mgmt_wfe_sleep(void);
  *         the chip when an event occurs.
  * @param  time_ms : Specifies the wake-up time during ultra sleep. If time_ms is equal to 0,
  *                   then sleep timer will not be enabled.
- *                   This parameter must be a number between min_value = 0 and max_value = 131071
+ *                   This parameter must be a number between min_value = 0 max_value = 131071999,
+ *                   if time_ms bigger than 131071999, then 131071999 will be used.
  ****************************************************************************************
  */
 void pwr_mgmt_ultra_sleep(uint32_t time_ms);

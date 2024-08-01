@@ -1360,6 +1360,17 @@ uint16_t ble_gap_default_subrate_param_set(const ble_gap_dft_subrate_param_t *p_
  */
 uint16_t ble_gap_subrate_request(uint8_t conn_idx, const ble_gap_subrate_req_t *p_subrate_req);
 
+/**
+ ****************************************************************************************
+ * @brief Get BD address of the local device by the conidx.
+ *
+ * @param[in] conidx: The index of conncetion.
+ * @param[in] p_addr: Pointer to the local BD addrss
+ ****************************************************************************************
+ */
+void ble_gap_get_local_addr_by_conidx(uint8_t conidx, uint8_t *p_addr);
+
+
 /** @} */
 #endif
 /** @} */

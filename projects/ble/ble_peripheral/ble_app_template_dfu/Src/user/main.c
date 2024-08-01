@@ -51,8 +51,6 @@
 #include "dfu_port.h"
 #include "hal_flash.h"
 
-#include "drv_adapter_port.h"
-
 /*
  * LOCAL VARIABLE DEFINITIONS
  *****************************************************************************************
@@ -60,22 +58,10 @@
 /**@brief Stack global variables for Bluetooth protocol stack. */
 STACK_HEAP_INIT(heaps_table);
 
-#if defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
-void app_external_flash_init(void) {
-    drv_adapter_norflash_register();
-    drv_adapter_norflash_init();
-    drv_adapter_norflash_set_mmap_mode(false);
-}
-#endif
-
 int main(void)
 {
     // Initialize user peripherals.
     app_periph_init();
-
-#if defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
-    app_external_flash_init();
-#endif
 
     // Initialize BLE Stack.
     ble_stack_init(ble_evt_handler, &heaps_table);

@@ -104,11 +104,12 @@
 #define APP_IO_PINS_0_7              ((uint32_t)0x000000FFU)  /**< 0~7 pins selected  */
 #define APP_IO_PINS_0_15             ((uint32_t)0x0000FFFFU)  /**< 0~15 pins selected  */
 #define APP_IO_PINS_16_31            ((uint32_t)0xFFFF0000U)  /**< 16~31 pins selected */
-#define APP_IO_PIN_ALL               ((uint32_t)0x0000FFFFU)  /**< All pins selected   */
 #define APP_AON_IO_PIN_ALL           ((uint32_t)0x000000FFU)  /**< All AON pins selected */
 #if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5332X)
+#define APP_IO_PIN_ALL               ((uint32_t)0x00003FFFU)  /**< All pins selected   */
 #define APP_MSIO_IO_PIN_ALL          ((uint32_t)0x000003FFU)  /**< All MISO pins selected */
 #else
+#define APP_IO_PIN_ALL               ((uint32_t)0x0000FFFFU)  /**< All pins selected   */
 #define APP_MSIO_IO_PIN_ALL          ((uint32_t)0x000000FFU)  /**< All MISO pins selected */
 #endif
 #define APP_IO_PIN_MASK              ((uint32_t)0xFFFFFFFFU)  /**< PIN mask for assert test */

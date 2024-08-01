@@ -246,8 +246,8 @@ static void create_content_cache(notification_info_t *info)
     lv_draw_img_dsc_init(&img_dsc);
     draw_area.x1 = 24;
     draw_area.y1 = 0;
-    draw_area.x2 = draw_area.x1 + 48 - 1;
-    draw_area.y2 = draw_area.y1 + 48 - 1;
+    draw_area.x2 = draw_area.x1 + ((lv_img_dsc_t *)info->icon)->header.w - 1;
+    draw_area.y2 = draw_area.y1 + ((lv_img_dsc_t *)info->icon)->header.h - 1;
     lv_draw_img(draw_ctx, &img_dsc, &draw_area, info->icon);
 
     // Draw Title

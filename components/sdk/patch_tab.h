@@ -6,7 +6,6 @@
 typedef uint16_t task_id_t;
 typedef uint16_t msg_id_t;
 
-
 typedef int (*msg_func_t)(msg_id_t const msgid, void const *param, task_id_t const dest_id, task_id_t const src_id);
 
 typedef int (*llm_hci_cmd_hdl_func_t)(void const *param, uint16_t opcode);
@@ -39,22 +38,17 @@ typedef struct
     gapm_hci_evt_hdl_func_t new_func_addr;
 } gapm_hci_evt_tab_item_t;
 
-extern void ble_common_env_init(void);
-extern void ble_con_env_init(void);
-extern void ble_scan_env_init(void);
-extern void ble_adv_env_init(void);
-extern void ble_test_evn_init(void);
-extern void ble_iso_env_init(void);
-extern void ble_eatt_evn_init(void);
-extern void ble_mul_link_env_init(void);
-extern void ble_car_key_env_init(void);
-extern void ble_bt_bredr_env_init(void);
-
 // sdk task for common
 extern int host_to_sdk_msg_handler_patch(msg_id_t const msgid, void *param,
     task_id_t const dest_id, task_id_t const src_id);
 
 extern int gap_activity_stopped_ind_handler_patch(msg_id_t const msgid, void const *p_param,
+    task_id_t const dest_id, task_id_t const src_id);
+
+extern int gap_dev_bdaddr_ind_handler_patch(msg_id_t const msgid, void const *p_param,
+    task_id_t const dest_id, task_id_t const src_id);
+
+extern int gapm_cmp_evt_handler_patch(msg_id_t const msgid, void const *param,
     task_id_t const dest_id, task_id_t const src_id);
 
 // llm task for common
@@ -177,20 +171,30 @@ extern int l2cc_enh_lecb_connect_cfm_handler_patch(msg_id_t const msgid, void *p
     task_id_t const dest_id, task_id_t const src_id);
 #endif
 
-#if CFG_DTM_TEST
+#if DTM_TEST_ENABLE
 // llm hci cmd handler for test
-extern int hci_le_tx_test_v4_cmd_handler_patch(struct hci_le_tx_test_v4_cmd const *param, uint16_t opcode);
+extern int hci_le_tx_test_v4_cmd_handler_patch(void const *param, uint16_t opcode);
 #endif
 
 ke_msg_tab_item_t ke_msg_tab[] =
 {
+    // llm task for common
+    {(msg_func_t)0x000333a9, (msg_func_t)llm_hci_command_handler_patch},
+
+    #if CFG_MAX_CONNECTIONS
+    // llc task for connection
+    {(msg_func_t)0x0004d915, (msg_func_t)llc_op_dl_upd_ind_handler_patch},
+    {(msg_func_t)0x00063255, (msg_func_t)lld_llcp_rx_ind_handler_patch},
+    {(msg_func_t)0x0004d4b9, (msg_func_t)llc_op_ch_class_en_ind_handler_patch},
+    {(msg_func_t)0x0004d575, (msg_func_t)llc_op_ch_class_rep_ind_handler_patch},
+    #endif
+
+    #if (!CFG_CONTROLLER_ONLY)
     // ble sdk task for common
     {(msg_func_t)0x00094a4d, (msg_func_t)host_to_sdk_msg_handler_patch},
     {(msg_func_t)0x0008dff5, (msg_func_t)gap_activity_stopped_ind_handler_patch},
-    // llm task for common
-    {(msg_func_t)0x000333a9, (msg_func_t)llm_hci_command_handler_patch},
-    // gapc task for common
-    {(msg_func_t)0x00012cc9, (msg_func_t)gapc_hci_handler_patch},
+    {(msg_func_t)0x0008f3ed, (msg_func_t)gap_dev_bdaddr_ind_handler_patch},
+    {(msg_func_t)0x0009171d, (msg_func_t)gapm_cmp_evt_handler_patch},
     // gapm task for common
     {(msg_func_t)0x00018555, (msg_func_t)gapm_hci_handler_patch},
     {(msg_func_t)0x0001a25d, (msg_func_t)gapm_set_dev_config_cmd_handler_patch},
@@ -202,13 +206,10 @@ ke_msg_tab_item_t ke_msg_tab[] =
     {(msg_func_t)0x00098edd, (msg_func_t)sec_rcv_bond_req_ind_handler_patch},
     {(msg_func_t)0x0008ecd9, (msg_func_t)gap_connection_req_ind_handler_patch},
     {(msg_func_t)0x0008f645, (msg_func_t)gap_disconnect_ind_handler_patch},
-    // llc task for connection
-    {(msg_func_t)0x0004d915, (msg_func_t)llc_op_dl_upd_ind_handler_patch},
-    {(msg_func_t)0x00063255, (msg_func_t)lld_llcp_rx_ind_handler_patch},
-    {(msg_func_t)0x0004d4b9, (msg_func_t)llc_op_ch_class_en_ind_handler_patch},
-    {(msg_func_t)0x0004d575, (msg_func_t)llc_op_ch_class_rep_ind_handler_patch},
     // gattc task for connection
     {(msg_func_t)0x000432f1, (msg_func_t)l2cc_lecb_sdu_recv_ind_handler_patch},
+    // gapc task for common
+    {(msg_func_t)0x00012cc9, (msg_func_t)gapc_hci_handler_patch},
     // sdk task for gattc
     {(msg_func_t)0x0008abad, (msg_func_t)ble_sdk_gattc_extend_prf_cmp_evt_handler_patch},
     {(msg_func_t)0x0008b019, (msg_func_t)ble_sdk_gattc_extend_prf_event_ind_handler_patch},
@@ -237,6 +238,7 @@ ke_msg_tab_item_t ke_msg_tab[] =
     // llm task for car key
     {(msg_func_t)0x00071369, (msg_func_t)llm_pub_key_gen_ind_handler_patch},
     #endif
+    #endif  //(!CFG_CONTROLLER_ONLY)
 };
 
 llm_hci_cmd_tab_item_t llm_hci_cmd_tab[] =
@@ -248,7 +250,7 @@ llm_hci_cmd_tab_item_t llm_hci_cmd_tab[] =
     {(llm_hci_cmd_hdl_func_t)0x00038929, (llm_hci_cmd_hdl_func_t)hci_le_set_addr_resol_en_cmd_handler_patch},
     {(llm_hci_cmd_hdl_func_t)0x0003aea5, (llm_hci_cmd_hdl_func_t)hci_le_set_priv_mode_cmd_handler_patch},
 
-    #if CFG_DTM_TEST
+    #if DTM_TEST_ENABLE
     // llm hci cmd for dtm test
     {(llm_hci_cmd_hdl_func_t)0x0003b9f5, (llm_hci_cmd_hdl_func_t)hci_le_tx_test_v4_cmd_handler_patch},
     #endif
@@ -279,12 +281,8 @@ gapm_hci_evt_tab_item_t gapm_hci_evt_tab[] =
     #endif
 };
 
-extern void reg_ke_msg_patch_tab(ke_msg_tab_item_t *ke_msg_tab, uint16_t ke_msg_cnt);
-extern void reg_gapm_hci_evt_patch_tab(gapm_hci_evt_tab_item_t *gapm_hci_evt_tab, uint16_t gapm_hci_evt_cnt);
-extern void reg_llm_hci_cmd_patch_tab(llm_hci_cmd_tab_item_t *llm_hci_cmd_tab, uint16_t llm_hci_cmd_cnt);
-
 #if CFG_ISO_SUPPORT
 extern void reg_lli_hci_cmd_patch_tab(lli_hci_cmd_tab_item_t *lli_hci_cmd_tab, uint16_t lli_hci_cmd_cnt);
 #endif
 
-#endif
+#endif  // __PATCH_TAB_H_

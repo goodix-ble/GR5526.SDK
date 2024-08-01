@@ -20,17 +20,17 @@ typedef void (*lv_clk_period_cb_t)(void);
  *****************************************************************************************
  */
 /**
- * set clock hour hand 
+ * set clock hour hand
  * @param[in] obj      pointer to a obj of hour hand
  */
 void lv_clk_set_hour_hand(lv_obj_t* obj);
 /**
- * set clock min hand 
+ * set clock min hand
  * @param[in] obj      pointer to a obj of min hand
  */
 void lv_clk_set_min_hand(lv_obj_t* obj);
 /**
- * set clock second hand 
+ * set clock second hand
  * @param[in] obj      pointer to a obj of sec hand
  */
 void lv_clk_set_sec_hand(lv_obj_t* obj);
@@ -52,4 +52,9 @@ void lv_clk_hand_stop_run(void);
  *  init clock hands animal
  */
 void lv_clk_hand_init(void);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

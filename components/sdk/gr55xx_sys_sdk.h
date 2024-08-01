@@ -61,6 +61,7 @@
 #include <stdint.h>
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdarg.h>
 
 /** @addtogroup GR55XX_SYS_DEFINES Defines
  * @{
@@ -82,7 +83,7 @@ typedef void (*callback_t)(int);
 typedef void (*timer_callback_t)(uint8_t timer_id);
 
 /**@brief Printf callback type. */
-typedef int (*vprintf_callback_t) (const char *fmt, __va_list argp);
+typedef int (*vprintf_callback_t) (const char *fmt, va_list argp);
 
 /**@brief raw log callback type. */
 typedef uint16_t (*raw_log_send_cb_t) (uint8_t *p_data, uint16_t length);

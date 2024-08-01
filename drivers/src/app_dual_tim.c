@@ -289,13 +289,15 @@ static uint16_t dual_timer_gpio_config(dual_timer_io_ctrl_cfg_t *io_crtl_cfg, ap
  */
 uint16_t app_dual_tim_init(app_dual_tim_params_t *p_params, app_dual_tim_evt_handler_t evt_handler)
 {
-    app_dual_tim_id_t id = p_params->id;
+    app_dual_tim_id_t id;
     hal_status_t  hal_err_code;
 
     if (NULL == p_params)
     {
         return APP_DRV_ERR_POINTER_NULL;
     }
+
+    id = p_params->id;
 
     if (id >= APP_DUAL_TIM_ID_MAX)
     {
@@ -494,7 +496,36 @@ uint16_t app_dual_tim_set_background_reload(app_dual_tim_id_t id, uint32_t reloa
 
     return APP_DRV_SUCCESS;
 }
+#if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5332X || APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR551X)
+uint16_t app_dual_tim_set_reload_value_bg_reload_value(app_dual_tim_id_t id, uint32_t reload_value,uint32_t bg_reload_value)
+{
+    hal_status_t err_code;
 
+    if (id >= APP_DUAL_TIM_ID_MAX ||
+        p_dual_tim_env[id]->dual_tim_state == APP_DUAL_TIM_INVALID)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+#ifdef APP_DRIVER_WAKEUP_CALL_FUN
+    dual_tim_wake_up(id);
+#endif
+    err_code = hal_dual_timer_set_reload_background_reload(&p_dual_tim_env[id]->handle, reload_value,bg_reload_value);
+    HAL_ERR_CODE_CHECK(err_code);
+
+    return APP_DRV_SUCCESS;
+}
+uint32_t app_dual_tim_get_counter_value(app_dual_tim_id_t id)
+{
+    if (id >= APP_DUAL_TIM_ID_MAX ||
+        p_dual_tim_env[id]->dual_tim_state == APP_DUAL_TIM_INVALID)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    return hal_dual_timer_get_counter_value(&p_dual_tim_env[id]->handle);
+}
+#endif
 #if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5332X)
 uint16_t app_dual_tim_set_onetime_reload(app_dual_tim_id_t id, uint32_t reload_value)
 {

@@ -38,23 +38,23 @@ extern "C" {
 #endif
 
 #if LV_GDX_PATCH_USE_WMS_TILEVIEW
-#include "./goodix/tileview/lv_wms_tileview.h"
+#include "lv_wms_tileview.h"
 #endif
 
 #if LV_GDX_PATCH_USE_GPU_ENHANCED_LIST
-#include "./goodix/gpu_enhanced_menu/lv_enhanced_list.h"
+#include "lv_enhanced_list.h"
 #endif // LV_GDX_PATCH_USE_GPU_ENHANCED_LIST
 
 #if LV_GDX_PATCH_USE_GPU_ENHANCED_GRID
-#include "./goodix/gpu_enhanced_menu/lv_enhanced_grid.h"
+#include "lv_enhanced_grid.h"
 #endif // LV_GDX_PATCH_USE_GPU_ENHANCED_GRID
 
 #if LV_GDX_PATCH_USE_GPU_ENHANCED_SCROLLBAR
-#include "./goodix/gpu_scrollbar/lv_enhanced_scrollbar.h"
+#include "lv_enhanced_scrollbar.h"
 #endif // LV_GDX_PATCH_USE_GPU_ENHANCED_SCROLLBAR
 
 #if LV_GDX_PATCH_USE_GPU_CIRCULAR_LIST
-#include "./goodix/gpu_enhanced_menu/lv_circular_list.h"
+#include "lv_circular_list.h"
 #endif // LV_GDX_PATCH_USE_GPU_CIRCULAR_LIST
 
 /*********************

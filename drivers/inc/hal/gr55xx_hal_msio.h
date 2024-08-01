@@ -69,10 +69,10 @@ extern "C" {
 /**
   * @brief HAL_MSIO Callback function definition
   */
-typedef struct _msio_callback
+typedef struct _hal_msio_callback
 {
     void (*msio_callback)(msio_pad_t MSIOx, uint16_t msio_pin);   /**< MSIO pin detection callback   */
-} msio_callback_t;
+} hal_msio_callback_t;
 
 /** @} */
 

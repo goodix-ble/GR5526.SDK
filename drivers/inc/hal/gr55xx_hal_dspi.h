@@ -178,14 +178,14 @@ typedef struct _dspi_command_t
   * @brief HAL_DSPI Callback function definition
   */
 
-typedef struct _dspi_callback
+typedef struct _hal_dspi_callback
 {
     void (*dspi_msp_init)(dspi_handle_t *p_dspi);                   /**< DSPI init MSP callback                 */
     void (*dspi_msp_deinit)(dspi_handle_t *p_dspi);                 /**< DSPI de-init MSP callback              */
     void (*dspi_abort_callback)(dspi_handle_t *p_dspi);             /**< DSPI abort callback                    */
     void (*dspi_error_callback)(dspi_handle_t *p_dspi);             /**< DSPI error callback                    */
     void (*dspi_tx_cplt_callback)(dspi_handle_t *p_dspi);           /**< DSPI tx transfer completed callback    */
-} dspi_callback_t;
+} hal_dspi_callback_t;
 
 /** @} */
 

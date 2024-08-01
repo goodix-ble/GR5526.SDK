@@ -116,8 +116,8 @@ extern "C" {
 #define SPI_FLASH_ERASE_SUCCESS         (1)                    /* spi flash erase success */
 #define SPI_FLASH_ERASE_FAIL            (0)                    /* spi flash erase fail */
 #else
-#define SPI_FLASH_TRANSMIT_SUCCESS      ((uint32_t)0x00000000) /* GR5332 spi flash operatoon success */
-#define SPI_FLASH_TRANSMIT_FAIL         ((uint32_t)0x00000001) /* GR5332 spi flash operatoon fail */
+#define SPI_FLASH_TRANSMIT_SUCCESS      ((uint32_t)0x00000000) /* GR533X spi flash operatoon success */
+#define SPI_FLASH_TRANSMIT_FAIL         ((uint32_t)0x00000001) /* GR533X spi flash operatoon fail */
 #define SPI_FLASH_ERASE_SUCCESS         (0)                    /* spi flash erase success */
 #define SPI_FLASH_ERASE_FAIL            (1)                    /* spi flash erase fail */
 #endif

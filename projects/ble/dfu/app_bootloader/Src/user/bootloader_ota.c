@@ -173,6 +173,7 @@ static void ble_evt_handler(const ble_evt_t *p_evt)
         }
         case BLE_GAPC_EVT_CONNECTED:
             bootloader_address_restore();
+            dfu_mode_update(DFU_NON_COPY_UPGRADE_MODE_PATTERN);
             break;
 
         case BLE_GAPC_EVT_DISCONNECTED:

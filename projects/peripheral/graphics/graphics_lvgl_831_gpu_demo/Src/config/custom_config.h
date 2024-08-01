@@ -159,7 +159,7 @@
 // <0x00202000=> Flash address
 // <i> Default:  0x00202000(Flash)
 #ifndef APP_CODE_LOAD_ADDR
-#define APP_CODE_LOAD_ADDR      (0x00202000 + 2*4096 + 76*1024)  /* there is a AppBootloader at head. */
+#define APP_CODE_LOAD_ADDR      0x00202000
 #endif
 
 // <o> Code run address
@@ -167,7 +167,7 @@
 // <0x00202000=> Flash address
 // <i> Default:  0x00202000(Flash XIP)
 #ifndef APP_CODE_RUN_ADDR
-#define APP_CODE_RUN_ADDR       (APP_CODE_LOAD_ADDR)
+#define APP_CODE_RUN_ADDR       0x00202000
 #endif
 
 // <o> Additional RAM area

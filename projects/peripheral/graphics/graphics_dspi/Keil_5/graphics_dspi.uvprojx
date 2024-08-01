@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_projx.xsd">
+<?xml version="1.0" ?><Project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="project_projx.xsd">
 
   <SchemaVersion>2.1</SchemaVersion>
 
@@ -18,29 +17,29 @@
           <Vendor>ARM</Vendor>
           <PackID>ARM.CMSIS.5.5.1</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
-          <Cpu>IROM(0x00000000,0x80000) IRAM(0x20000000,0x20000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ESEL ELITTLE</Cpu>
-          <FlashUtilSpec></FlashUtilSpec>
-          <StartupFile></StartupFile>
+          <Cpu>IROM(0x00000000,0x80000) IRAM(0x20000000,0x20000) CPUTYPE(&quot;Cortex-M4&quot;) FPU2 CLOCK(12000000) ESEL ELITTLE</Cpu>
+          <FlashUtilSpec/>
+          <StartupFile/>
           <FlashDriverDll>UL2CM3(-S0 -C0 -P0 -FD20000000 -FC1000 -FN1 -FF0NEW_DEVICE -FS00 -FL080000 -FP0($$Device:ARMCM4_FP$Device\ARM\Flash\NEW_DEVICE.FLM))</FlashDriverDll>
           <DeviceId>0</DeviceId>
           <RegisterFile>$$Device:ARMCM4_FP$Device\ARM\ARMCM4\Include\ARMCM4_FP.h</RegisterFile>
-          <MemoryEnv></MemoryEnv>
-          <Cmp></Cmp>
-          <Asm></Asm>
-          <Linker></Linker>
-          <OHString></OHString>
-          <InfinionOptionDll></InfinionOptionDll>
-          <SLE66CMisc></SLE66CMisc>
-          <SLE66AMisc></SLE66AMisc>
-          <SLE66LinkerMisc></SLE66LinkerMisc>
+          <MemoryEnv/>
+          <Cmp/>
+          <Asm/>
+          <Linker/>
+          <OHString/>
+          <InfinionOptionDll/>
+          <SLE66CMisc/>
+          <SLE66AMisc/>
+          <SLE66LinkerMisc/>
           <SFDFile>$$Device:ARMCM4_FP$Device\ARM\SVD\ARMCM4.svd</SFDFile>
           <bCustSvd>0</bCustSvd>
           <UseEnv>0</UseEnv>
-          <BinPath></BinPath>
-          <IncludePath></IncludePath>
-          <LibPath></LibPath>
-          <RegisterFilePath></RegisterFilePath>
-          <DBRegisterFilePath></DBRegisterFilePath>
+          <BinPath/>
+          <IncludePath/>
+          <LibPath/>
+          <RegisterFilePath/>
+          <DBRegisterFilePath/>
           <TargetStatus>
             <Error>0</Error>
             <ExitCodeStop>0</ExitCodeStop>
@@ -62,8 +61,8 @@
           <BeforeCompile>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <UserProg1Name/>
+            <UserProg2Name/>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopU1X>0</nStopU1X>
@@ -72,8 +71,8 @@
           <BeforeMake>
             <RunUserProg1>0</RunUserProg1>
             <RunUserProg2>0</RunUserProg2>
-            <UserProg1Name></UserProg1Name>
-            <UserProg2Name></UserProg2Name>
+            <UserProg1Name/>
+            <UserProg2Name/>
             <UserProg1Dos16Mode>0</UserProg1Dos16Mode>
             <UserProg2Dos16Mode>0</UserProg2Dos16Mode>
             <nStopB1X>0</nStopB1X>
@@ -90,7 +89,7 @@
             <nStopA2X>0</nStopA2X>
           </AfterMake>
           <SelectedForBatchBuild>1</SelectedForBatchBuild>
-          <SVCSIdString></SVCSIdString>
+          <SVCSIdString/>
         </TargetCommonOption>
         <CommonProperty>
           <UseCPPCompiler>0</UseCPPCompiler>
@@ -104,8 +103,8 @@
           <AssembleAssemblyFile>0</AssembleAssemblyFile>
           <PublicsOnly>0</PublicsOnly>
           <StopOnExitCode>3</StopOnExitCode>
-          <CustomArgument></CustomArgument>
-          <IncludeLibraryModules></IncludeLibraryModules>
+          <CustomArgument/>
+          <IncludeLibraryModules/>
           <ComprImg>1</ComprImg>
         </CommonProperty>
         <DllOption>
@@ -132,17 +131,17 @@
             <UseTargetDll>1</UseTargetDll>
             <UseExternalTool>0</UseExternalTool>
             <RunIndependent>0</RunIndependent>
-            <UpdateFlashBeforeDebugging>0</UpdateFlashBeforeDebugging>
+            <UpdateFlashBeforeDebugging>1</UpdateFlashBeforeDebugging>
             <Capability>1</Capability>
             <DriverSelection>4096</DriverSelection>
           </Flash1>
           <bUseTDR>1</bUseTDR>
           <Flash2>BIN\UL2CM3.DLL</Flash2>
-          <Flash3>"" ()</Flash3>
-          <Flash4></Flash4>
-          <pFcarmOut></pFcarmOut>
-          <pFcarmGrp></pFcarmGrp>
-          <pFcArmRoot></pFcArmRoot>
+          <Flash3>&quot;&quot; ()</Flash3>
+          <Flash4/>
+          <pFcarmOut/>
+          <pFcarmGrp/>
+          <pFcArmRoot/>
           <FcArmLst>0</FcArmLst>
         </Utilities>
         <TargetArmAds>
@@ -174,8 +173,8 @@
             <AdsLsxf>1</AdsLsxf>
             <RvctClst>0</RvctClst>
             <GenPPlst>0</GenPPlst>
-            <AdsCpuType>"Cortex-M4"</AdsCpuType>
-            <RvctDeviceName></RvctDeviceName>
+            <AdsCpuType>&quot;Cortex-M4&quot;</AdsCpuType>
+            <RvctDeviceName/>
             <mOS>0</mOS>
             <uocRom>0</uocRom>
             <uocRam>0</uocRam>
@@ -308,7 +307,7 @@
                 <Size>0x0</Size>
               </OCR_RVCT10>
             </OnChipMemories>
-            <RvctStartVector></RvctStartVector>
+            <RvctStartVector/>
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
@@ -335,10 +334,10 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls></MiscControls>
+              <MiscControls/>
               <Define>ENV_USE_FREERTOS,DRIVER_TEST</Define>
-              <Undefine></Undefine>
-              <IncludePath>..\Src\platform;..\Src\user;..\..\..\..\..\build\config;..\..\..\..\..\components\app_drivers\inc;..\..\..\..\..\components\boards;..\..\..\..\..\components\drivers_ext\gr55xx;..\..\..\..\..\components\drivers_ext\st7735;..\..\..\..\..\components\drivers_ext\vs1005;..\..\..\..\..\components\libraries\app_alarm;..\..\..\..\..\components\libraries\app_assert;..\..\..\..\..\components\libraries\app_error;..\..\..\..\..\components\libraries\app_key;..\..\..\..\..\components\libraries\app_log;..\..\..\..\..\components\libraries\app_queue;..\..\..\..\..\components\libraries\app_timer;..\..\..\..\..\components\libraries\at_cmd;..\..\..\..\..\components\libraries\bsp;..\..\..\..\..\components\libraries\dfu_master;..\..\..\..\..\components\libraries\dfu_port;..\..\..\..\..\components\libraries\gui;..\..\..\..\..\components\libraries\gui\gui_config;..\..\..\..\..\components\libraries\hal_flash;..\..\..\..\..\components\libraries\hci_uart;..\..\..\..\..\components\libraries\pmu_calibration;..\..\..\..\..\components\libraries\ring_buffer;..\..\..\..\..\components\libraries\sensorsim;..\..\..\..\..\components\libraries\utility;..\..\..\..\..\components\patch\ind;..\..\..\..\..\components\profiles\ams_c;..\..\..\..\..\components\profiles\ancs_c;..\..\..\..\..\components\profiles\ans;..\..\..\..\..\components\profiles\ans_c;..\..\..\..\..\components\profiles\bas;..\..\..\..\..\components\profiles\bas_c;..\..\..\..\..\components\profiles\bcs;..\..\..\..\..\components\profiles\bps;..\..\..\..\..\components\profiles\common;..\..\..\..\..\components\profiles\cscs;..\..\..\..\..\components\profiles\cts;..\..\..\..\..\components\profiles\cts_c;..\..\..\..\..\components\profiles\dis;..\..\..\..\..\components\profiles\dis_c;..\..\..\..\..\components\profiles\gls;..\..\..\..\..\components\profiles\gus;..\..\..\..\..\components\profiles\gus_c;..\..\..\..\..\components\profiles\hids;..\..\..\..\..\components\profiles\hrrcps;..\..\..\..\..\components\profiles\hrs;..\..\..\..\..\components\profiles\hrs_c;..\..\..\..\..\components\profiles\hts;..\..\..\..\..\components\profiles\ias;..\..\..\..\..\components\profiles\lls;..\..\..\..\..\components\profiles\ndcs;..\..\..\..\..\components\profiles\otas;..\..\..\..\..\components\profiles\otas_c;..\..\..\..\..\components\profiles\pass;..\..\..\..\..\components\profiles\pass_c;..\..\..\..\..\components\profiles\pcs;..\..\..\..\..\components\profiles\rscs;..\..\..\..\..\components\profiles\rscs_c;..\..\..\..\..\components\profiles\rtus;..\..\..\..\..\components\profiles\sample;..\..\..\..\..\components\profiles\ths;..\..\..\..\..\components\profiles\ths_c;..\..\..\..\..\components\profiles\thscps;..\..\..\..\..\components\profiles\tps;..\..\..\..\..\components\profiles\wechat;..\..\..\..\..\components\sdk\;..\..\..\..\..\drivers\inc;..\..\..\..\..\external\freertos\include;..\..\..\..\..\external\freertos\portable\RVDS\ARM_CM4F;..\..\..\..\..\external\segger_rtt;..\..\..\..\..\components\drivers_ext\graphics_dc;..\..\..\..\..\components\graphics\gfx\common\;..\..\..\..\..\components\graphics\gfx\common\mem;..\..\..\..\..\components\graphics\gfx\configure;..\..\..\..\..\components\graphics\gfx\include;..\..\..\..\..\components\graphics\gfx\include\tsi;..\..\..\..\..\components\graphics\gfx\include\tsi\common;..\..\..\..\..\components\graphics\gfx\include\tsi\NemaDC;..\..\..\..\..\components\graphics\gfx\include\tsi\NemaGFX;..\..\..\..\..\components\graphics\gfx\NemaDC;..\..\..\..\..\components\graphics\gfx\NemaGFX;..\..\..\..\..\components\graphics\gfx\porting;..\Common;..\Src\user_task;..\Src\user\;..\Src\application\;..\Src\application\image;..\..\..\..\..\platform\include;..\..\..\..\..\platform\soc\include;..\..\..\..\..\platform\arch\arm\cortex-m\cmsis\core\include;..\..\..\..\..\platform\soc\linker\keil;..\Src\config;..\..\..\..\..\drivers\inc\hal;..\..\..\..\..\platform\boards;..\..\..\..\..\components\drivers_ext\dspi_device;..\..\..\..\..\components\drivers_ext\qspi_device</IncludePath>
+              <Undefine/>
+              <IncludePath>..\Src\platform;..\Src\user;..\Src\config;..\..\..\..\..\components\app_drivers\inc;..\..\..\..\..\components\boards;..\..\..\..\..\components\drivers_ext\gr55xx;..\..\..\..\..\components\drivers_ext\st7735;..\..\..\..\..\components\drivers_ext\vs1005;..\..\..\..\..\components\libraries\app_alarm;..\..\..\..\..\components\libraries\app_assert;..\..\..\..\..\components\libraries\app_error;..\..\..\..\..\components\libraries\app_key;..\..\..\..\..\components\libraries\app_log;..\..\..\..\..\components\libraries\app_queue;..\..\..\..\..\components\libraries\app_timer;..\..\..\..\..\components\libraries\at_cmd;..\..\..\..\..\components\libraries\bsp;..\..\..\..\..\components\libraries\dfu_master;..\..\..\..\..\components\libraries\dfu_port;..\..\..\..\..\components\libraries\gui;..\..\..\..\..\components\libraries\gui\gui_config;..\..\..\..\..\components\libraries\hal_flash;..\..\..\..\..\components\libraries\hci_uart;..\..\..\..\..\components\libraries\pmu_calibration;..\..\..\..\..\components\libraries\ring_buffer;..\..\..\..\..\components\libraries\sensorsim;..\..\..\..\..\components\libraries\utility;..\..\..\..\..\components\patch\ind;..\..\..\..\..\components\profiles\ams_c;..\..\..\..\..\components\profiles\ancs_c;..\..\..\..\..\components\profiles\ans;..\..\..\..\..\components\profiles\ans_c;..\..\..\..\..\components\profiles\bas;..\..\..\..\..\components\profiles\bas_c;..\..\..\..\..\components\profiles\bcs;..\..\..\..\..\components\profiles\bps;..\..\..\..\..\components\profiles\common;..\..\..\..\..\components\profiles\cscs;..\..\..\..\..\components\profiles\cts;..\..\..\..\..\components\profiles\cts_c;..\..\..\..\..\components\profiles\dis;..\..\..\..\..\components\profiles\dis_c;..\..\..\..\..\components\profiles\gls;..\..\..\..\..\components\profiles\gus;..\..\..\..\..\components\profiles\gus_c;..\..\..\..\..\components\profiles\hids;..\..\..\..\..\components\profiles\hrrcps;..\..\..\..\..\components\profiles\hrs;..\..\..\..\..\components\profiles\hrs_c;..\..\..\..\..\components\profiles\hts;..\..\..\..\..\components\profiles\ias;..\..\..\..\..\components\profiles\lls;..\..\..\..\..\components\profiles\ndcs;..\..\..\..\..\components\profiles\otas;..\..\..\..\..\components\profiles\otas_c;..\..\..\..\..\components\profiles\pass;..\..\..\..\..\components\profiles\pass_c;..\..\..\..\..\components\profiles\pcs;..\..\..\..\..\components\profiles\rscs;..\..\..\..\..\components\profiles\rscs_c;..\..\..\..\..\components\profiles\rtus;..\..\..\..\..\components\profiles\sample;..\..\..\..\..\components\profiles\ths;..\..\..\..\..\components\profiles\ths_c;..\..\..\..\..\components\profiles\thscps;..\..\..\..\..\components\profiles\tps;..\..\..\..\..\components\profiles\wechat;..\..\..\..\..\components\sdk\;..\..\..\..\..\drivers\inc;..\..\..\..\..\external\freertos\include;..\..\..\..\..\external\freertos\portable\RVDS\ARM_CM4F;..\..\..\..\..\external\segger_rtt;..\..\..\..\..\components\drivers_ext\graphics_dc;..\..\..\..\..\components\graphics\gfx\common\;..\..\..\..\..\components\graphics\gfx\common\mem;..\..\..\..\..\components\graphics\gfx\configure;..\..\..\..\..\components\graphics\gfx\include;..\..\..\..\..\components\graphics\gfx\include\tsi;..\..\..\..\..\components\graphics\gfx\include\tsi\common;..\..\..\..\..\components\graphics\gfx\include\tsi\NemaDC;..\..\..\..\..\components\graphics\gfx\include\tsi\NemaGFX;..\..\..\..\..\components\graphics\gfx\NemaDC;..\..\..\..\..\components\graphics\gfx\NemaGFX;..\..\..\..\..\components\graphics\gfx\porting;..\Common;..\Src\user_task;..\Src\user\;..\Src\application\;..\Src\application\image;..\..\..\..\..\platform\include;..\..\..\..\..\platform\soc\include;..\..\..\..\..\platform\arch\arm\cortex-m\cmsis\core\include;..\..\..\..\..\platform\soc\linker\keil;..\Src\config;..\..\..\..\..\drivers\inc\hal;..\..\..\..\..\platform\boards;..\..\..\..\..\components\drivers_ext\dspi_device;..\..\..\..\..\components\drivers_ext\qspi_device</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -353,10 +352,10 @@
             <useXO>0</useXO>
             <uClangAs>0</uClangAs>
             <VariousControls>
-              <MiscControls></MiscControls>
-              <Define></Define>
-              <Undefine></Undefine>
-              <IncludePath></IncludePath>
+              <MiscControls/>
+              <Define/>
+              <Undefine/>
+              <IncludePath/>
             </VariousControls>
           </Aads>
           <LDads>
@@ -368,13 +367,13 @@
             <useFile>0</useFile>
             <TextAddressRange>0x00000000</TextAddressRange>
             <DataAddressRange>0x00060000</DataAddressRange>
-            <pXoBase></pXoBase>
+            <pXoBase/>
             <ScatterFile>..\..\..\..\..\platform\soc\linker\keil\flash_scatter_common.sct</ScatterFile>
-            <IncludeLibs></IncludeLibs>
-            <IncludeLibsPath></IncludeLibsPath>
+            <IncludeLibs/>
+            <IncludeLibsPath/>
             <Misc>..\..\..\..\..\platform\soc\linker\keil\rom_symbol.txt</Misc>
-            <LinkerInputFile></LinkerInputFile>
-            <DisabledWarnings></DisabledWarnings>
+            <LinkerInputFile/>
+            <DisabledWarnings/>
           </LDads>
         </TargetArmAds>
       </TargetOption>
@@ -613,9 +612,9 @@
           <GroupName>user_config</GroupName>
           <Files>
             <File>
-              <FileName>..\..\..\..\..\build\config\custom_config.h</FileName>
+              <FileName>..\Src\config\custom_config.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\..\..\..\..\..\build\config\custom_config.h</FilePath>
+              <FilePath>.\..\Src\config\custom_config.h</FilePath>
             </File>
           </Files>
         </Group>

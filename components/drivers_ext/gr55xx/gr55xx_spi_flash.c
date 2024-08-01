@@ -68,30 +68,12 @@
 #if (APP_DRIVER_CHIP_TYPE != APP_DRIVER_GR5332X)
 #define QSPI_CLOCK_PRESCALER             8u                     /* The QSPI CLOCK Freq = Peripheral CLK/QSPI_CLOCK_PRESCALER */
 #define QSPI_WAIT_TIMEOUT_MS             1500u                  /* default time(ms) for     wait operation */
-#define QSPI_ID                          APP_QSPI_ID_0
 #define QSPI_TIMING_MODE                 QSPI_CLOCK_MODE_0
 #endif
 
 /*****************************************
  * CHANGE FOLLOWING SETTINGS CAREFULLY !
  *****************************************/
-#if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5526X) || (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5525X)
-#if QSPI_ID == APP_QSPI_ID_0
-    #define QSPI_USED_DMA                DMA0
-    #define QSPI_USED_DMA_CH             DMA_Channel0
-#elif QSPI_ID == APP_QSPI_ID_1
-    #define QSPI_USED_DMA                DMA0
-    #define QSPI_USED_DMA_CH             DMA_Channel1
-#else
-    #define QSPI_USED_DMA                DMA1
-    #define QSPI_USED_DMA_CH             DMA_Channel0
-#endif
-#endif
-#if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR551X)
-    #define QSPI_USED_DMA                DMA
-    #define QSPI_USED_DMA_CH             DMA_Channel7
-#endif
-
 #if QSPI_CLOCK_PRESCALER == 2u
     #define QSPI_RX_SAMPLE_DELAY         1u
 #else
@@ -99,6 +81,7 @@
 #endif
 
 #define FLASH_SIZE_16M                   0x1000000
+
 /*
  * LOCAL VARIABLE DEFINITIONS
  *****************************************************************************************
@@ -657,9 +640,12 @@ uint32_t spi_flash_init(flash_init_t *p_flash_init)
 
     if (FLASH_SPIM_ID == p_flash_init->spi_type)
     {
-       if(p_flash_init->is_high_freq) {
+        if (p_flash_init->is_high_freq)
+        {
             spim_params.init.baudrate_prescaler = SSI_HIGH_FREQ_CLOCK_PRESCALER;
-        } else {
+        }
+        else
+        {
             spim_params.init.baudrate_prescaler = SSI_LOW_FREQ_CLOCK_PRESCALER;
         }
 
@@ -707,24 +693,49 @@ uint32_t spi_flash_init(flash_init_t *p_flash_init)
 #endif
     )
     {
-        if(FLASH_QSPI_ID0 == p_flash_init->spi_type){
-            g_qspi_ctl.qspi_id = APP_QSPI_ID_0;
-        } else if(FLASH_QSPI_ID1 == p_flash_init->spi_type){
-            g_qspi_ctl.qspi_id = APP_QSPI_ID_1;
 #if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5526X) || (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5525X)
-        } else {
-            g_qspi_ctl.qspi_id = APP_QSPI_ID_2;
-#endif
+        if (FLASH_QSPI_ID0 == p_flash_init->spi_type)
+        {
+            g_qspi_ctl.qspi_id = APP_QSPI_ID_0;
+            qspi_params.dma_cfg.dma_instance = DMA0;
+            qspi_params.dma_cfg.dma_channel = DMA_Channel0;
         }
+        else if (FLASH_QSPI_ID1 == p_flash_init->spi_type)
+        {
+            g_qspi_ctl.qspi_id = APP_QSPI_ID_1;
+            qspi_params.dma_cfg.dma_instance = DMA0;
+            qspi_params.dma_cfg.dma_channel = DMA_Channel1;
+        }
+        else
+        {
+            g_qspi_ctl.qspi_id = APP_QSPI_ID_2;
+            qspi_params.dma_cfg.dma_instance = DMA1;
+            qspi_params.dma_cfg.dma_channel = DMA_Channel0;
+        }
+#else
+        if (FLASH_QSPI_ID0 == p_flash_init->spi_type)
+        {
+            g_qspi_ctl.qspi_id = APP_QSPI_ID_0;
+        }
+        else if (FLASH_QSPI_ID1 == p_flash_init->spi_type)
+        {
+            g_qspi_ctl.qspi_id = APP_QSPI_ID_1;
+        }
+        qspi_params.dma_cfg.dma_instance = DMA;
+        qspi_params.dma_cfg.dma_channel = DMA_Channel7;
+#endif
 
-        if(p_flash_init->is_high_freq) {
+        if (p_flash_init->is_high_freq)
+        {
             qspi_params.init.clock_prescaler = SSI_HIGH_FREQ_CLOCK_PRESCALER;
-        } else {
+        }
+        else
+        {
             qspi_params.init.clock_prescaler = SSI_LOW_FREQ_CLOCK_PRESCALER;
         }
 
         qspi_params.init.clock_mode      = QSPI_TIMING_MODE;
-        if(qspi_params.init.clock_prescaler == 2)
+        if (qspi_params.init.clock_prescaler == 2)
         {
             qspi_params.init.rx_sample_delay = 1;
         }
@@ -771,9 +782,6 @@ uint32_t spi_flash_init(flash_init_t *p_flash_init)
         qspi_params.pin_cfg.io_3.pull      = APP_IO_PULLUP;
         qspi_params.pin_cfg.io_3.enable    = APP_QSPI_PIN_ENABLE;
 
-        qspi_params.dma_cfg.dma_instance = QSPI_USED_DMA;
-        qspi_params.dma_cfg.dma_channel = QSPI_USED_DMA_CH;
-
         app_qspi_dma_deinit(g_qspi_ctl.qspi_id);
         app_qspi_deinit(g_qspi_ctl.qspi_id);
         ret = app_qspi_init(&qspi_params, app_qspi_callback);
@@ -818,7 +826,7 @@ uint32_t spi_flash_init(flash_init_t *p_flash_init)
 #else
     g_flash_size = p_flash_init->spi_flash_addr_size;
 #endif
-    if(g_flash_size > FLASH_SIZE_16M)
+    if (g_flash_size > FLASH_SIZE_16M)
     {
         if (FLASH_SPIM_ID == p_flash_init->spi_type)
         {
@@ -909,9 +917,12 @@ uint32_t spi_flash_write(uint32_t address, uint8_t *buffer, uint32_t nbytes)
 #if (APP_DRIVER_CHIP_TYPE != APP_DRIVER_GR5332X)
         else
         {
-            if(g_flash_init.is_dual_line) {
+            if (g_flash_init.is_dual_line)
+            {
                 count = qspi_flash_dual_write(address, buffer, write_size);
-            } else {
+            }
+            else
+            {
                 count = qspi_flash_write(address, buffer, write_size);
             }
         }
@@ -939,9 +950,12 @@ uint32_t spi_flash_read(uint32_t address, uint8_t *buffer, uint32_t nbytes)
 #if (APP_DRIVER_CHIP_TYPE != APP_DRIVER_GR5332X)
     else
     {
-        if(g_flash_init.is_dual_line) {
+        if (g_flash_init.is_dual_line)
+        {
             count = qspi_flash_dual_read(address, buffer, nbytes);
-        } else {
+        }
+        else
+        {
             count = qspi_flash_read(address, buffer, nbytes);
         }
     }

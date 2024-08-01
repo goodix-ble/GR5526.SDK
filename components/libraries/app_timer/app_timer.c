@@ -175,10 +175,10 @@ void SLPTIMER_IRQHandler(void)
  */
 void hal_pwr_sleep_timer_elapsed_callback(void)
 {
+    APP_TIMER_LOCK();
     app_timer_t *p_curr_node = app_timer_running_queue_remove(NULL);
 
     APP_ASSERT_CHECK(p_curr_node);
-
     s_app_timer_info.apptimer_total_us = p_curr_node->next_shot_time;
     if (s_app_timer_info.apptimer_total_us >= APP_TIMER_DELAY_US_MAX)
     {
@@ -205,6 +205,8 @@ void hal_pwr_sleep_timer_elapsed_callback(void)
         p_curr_node->next_shot_time = s_app_timer_info.apptimer_total_us + p_curr_node->original_delay;
         app_timer_running_queue_insert(p_curr_node);
     }
+
+    APP_TIMER_UNLOCK();
 
 #if APP_TIMER_TRIGGER_WINDOW_ENABLE
     app_timer_running_queue_trigger_window_mark();
@@ -344,6 +346,17 @@ sdk_err_t app_timer_delete(app_timer_id_t *p_timer_id)
     return SDK_SUCCESS;
 }
 
+sdk_err_t app_timer_deinit(void)
+{
+    if (app_timer_get_status() == RUN)
+    {
+        low_level_timer_stop();
+        NVIC_ClearPendingIRQ(SLPTIMER_IRQn);
+        NVIC_DisableIRQ(SLPTIMER_IRQn);
+    }
+    return SDK_SUCCESS;
+}
+
 uint8_t app_timer_get_status(void)
 {
     uint8_t status = (uint8_t)STOP;
@@ -386,6 +399,11 @@ sdk_err_t app_timer_create(app_timer_id_t *p_timer_id, app_timer_type_t mode, ap
     if ((NULL == p_timer_id) || (NULL == callback))
     {
         return SDK_ERR_INVALID_PARAM;
+    }
+
+    if (RUN == p_timer_id->timer_node_status)
+    {
+        return SDK_ERR_BUSY;
     }
 
     APP_TIMER_LOCK();
@@ -537,12 +555,20 @@ static uint8_t app_timer_running_queue_trigger_window_mark(void)
             else
             {
                 app_timer_t **pp_trigger_window_one_shot_node_tail = &s_app_timer_info.p_within_window_one_shot_node_hd;
-                while (*pp_trigger_window_one_shot_node_tail)
-                {
-                    pp_trigger_window_one_shot_node_tail = &(*pp_trigger_window_one_shot_node_tail)->p_next;
-                }
                 p_triggered_node->p_next = NULL;
-                (*pp_trigger_window_one_shot_node_tail)->p_next = p_triggered_node;
+
+                if (NULL == *pp_trigger_window_one_shot_node_tail)
+                {
+                    *pp_trigger_window_one_shot_node_tail = p_triggered_node;
+                }
+                else
+                {
+                    while (*pp_trigger_window_one_shot_node_tail)
+                    {
+                        pp_trigger_window_one_shot_node_tail = &(*pp_trigger_window_one_shot_node_tail)->p_next;
+                    }
+                    *pp_trigger_window_one_shot_node_tail = p_triggered_node;
+                }
             }
         }
         else

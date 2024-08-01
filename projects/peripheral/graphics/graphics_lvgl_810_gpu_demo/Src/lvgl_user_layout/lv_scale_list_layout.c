@@ -450,7 +450,7 @@ lv_obj_t* lv_scale_list_layout_create(void){
     g_scale_list_view = lv_scale_list_create(NULL);
     lv_obj_clear_flag(g_scale_list_view, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_add_flag(g_scale_list_view, LV_OBJ_FLAG_EVENT_BUBBLE);
-    lv_obj_set_size(g_scale_list_view, 454, 454);
+    lv_obj_set_size(g_scale_list_view, SCREEN_WIDTH, SCREEN_HEIGHT);
     lv_obj_add_flag(g_scale_list_view, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_scroll_dir(g_scale_list_view, LV_DIR_NONE);
     lv_scale_list_add_item(g_scale_list_view, (uint32_t *)app_png_icon_addrs, (char *)str_infos, ICON_NUM);

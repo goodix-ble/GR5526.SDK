@@ -136,12 +136,12 @@ typedef struct _timer_handle
   * @brief HAL_TIMER Callback function definition
   */
 
-typedef struct _timer_base_callback
+typedef struct _hal_timer_base_callback
 {
     void (*timer_msp_init)(timer_handle_t *p_timer);                /**< TIMER init MSP callback            */
     void (*timer_msp_deinit)(timer_handle_t *p_timer);              /**< TIMER de-init MSP callback         */
     void (*timer_period_elapsed_callback)(timer_handle_t *p_timer); /**< TIMER period elapsed callback      */
-} timer_base_callback_t;
+} hal_timer_base_callback_t;
 
 /** @} */
 

@@ -239,7 +239,7 @@
 // <o>  Support maximum number of BLE Links <1-10>
 // <i>  Range: 1-10
 #ifndef CFG_MAX_CONNECTIONS
-#define CFG_MAX_CONNECTIONS      5
+#define CFG_MAX_CONNECTIONS      1
 #endif
 
 // <o>  Support maximum number of BLE Legacy/Extended Advertisings <0-5>
@@ -334,6 +334,13 @@
 #define SECURITY_CFG_VAL         0
 #endif
 // </h>
+
+// <o>  Support ranging
+// <0=> NOT SUPPORT
+// <1=> SUPPORT
+#ifndef CFG_RANGING_SUPPORT
+#define CFG_RANGING_SUPPORT             0
+#endif
 
 // <<< end of configuration section >>>
 #endif //__CUSTOM_CONFIG_H__

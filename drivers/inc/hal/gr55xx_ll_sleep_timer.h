@@ -171,7 +171,7 @@ __STATIC_INLINE uint32_t ll_sleep_timer_get_value(void)
   *
   * @retval 32 bit sleep Timer Count Value
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_sleep_timer_get_read_value(void)
+__STATIC_FORCEINLINE uint32_t ll_sleep_timer_get_read_value(void)
 {
     return READ_REG(SLP_TIMER->TIMER_R);
 }

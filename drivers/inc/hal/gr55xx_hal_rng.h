@@ -152,12 +152,12 @@ typedef struct _rng_handle
   * @brief HAL_RNG Callback function definition
   */
 
-typedef struct _rng_callback
+typedef struct _hal_rng_callback
 {
     void (*rng_msp_init)(rng_handle_t *p_rng);                                  /**< RNG init MSP callback      */
     void (*rng_msp_deinit)(rng_handle_t *p_rng);                                /**< RNG de-init MSP callback   */
     void (*rng_ready_data_callback)(rng_handle_t *p_rng, uint32_t random32bit); /**< RNG data ready callback    */
-} rng_callback_t;
+} hal_rng_callback_t;
 
 /** @} */
 

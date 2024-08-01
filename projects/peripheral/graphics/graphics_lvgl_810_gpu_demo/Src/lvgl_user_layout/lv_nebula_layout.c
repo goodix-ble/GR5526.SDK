@@ -341,7 +341,7 @@ lv_obj_t* lv_nebula_layout_create(void){
     g_nebula_view = lv_nebula_create(NULL);
     lv_obj_clear_flag(g_nebula_view, LV_OBJ_FLAG_SCROLLABLE);
     lv_obj_add_flag(g_nebula_view, LV_OBJ_FLAG_EVENT_BUBBLE);
-    lv_obj_set_size(g_nebula_view, 454, 454);
+    lv_obj_set_size(g_nebula_view, DISP_HOR_RES, DISP_VER_RES);
     lv_obj_add_flag(g_nebula_view, LV_OBJ_FLAG_CLICKABLE);
     lv_obj_set_scroll_dir(g_nebula_view, LV_DIR_NONE);
     lv_obj_add_event_cb(g_nebula_view, scroll_event_cb, LV_EVENT_PRESSED, NULL);

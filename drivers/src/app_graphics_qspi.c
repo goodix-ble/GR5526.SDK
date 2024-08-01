@@ -971,7 +971,7 @@ bool app_qspi_async_veri_draw_screen(app_qspi_id_t screen_id,
     memset(&s_dma_llp_block[0], 0, sizeof(dma_block_config_t) * (p_cur_scroll->frame_draw_lines + 1));
 
     for(j = 0; j < p_cur_scroll->frame_draw_lines; j++) {
-        s_dma_llp_block[j].src_address    = p_cur_scroll->frame_ahb_start_address + (p_cur_scroll->frame_offset_lines + j) * scrn_line_size ;
+        s_dma_llp_block[j].src_address    = p_cur_scroll->frame_ahb_start_address + j * scrn_line_size;
         s_dma_llp_block[j].dst_address    = 0;
         s_dma_llp_block[j].p_lli          = &s_dma_llp_block[j + 1];
         s_dma_llp_block[j].CTL_L          = s_async_write_screen_info.llp_cfg_ctrl_low;
@@ -1289,10 +1289,6 @@ uint16_t app_qspi_send_display_frame(app_qspi_id_t screen_id,
         return APP_DRV_ERR_POINTER_NULL;
     }
 
-    if(p_screen_info->scrn_pixel_width > p_screen_info->scrn_pixel_stride) {
-        return APP_DRV_ERR_INVALID_PARAM;
-    }
-
     dma_block_config_t * p_llp_block      = NULL;
     dma_block_config_t * p_llp_block_prev = NULL;
 
@@ -1336,17 +1332,11 @@ uint16_t app_qspi_send_display_frame(app_qspi_id_t screen_id,
     uint32_t stride_size = 0;
     const uint32_t total_beats = (p_screen_info->scrn_pixel_width * p_screen_info->scrn_pixel_height * p_screen_info->scrn_pixel_depth) >> shift_bit;
 
-    if(p_screen_info->scrn_pixel_width == p_screen_info->scrn_pixel_stride)
     {
         block_count = total_beats / 4092;
         block_left  = total_beats % 4092;
         block_beat  = 4092;
         stride_size = block_beat << shift_bit;
-    } else {
-        block_count = p_screen_info->scrn_pixel_height;
-        block_left  = 0;
-        block_beat  = (p_screen_info->scrn_pixel_width * p_screen_info->scrn_pixel_depth) >> shift_bit;
-        stride_size = p_screen_info->scrn_pixel_stride * p_screen_info->scrn_pixel_depth;
     }
 
     uint32_t src_addr = (uint32_t) p_buff;

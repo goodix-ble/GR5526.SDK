@@ -311,6 +311,30 @@ uint16_t app_dual_tim_io_crtl_config(app_dual_tim_id_t id, app_dual_tim_io_crtl_
  */
 dual_timer_handle_t *app_dual_tim_get_handle(app_dual_tim_id_t id);
 
+/**
+ ****************************************************************************************
+ * @brief  Set the APP DUAL TIM background reload value and current reload value
+ *         The background reload value contains the value from which the counter is to decrement.
+ *         This is the value used to reload the counter when Periodic mode is enabled, and the current count reaches 0.
+ * @param[in]  id:  A specific timer ID which can be APP_DUAL_TIM_ID_0 or APP_DUAL_TIM_ID_1
+ * @param[in]  reload_value: current reload value
+ * @param[in]  bg_reload_value: Background reload value
+ *
+ * @return Result of execution.
+ ****************************************************************************************
+ */
+uint16_t app_dual_tim_set_reload_value_bg_reload_value(app_dual_tim_id_t id, uint32_t reload_value,uint32_t bg_reload_value);
+
+/**
+ ****************************************************************************************
+ * @brief  Return the DUAL TIM counter.
+ *
+ * @param[in]  id: DUAL TIM Channel ID.
+ *
+ * @return DUAL TIM Counter.
+ ****************************************************************************************
+ */
+uint32_t app_dual_tim_get_counter_value(app_dual_tim_id_t id);
 /** @} */
 
 #endif

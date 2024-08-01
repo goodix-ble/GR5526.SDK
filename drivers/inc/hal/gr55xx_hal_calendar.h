@@ -160,12 +160,12 @@ typedef struct _calendar_handle
 /**
   * @brief HAL_CALENDAR Callback function definition
   */
-typedef struct _calendar_callback
+typedef struct _hal_calendar_callback
 {
     void (*calendar_alarm_callback)(calendar_handle_t *p_calendar);     /**< CALENDAR date count complete callback */
     void (*calendar_tick_callback)(calendar_handle_t *p_calendar);      /**< CALENDAR tick count complete callback */
     void (*calendar_overflow_callback)(calendar_handle_t *p_calendar);      /**< CALENDAR overflow callback */
-} calendar_callback_t;
+} hal_calendar_callback_t;
 
 /** @} */
 

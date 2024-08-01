@@ -73,10 +73,10 @@ extern "C" {
   * @brief HAL_GPIO Callback function definition
   */
 
-typedef struct _gpio_callback
+typedef struct _hal_gpio_callback
 {
     void (*gpio_callback)(gpio_regs_t *GPIOx, uint16_t gpio_pin);   /**< GPIO pin detection callback   */
-} gpio_callback_t;
+} hal_gpio_callback_t;
 
 /** @} */
 

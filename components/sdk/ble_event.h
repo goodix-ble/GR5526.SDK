@@ -105,6 +105,7 @@ enum  BLE_GAPM_EVTS
     BLE_GAPM_EVT_SYNC_STOP,                           /**< Periodic Advertising Synchronization Stop event. */
     BLE_GAPM_EVT_SYNC_LOST,                           /**< Periodic Advertising Synchronization Lost event. */
     BLE_GAPM_EVT_READ_RSLV_ADDR,                      /**< Read Resolvable Address event. */
+    BLE_GAPM_EVT_RSLV_ADDR_REPORT,                    /**< Resolvable Address report event. */
     BLE_GAPM_EVT_MAX,
 };
 

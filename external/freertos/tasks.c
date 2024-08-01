@@ -271,7 +271,7 @@ typedef struct tskTaskControlBlock       /* The old naming convention is used to
     #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
         StackType_t * pxEndOfStack; /*< Points to the highest valid address for the stack. */
     #endif
-    #if 1 /* SOC_GRxxx */
+    #if ( configUSE_GOODIX_EXTENSION_FEATURE == 1 ) /* SOC_GRxxx */
         UBaseType_t     uxSizeOfStack;      /* Used by fault trace */
     #endif
     #if ( portCRITICAL_NESTING_IN_TCB == 1 )
@@ -892,7 +892,7 @@ static void prvInitialiseNewTask( TaskFunction_t pxTaskCode,
         }
     #endif /* portSTACK_GROWTH */
 
-    #if 1 /* SOC_GRxxx */
+    #if ( configUSE_GOODIX_EXTENSION_FEATURE == 1 ) /* SOC_GRxxx */
         pxNewTCB->uxSizeOfStack = ulStackDepth;    /* Used by fault trace */
     #endif
 
@@ -3453,7 +3453,7 @@ void vTaskMissedYield( void )
 
 #endif /* configUSE_TRACE_FACILITY */
 
-#if 1 /* SOC_GRxxx */
+#if ( configUSE_GOODIX_EXTENSION_FEATURE == 1 ) /* SOC_GRxxx */
 volatile uint32_t s_ref_count_tick = 0;
 volatile uint32_t s_idle_sum_ticks = 0;
 volatile uint32_t s_cpu_use_percent = 0;
@@ -3474,7 +3474,8 @@ volatile uint32_t s_idle_end_tick =0;
         s_idle_sum_ticks = 0;\
     }\
 
-uint32_t sys_cpu_usage(void) {
+uint32_t sys_cpu_usage(void)
+{
     return s_cpu_use_percent;
 }
 #endif
@@ -3554,7 +3555,7 @@ static portTASK_FUNCTION( prvIdleTask, pvParameters )
             }
         #endif /* configUSE_IDLE_HOOK */
 
-       #if 1 /* SOC_GRxxx */
+       #if ( configUSE_GOODIX_EXTENSION_FEATURE == 1 ) /* SOC_GRxxx */
             {
                 extern void vPortEnterDeepSleep( TickType_t xExpectedIdleTime );
                 vTaskSuspendAll();
@@ -5479,7 +5480,7 @@ static void prvAddCurrentTaskToDelayedList( TickType_t xTicksToWait,
 
 #endif /* if ( configINCLUDE_FREERTOS_TASK_C_ADDITIONS_H == 1 ) */
 
-#if 1 /* SOC_GRxxx */
+#if ( configUSE_GOODIX_EXTENSION_FEATURE == 1 ) /* SOC_GRxxx */
     char *get_current_tcb_name()
     {
         //strcpy(pName, pxCurrentTCB->pcTaskName);

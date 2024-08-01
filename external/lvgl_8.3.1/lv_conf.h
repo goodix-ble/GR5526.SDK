@@ -798,12 +798,12 @@
  *==================*/
 
 #ifndef DISP_HOR_RES
-    #define DISP_HOR_RES                454u
-#endif
+#define DISP_HOR_RES                454u
+#endif // DISP_HOR_RES
 
 #ifndef DISP_VER_RES
-    #define DISP_VER_RES                454u
-#endif
+#define DISP_VER_RES                454u
+#endif // DISP_VER_RES
 
 #define DISP_PIXEL_DEPTH            2u
 

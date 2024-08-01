@@ -1114,6 +1114,9 @@
 <file>
 <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\dfu_port\dfu_port.c</name>
 </file>
+<file>
+<name>$PROJ_DIR$\..\..\..\..\..\components\sdk\ble.c</name>
+</file>
 </group>
 <group>
 <name>gr_profiles</name>

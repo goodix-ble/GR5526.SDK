@@ -75,7 +75,7 @@ void lv_port_disp_init(void)
 
     /*Set the resolution of the display*/
     disp_drv.hor_res = DISP_HOR_RES;
-    disp_drv.ver_res = DISP_HOR_RES;
+    disp_drv.ver_res = DISP_VER_RES;
     disp_drv.full_refresh = 1;
 
     /*Used to copy the buffer's content to the display*/
@@ -117,9 +117,9 @@ void lv_port_disp_debug_enable(bool enable) {
 
 
 uint32_t lv_port_get_fb_format(void) {
-#if DISP_PIXEL_DEPTH == 2
+#if LVGL_FRAMEBUFFER_SIZE == 16
     return HAL_GFX_RGB565;
-#elif DISP_PIXEL_DEPTH == 4
+#elif LVGL_FRAMEBUFFER_SIZE == 32
     return HAL_GFX_RGBA8888;
 #else
     #error "Not Support Now"

@@ -141,12 +141,12 @@ typedef struct _dual_timer_handle
 /**
   * @brief HAL_DUAL_TIMER Callback function definition
   */
-typedef struct _dual_timer_callback
+typedef struct _hal_dual_timer_callback
 {
     void (*dual_timer_msp_init)(dual_timer_handle_t *p_dual_timer);                 /**< DUAL_TIMER init MSP callback       */
     void (*dual_timer_msp_deinit)(dual_timer_handle_t *p_dual_timer);               /**< DUAL_TIMER de-init MSP callback    */
     void (*dual_timer_period_elapsed_callback)(dual_timer_handle_t *p_dual_timer);  /**< DUAL_TIMER period elapsed callback */
-} dual_timer_callback_t;
+} hal_dual_timer_callback_t;
 /** @} */
 
 /** @} */

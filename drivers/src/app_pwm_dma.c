@@ -184,7 +184,7 @@ uint16_t app_pwm_start_coding_with_dma(app_pwm_id_t id, uint32_t *p_data, uint16
     }
 
     if ((p_pwm_env[id] == NULL) ||
-        (p_pwm_env[id]->pwm_state == APP_PWM_INVALID) ||
+        (p_pwm_env[id]->dma_state == APP_PWM_DMA_INVALID) ||
         (p_pwm_env[id]->handle.p_dma == NULL))
     {
         return APP_DRV_ERR_NOT_INIT;

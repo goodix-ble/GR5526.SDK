@@ -42,6 +42,7 @@
 #include "app_pwr_mgmt.h"
 #include "gr_soc.h"
 #include <string.h>
+#include "app_drv.h"
 
 #ifdef HAL_I2S_MODULE_ENABLED
 
@@ -225,14 +226,16 @@ static app_i2s_id_t i2s_get_id(i2s_handle_t *p_i2s)
  */
 uint16_t app_i2s_init(app_i2s_params_t *p_params, app_i2s_evt_handler_t evt_handler)
 {
-    app_i2s_id_t id = p_params->id;
+    app_i2s_id_t id;
     app_drv_err_t app_err_code;
     hal_status_t  hal_err_code;
 
-    if (p_params == NULL)
+    if (NULL == p_params)
     {
         return APP_DRV_ERR_POINTER_NULL;
     }
+
+    id = p_params->id;
 
     if (id >= APP_I2S_ID_MAX)
     {
@@ -380,6 +383,11 @@ uint16_t app_i2s_receive_sync(app_i2s_id_t id, uint16_t *p_data, uint16_t size, 
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     i2s_wake_up(id);
 #endif
@@ -455,6 +463,11 @@ uint16_t app_i2s_transmit_receive_sync(app_i2s_id_t id,
     }
 
     if (p_tx_data == NULL || p_rx_data == NULL)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }
@@ -586,6 +599,11 @@ uint16_t app_i2s_transmit_sync(app_i2s_id_t id, uint16_t *p_data, uint16_t size,
     }
 
     if (p_data == NULL || size == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }

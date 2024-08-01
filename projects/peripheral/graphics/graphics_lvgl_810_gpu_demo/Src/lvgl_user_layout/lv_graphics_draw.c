@@ -29,7 +29,7 @@
  *      DEFINES
  *********************/
 #define MY_CLASS &lv_graphics_draw_class
-#define CANVAS_BUF_SIZE     (1*(454*454*2))
+#define CANVAS_BUF_SIZE     (1*(DISP_HOR_RES*DISP_VER_RES*2))
 
 /**********************
  *      TYPEDEFS
@@ -319,12 +319,12 @@ static void _free_canvas_draw_circles() {
     uint16_t hor_res = draw_buf->area.x2 - draw_buf->area.x1 + 1;
 
 
-    hal_gfx_set_clip(0, 0, 454, 454);
+    hal_gfx_set_clip(0, 0, DISP_HOR_RES, DISP_VER_RES);
     hal_gfx_bind_dst_tex((uint32_t)p_cache, ver_res, hor_res, HAL_GFX_RGB565, -1);
 
     if(step_count <= 1) {
         hal_gfx_set_blend_fill(HAL_GFX_BL_SIMPLE);
-        hal_gfx_fill_rect(0,0,454,454, 0xffffffff);
+        hal_gfx_fill_rect(0,0,DISP_HOR_RES, DISP_VER_RES, 0xffffffff);
         hal_gfx_cl_submit(cmd);
         hal_gfx_cl_wait(cmd);
     }
@@ -354,7 +354,7 @@ static void _free_canvas_draw_circles() {
 
 #if 1
 
-    hal_gfx_set_clip(0, 0, 454, 454);
+    hal_gfx_set_clip(0, 0, DISP_HOR_RES, DISP_VER_RES);
     hal_gfx_bind_dst_tex((uint32_t)draw_buf->buf_act, ver_res, hor_res, HAL_GFX_RGB565, -1);
     hal_gfx_bind_src_tex((uint32_t)p_cache, ver_res, hor_res, HAL_GFX_RGB565, -1, HAL_GFX_FILTER_PS);
     hal_gfx_set_blend_blit(HAL_GFX_BL_SRC);
@@ -431,7 +431,7 @@ static void _free_canvas_draw_perodic_arcs() {
 
     uint16_t ver_res = draw_buf->area.y2 - draw_buf->area.y1 + 1;
     uint16_t hor_res = draw_buf->area.x2 - draw_buf->area.x1 + 1;
-    hal_gfx_set_clip(0, 0, 454, 454);
+    hal_gfx_set_clip(0, 0, DISP_HOR_RES, DISP_VER_RES);
     hal_gfx_bind_dst_tex((uint32_t)draw_buf->buf_act, ver_res, hor_res, HAL_GFX_RGB565, -1);
     s_arc_level = (count/30);
     s_arc_level = s_arc_level % 6;
@@ -444,7 +444,7 @@ static void _free_canvas_draw_perodic_arcs() {
     uint32_t r_base =10;
 
     hal_gfx_set_blend_fill(HAL_GFX_BL_SIMPLE);
-    hal_gfx_fill_rect(0,0,454,454, 0xffffffff);
+    hal_gfx_fill_rect(0,0,DISP_HOR_RES, DISP_VER_RES, 0xffffffff);
     hal_gfx_cl_submit(cmd);
     hal_gfx_cl_wait(cmd);
 
@@ -493,11 +493,11 @@ static void _free_canvas_draw_stencil() {
     uint16_t ver_res = draw_buf->area.y2 - draw_buf->area.y1 + 1;
     uint16_t hor_res = draw_buf->area.x2 - draw_buf->area.x1 + 1;
     hal_gfx_bind_dst_tex((uint32_t)draw_buf->buf_act, ver_res, hor_res, HAL_GFX_RGB565, -1);
-    hal_gfx_set_clip(0, 0, 454, 454);
+    hal_gfx_set_clip(0, 0, DISP_HOR_RES, DISP_VER_RES);
 
     if(count < 40) {
         hal_gfx_set_blend_fill(HAL_GFX_BL_SRC);
-        hal_gfx_fill_rect(0,0,454,454, 0xffffffff);
+        hal_gfx_fill_rect(0,0,DISP_HOR_RES, DISP_VER_RES, 0xffffffff);
         hal_gfx_cl_submit(cmd);
         hal_gfx_cl_wait(cmd);
 
@@ -518,7 +518,7 @@ static void _free_canvas_draw_stencil() {
 
     } else {
         hal_gfx_set_blend_fill(HAL_GFX_BL_SRC);
-        hal_gfx_fill_rect(0,0,454,454, 0xffffffff);
+        hal_gfx_fill_rect(0,0,DISP_HOR_RES, DISP_VER_RES, 0xffffffff);
         hal_gfx_cl_submit(cmd);
         hal_gfx_cl_wait(cmd);
 
@@ -585,7 +585,7 @@ static void _innercube(int angle_x, int angle_y, int angle_z)
     //projection
     hal_gfx_matrix4x4_t mvp;
 
-    hal_gfx_mat4x4_load_perspective(mvp, FoV, (float)454/454, 0.2f, 100.f);
+    hal_gfx_mat4x4_load_perspective(mvp, FoV, (float)DISP_HOR_RES/DISP_VER_RES, 0.2f, 100.f);
 
     hal_gfx_matrix4x4_t proj;
     hal_gfx_mat4x4_load_identity(proj);
@@ -602,7 +602,7 @@ static void _innercube(int angle_x, int angle_y, int angle_z)
 
     for (i = 0; i < 24; i+=3) {
         float w = 1.f;
-        hal_gfx_mat4x4_obj_to_win_coords(mvp, 0.f, 0.f, 454, 454,
+        hal_gfx_mat4x4_obj_to_win_coords(mvp, 0.f, 0.f, DISP_HOR_RES, DISP_VER_RES,
                                       1.f, 100.f,
                                       &v[i  ], &v[i+1], &v[i+2], &w);
     }
@@ -668,7 +668,7 @@ static void _free_canvas_draw_incube_box() {
     uint16_t hor_res = draw_buf->area.x2 - draw_buf->area.x1 + 1;
     
     hal_gfx_bind_dst_tex((uint32_t)draw_buf->buf_act, ver_res, hor_res, HAL_GFX_RGB565, -1);
-    hal_gfx_set_clip(0, 0, 454, 454);
+    hal_gfx_set_clip(0, 0, DISP_HOR_RES, DISP_VER_RES);
     hal_gfx_clear(0);
     hal_gfx_cl_submit(cmd);
     hal_gfx_cl_wait(cmd);
@@ -835,8 +835,8 @@ static void _free_canvas_draw_jumping_ball() {
         is_prepared_shape   = true;
     }
 
-    hal_gfx_bind_dst_tex((uint32_t)draw_buf->buf_act, 454, 454, HAL_GFX_RGB565, -1);
-    hal_gfx_set_clip(0, 0, 454, 454);
+    hal_gfx_bind_dst_tex((uint32_t)draw_buf->buf_act, DISP_HOR_RES, DISP_VER_RES, HAL_GFX_RGB565, -1);
+    hal_gfx_set_clip(0, 0, DISP_HOR_RES, DISP_VER_RES);
     hal_gfx_clear(0);
     hal_gfx_set_blend_blit(HAL_GFX_BL_SRC);
 
@@ -879,8 +879,8 @@ static void _free_canvas_draw_tsc4_comp() {
 //    uint16_t ver_res = draw_buf->area.y2 - draw_buf->area.y1 + 1;
 //    uint16_t hor_res = draw_buf->area.x2 - draw_buf->area.x1 + 1;
 
-    hal_gfx_bind_dst_tex((uint32_t)draw_buf->buf_act, 454, 454, HAL_GFX_RGB565, -1);
-    hal_gfx_set_clip(0, 0, 454, 454);
+    hal_gfx_bind_dst_tex((uint32_t)draw_buf->buf_act, DISP_HOR_RES, DISP_VER_RES, HAL_GFX_RGB565, -1);
+    hal_gfx_set_clip(0, 0, DISP_HOR_RES, DISP_VER_RES);
     hal_gfx_clear(0);
     hal_gfx_set_blend_blit(HAL_GFX_BL_SRC);
 

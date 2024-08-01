@@ -7,6 +7,7 @@
 
 #include "grx_hal.h"
 #include "board_SK.h"
+#include "app_log.h"
 //--------------------------------------------------------------------+
 // MACRO CONSTANT TYPEDEF PROTYPES
 //--------------------------------------------------------------------+
@@ -52,31 +53,31 @@ int main(void)
 
     cdc_task();
   }
-
-  return 0;
 }
 
 //--------------------------------------------------------------------+
 // Device callbacks
 //--------------------------------------------------------------------+
-void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding)
+TU_ATTR_USED void tud_cdc_line_coding_cb(uint8_t itf, cdc_line_coding_t const* p_line_coding)
 {
+#if 0
     uint32_t bit_rate;
     uint8_t  stop_bits; ///< 0: 1 stop bit - 1: 1.5 stop bits - 2: 2 stop bits
     uint8_t  parity;    ///< 0: None - 1: Odd - 2: Even - 3: Mark - 4: Space
     uint8_t  data_bits; ///< can be 5, 6, 7, 8 or 16
+#endif
     printf("bit_rate: %d, stop_bits: %d, parity: %d, data_bits: %d \r\n",p_line_coding->bit_rate, p_line_coding->stop_bits, p_line_coding->parity, p_line_coding->data_bits);
 }
 
 
 // Invoked when device is mounted
-void tud_mount_cb(void)
+TU_ATTR_USED void tud_mount_cb(void)
 {
   blink_interval_ms = BLINK_MOUNTED;
 }
 
 // Invoked when device is unmounted
-void tud_umount_cb(void)
+TU_ATTR_USED void tud_umount_cb(void)
 {
   blink_interval_ms = BLINK_NOT_MOUNTED;
 }
@@ -84,14 +85,14 @@ void tud_umount_cb(void)
 // Invoked when usb bus is suspended
 // remote_wakeup_en : if host allow us  to perform remote wakeup
 // Within 7ms, device must draw an average of current less than 2.5 mA from bus
-void tud_suspend_cb(bool remote_wakeup_en)
+TU_ATTR_USED void tud_suspend_cb(bool remote_wakeup_en)
 {
   (void) remote_wakeup_en;
   blink_interval_ms = BLINK_SUSPENDED;
 }
 
 // Invoked when usb bus is resumed
-void tud_resume_cb(void)
+TU_ATTR_USED void tud_resume_cb(void)
 {
   blink_interval_ms = BLINK_MOUNTED;
 }
@@ -123,7 +124,7 @@ void cdc_task(void)
 }
 
 // Invoked when cdc when line state changed e.g connected/disconnected
-void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
+TU_ATTR_USED void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
 {
   (void) itf;
   (void) rts;
@@ -139,7 +140,7 @@ void tud_cdc_line_state_cb(uint8_t itf, bool dtr, bool rts)
 }
 
 // Invoked when CDC interface received data from host
-void tud_cdc_rx_cb(uint8_t itf)
+TU_ATTR_USED void tud_cdc_rx_cb(uint8_t itf)
 {
   (void) itf;
 }

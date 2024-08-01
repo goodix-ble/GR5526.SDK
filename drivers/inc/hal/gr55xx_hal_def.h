@@ -97,9 +97,9 @@ typedef enum
 
 /**
   * @brief  HAL max delay definition. Unit is millisecond.
-  *         40000ms is the max delay time in 96MHz system clock.
+  *         20000ms is the max delay time in 96MHz system clock.
   */
-#define HAL_MAX_DELAY                       (40000U)
+#define HAL_MAX_DELAY                       (20000U)
 
 /**
   * @brief  Timeout module init. This macro must be used in

@@ -559,7 +559,7 @@ __STATIC_INLINE void ll_aon_gpio_disable_xo_2mhz_output(void)
   *
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE uint32_t ll_aon_gpio_is_enabled_xo_2mhz_output(void)
+__STATIC_FORCEINLINE uint32_t ll_aon_gpio_is_enabled_xo_2mhz_output(void)
 {
     return (uint32_t)(READ_BITS(AON_CTL->XO_CTRL, AON_CTL_XO_CTRL_2MHZ_OUT) == AON_CTL_XO_CTRL_2MHZ_OUT);
 }
@@ -683,7 +683,7 @@ __STATIC_INLINE uint32_t ll_aon_gpio_read_output_port(void)
   *         @arg @ref LL_AON_GPIO_PIN_ALL
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_aon_gpio_set_output_pin(uint32_t pin_mask)
+__STATIC_FORCEINLINE void ll_aon_gpio_set_output_pin(uint32_t pin_mask)
 {
     SET_BITS(AON_IO->AON_PAD_CTRL1, (pin_mask << AON_IO_AON_PAD_CTRL1_OUT_VAL_POS) & AON_IO_AON_PAD_CTRL1_OUT_VAL);
 }
@@ -707,7 +707,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_aon_gpio_set_output_pin(uint32_t pin_ma
   *         @arg @ref LL_AON_GPIO_PIN_ALL
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_aon_gpio_reset_output_pin(uint32_t pin_mask)
+__STATIC_FORCEINLINE void ll_aon_gpio_reset_output_pin(uint32_t pin_mask)
 {
     CLEAR_BITS(AON_IO->AON_PAD_CTRL1, (pin_mask << AON_IO_AON_PAD_CTRL1_OUT_VAL_POS) & AON_IO_AON_PAD_CTRL1_OUT_VAL);
 }
@@ -731,7 +731,7 @@ SECTION_RAM_CODE __STATIC_INLINE void ll_aon_gpio_reset_output_pin(uint32_t pin_
   *         @arg @ref LL_AON_GPIO_PIN_ALL
   * @retval None
   */
-SECTION_RAM_CODE __STATIC_INLINE void ll_aon_gpio_toggle_pin(uint32_t pin_mask)
+__STATIC_FORCEINLINE void ll_aon_gpio_toggle_pin(uint32_t pin_mask)
 {
     WRITE_REG(AON_IO->AON_PAD_CTRL1, (READ_REG(AON_IO->AON_PAD_CTRL1)
         ^ ((pin_mask << AON_IO_AON_PAD_CTRL1_OUT_VAL_POS) & AON_IO_AON_PAD_CTRL1_OUT_VAL)));

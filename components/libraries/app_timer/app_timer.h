@@ -50,14 +50,14 @@
 #define app_timer_start(a, b, c)  app_timer_start_api(&a, b, c)
 #define app_timer_stop(a)         app_timer_stop_api(&a)
 
-/** @brief App timer version difine. */
+/** @brief App timer version define. */
 #define APP_TIMER_VERSION         0x0200
 
 /** @brief App timer assert enable define. */
 #define APP_TIMER_ASSERT_ENABLE   0
 
 /** @brief App timer trigger window enable define. */
-#define APP_TIMER_TRIGGER_WINDOW_ENABLE   0
+#define APP_TIMER_TRIGGER_WINDOW_ENABLE   1
 /** @} */
 
 /**
@@ -120,7 +120,7 @@ typedef app_timer_t* p_app_timer_id_t;
  * @param[in] mode:        timer trigger mode.
  * @param[in] callback:    Pointer to timer expire callback function
  *
- * @return the error code of this funciton
+ * @return the error code of this function
 
  * @note   After the function is executed, a new soft timer is added to the list and waits
  *         for execution. At this point, the user can operate the app_timer_start/app_timer_stop
@@ -172,6 +172,15 @@ sdk_err_t app_timer_delete(app_timer_id_t *p_timer_id);
  *****************************************************************************************
  */
 uint8_t app_timer_get_status(void);
+
+/**
+ *****************************************************************************************
+ * @brief  Stop all app timers. The all app timers are not expect to restore after calling
+ *         this API.
+ * @return the error code of this function
+ *****************************************************************************************
+ */
+sdk_err_t app_timer_deinit(void);
 
 #if APP_TIMER_TRIGGER_WINDOW_ENABLE
 /**

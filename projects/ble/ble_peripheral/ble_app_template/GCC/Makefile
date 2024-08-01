@@ -45,6 +45,7 @@ PRJ_C_SRC_FILES:=   \
 ../../../../../components/libraries/app_key/app_key_core.c  \
 ../../../../../components/libraries/app_error/cortex_backtrace.c  \
 ../../../../../components/libraries/fault_trace/fault_trace.c  \
+../../../../../components/sdk/ble.c  \
 ../../../../../components/profiles/common/ble_prf_utils.c  \
 ../../../../../external/segger_rtt/SEGGER_RTT.c  \
 ../Src/platform/user_periph_setup.c  \
@@ -269,9 +270,10 @@ mk_path :
 	mkdir -p  $(BUILD_OBJ)
 	mkdir -p  $(BUILD_LST)
 
-flash: $(BUILD)/$(MAKE_TARGET_APP).bin
+flash: $(BUILD)/$(MAKE_TARGET_NAME).bin
 	$(ECHO) "Writing $< to the GR55xx-SK board"
-	programer -t fw -p burn -i $(BUILD)/$(MAKE_TARGET_APP).bin
+	GR5xxx_console.exe eraseall 1 0
+	GR5xxx_console.exe program $(BUILD)/$(MAKE_TARGET_NAME).bin 'y' 0x200000 1024 1 0
 
 clean:
 	rm -rf $(BUILD)

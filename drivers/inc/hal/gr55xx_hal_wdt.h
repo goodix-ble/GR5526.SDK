@@ -121,12 +121,12 @@ typedef struct _wdt_handle
   * @brief HAL_WDT Callback function definition
   */
 
-typedef struct _wdt_callback
+typedef struct _hal_wdt_callback
 {
     void (*wdt_msp_init)(wdt_handle_t *p_wdt);                  /**< WDT init MSP callback              */
     void (*wdt_msp_deinit)(wdt_handle_t *p_wdt);                /**< WDT de-init MSP callback           */
     void (*wdt_period_elapsed_callback)(wdt_handle_t *p_wdt);   /**< WDT count complete callback        */
-} wdt_callback_t;
+} hal_wdt_callback_t;
 
 /** @} */
 

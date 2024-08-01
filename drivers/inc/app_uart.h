@@ -243,6 +243,7 @@ typedef struct
   */
 typedef struct
 {
+    //lint -e18 A symbol was declared in a typedef differently in two different modules is necessary
     uint8_t * tx_buf;      /**< Pointer to the TX buffer. */
     uint32_t  tx_buf_size; /**< Size of the TX buffer. */
 } app_uart_tx_buf_t;

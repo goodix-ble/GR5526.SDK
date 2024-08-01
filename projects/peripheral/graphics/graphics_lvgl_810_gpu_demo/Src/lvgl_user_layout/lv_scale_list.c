@@ -86,7 +86,7 @@ const lv_obj_class_t lv_scale_list_class = {
 #define ANGLE_CHANGE    0.47f
 #define CIRCLE_RADUIS   0.01745f
 // Estimated by if the clock dial select view be overriten
-#define SCALE_LIST_VIEW_SIZE     (5*(454*454*2))
+#define SCALE_LIST_VIEW_SIZE     (5*(SCREEN_WIDTH*SCREEN_HEIGHT*2))
 
 typedef struct 
 {
@@ -256,10 +256,10 @@ void gw_gpu_draw_progress(uint8_t progress, bool start)
     uint8_t  angle_step = 5;
     uint16_t ver_res = DISP_VER_RES;
     uint16_t hor_res = DISP_HOR_RES;
-    lv_area_t clip_area = {0, 0, ver_res-1, hor_res - 1};
+    lv_area_t clip_area = {0, 0, hor_res-1, ver_res - 1};
     lv_draw_arc_dsc_t arc_dsc;
     lv_draw_arc_dsc_init(&arc_dsc);
-    lv_point_t center = {227, 227};
+    lv_point_t center = {SCREEN_WIDTH >> 1, SCREEN_HEIGHT >> 1};
     uint16_t radius = 210;
     // uint16_t width = 6;
     uint16_t start_angle = 330;
@@ -675,8 +675,8 @@ void gw_scale_list_create(const lv_scale_list_t *view)
         s_scale_list_buf = app_graphics_mem_malloc(SCALE_LIST_VIEW_SIZE);
         // printf("list create: %08X\n", (uint32_t)s_scale_list_buf);
     }
-    ver_res = SCREEN_WIDTH;
-    hor_res = SCREEN_HEIGHT;
+    ver_res = SCREEN_HEIGHT;
+    hor_res = SCREEN_WIDTH;
     attr = (scale_list_attribute_t*)&view->attribute;// get attribute
 
     uint8_t item_count = 0;
@@ -698,7 +698,7 @@ void gw_scale_list_create(const lv_scale_list_t *view)
         static lv_disp_draw_buf_t pre_render_draw_buf;
         lv_disp_draw_buf_init(&pre_render_draw_buf, s_scale_list_buf, NULL, DISP_HOR_RES * DISP_VER_RES);
         disp->driver->draw_buf = &pre_render_draw_buf;
-        lv_area_t mask = {0, 0, 453, 453};
+        lv_area_t mask = {0, 0, SCREEN_WIDTH - 1, SCREEN_HEIGHT - 1};
         memcpy(&pre_render_draw_buf.area, &mask, sizeof(mask));
         lv_draw_label_dsc_t label_dsc;
         lv_draw_label_dsc_init(&label_dsc);
@@ -727,12 +727,12 @@ void gw_scale_list_create(const lv_scale_list_t *view)
         hal_gfx_cmdlist_t cmd = hal_gfx_cl_le_create();
         hal_gfx_cmdlist_t* cl = &cmd;
         hal_gfx_cl_bind_circular(cl);
-        lv_area_t area = {0, 0, 159, 49};
+        lv_area_t area = {0, 0, STR_X_SIZE - 1, STR_Y_SIZE - 1};
         // gw_color_fill_by_gpu(cache_buf_addr, init_color, ver_res, STR_Y_SIZE *2 * item_count);
         for(uint16_t i=0; i<item_count; i++)
         {
             //gw_set_buf_act_to_set(cache_buf_addr);
-            lv_disp_draw_buf_init(&pre_render_draw_buf, (void *)cache_buf_addr, NULL, DISP_HOR_RES * DISP_VER_RES);
+            lv_disp_draw_buf_init(&pre_render_draw_buf, (void *)cache_buf_addr, NULL, SCREEN_WIDTH * SCREEN_HEIGHT);
             memcpy(&pre_render_draw_buf.area, &mask, sizeof(mask));
             disp->driver->draw_buf = &pre_render_draw_buf;
             s_show_str = (char*)(attr->p_str_arrays + (CHAR_LENGTH*i));

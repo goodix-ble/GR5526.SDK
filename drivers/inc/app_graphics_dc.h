@@ -52,6 +52,10 @@
 #ifndef __APP_GRAPHICS_GRAPHICS_DC_H__
 #define __APP_GRAPHICS_GRAPHICS_DC_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #include "gr55xx.h"
 #include "app_io.h"
 #include "hal_gdc.h"
@@ -175,9 +179,8 @@ typedef enum {
     GDC_DATA_FORMAT_ARGB8888    = HAL_GDC_ARGB8888,  /**< FrameBuffer is ARGB8888, 32bit with Alpha */
     GDC_DATA_FORMAT_BGRA8888    = HAL_GDC_BGRA8888,  /**< FrameBuffer is BGRA8888, 32bit with Alpha */
     GDC_DATA_FORMAT_TSC4        = HAL_GDC_TSC4,      /**< FrameBuffer is RGB565 compressed by TSC4  */
-    GDC_DATA_FORMAT_TSC6        = HAL_GDC_TSC6,      /**< FrameBuffer is *888 compressed by TSC6    */
+    GDC_DATA_FORMAT_TSC6        = HAL_GDC_TSC6,      /**< FrameBuffer is *888 compressed by TSC6  */
     GDC_DATA_FORMAT_TSC6A       = HAL_GDC_TSC6A,     /**< FrameBuffer is *8888 compressed by TSC6A  */
-    GDC_DATA_FORMAT_RGB332      = HAL_GDC_RGB332,    /**< FrameBuffer is RGB332, 8bit               */
 } graphics_dc_data_format_e;
 
 
@@ -194,9 +197,6 @@ typedef enum {
     GDC_MIPICFG_DSPI_RGB888_OPT1    = MIPICFG_2RGB888_OPT0,     /**< Sent in DSPI Mode, Output format is RGB888 with option.1 */
     GDC_MIPICFG_QSPI_RGB565_OPT0    = MIPICFG_4RGB565_OPT0,     /**< Sent in QSPI Mode, Output format is RGB565 with option.0 */
     GDC_MIPICFG_QSPI_RGB888_OPT0    = MIPICFG_4RGB888_OPT0,     /**< Sent in QSPI Mode, Output format is RGB888 with option.0 */
-
-    GDC_MIPICFG_SPI_RGB332_OPT0     = MIPICFG_1RGB332_OPT0,
-
 } graphics_dc_mipi_format_e;
 
 
@@ -204,7 +204,6 @@ typedef enum {
   * @brief Define the Output pixel bits for DC
   */
 typedef enum {
-    GDC_OUT_PIXEL_BITS_08 =  8,                 /**< Output pixel  8 bits  */
     GDC_OUT_PIXEL_BITS_16 = 16,                 /**< Output pixel 16 bits  */
     GDC_OUT_PIXEL_BITS_24 = 24,                 /**< Output pixel 24 bits  */
     GDC_OUT_PIXEL_BITS_NOT_SUPPORT = 0xFF,      /**< Not support  */
@@ -215,8 +214,6 @@ typedef enum {
   */
 typedef enum {
     GDC_SPI_FRAME_TIMING_0  =  0x00,            /**< 8Bit CMD::24Bit ADDR::Ndata, All Sent in SPI  */
-    GDC_SPI_FRAME_TIMING_1,                     /**< 8Bit CMD::0Bit  ADDR::Ndata, All Sent in SPI-3 (9bit/Data)  */
-    GDC_SPI_FRAME_TIMING_2,                     /**< 8Bit CMD::0Bit  ADDR::Ndata, All Sent in SPI-4 (8bit/Data + DCX)  */
     GDC_DSPI_FRAME_TIMING_0,                    /**< 8Bit CMD Sent in SPI::NO ADDR::Ndata Sent in DSPI, with DCX */
     GDC_QSPI_FRAME_TIMING_0,                    /**< 8Bit CMD::24Bit ADDR Sent in SPI, All Data Sent in QSPI  */
     GDC_QSPI_FRAME_TIMING_1,                    /**< 8Bit CMD Sent in SPI, 24Bit ADDR and All data Sent in QSPI  */

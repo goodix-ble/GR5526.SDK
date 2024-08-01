@@ -264,10 +264,14 @@ static int usb_ep_write(struct _gr55xx_usb_ep *ep, struct _gr55xx_usb_request *r
     }
 
     maxpacket = ep->ep.maxpacket;
+    unsigned len = min(req->req.length - req->req.actual, maxpacket);
     count = usb_ep_fifo_write(idx, req, maxpacket);
-
-    /*MCU has write all data to IN FIFO, then inform USB controller */
-    hal_usb_ep_write_end(&g_usb_handle,(hal_usb_ep_t)idx);
+    if(!(((idx == 2) || (idx == 3)) && len == 64))
+    {
+        /*If len=64, EP2 and EP3 will auto inform USB controller by hardware. */
+        /*MCU has write all data to IN FIFO, then inform USB controller */
+        hal_usb_ep_write_end(&g_usb_handle,(hal_usb_ep_t)idx);
+    }
 
     if (count != maxpacket)
         is_last = 1;

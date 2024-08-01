@@ -35,6 +35,7 @@ PRJ_C_SRC_FILES:=   \
 ../../../../../drivers/src/app_uart.c  \
 ../../../../../drivers/src/app_spi.c  \
 ../../../../../drivers/src/app_uart_dma.c  \
+../../../../../drivers/src/app_rtc.c  \
 ../../../../../components/libraries/utility/utility.c  \
 ../../../../../components/libraries/sensorsim/sensorsim.c  \
 ../../../../../components/libraries/app_timer/app_timer.c  \
@@ -49,6 +50,7 @@ PRJ_C_SRC_FILES:=   \
 ../../../../../components/libraries/app_log/app_log_dump_port.c  \
 ../../../../../components/libraries/app_error/app_error.c  \
 ../../../../../components/libraries/app_assert/app_assert.c  \
+../../../../../components/sdk/ble.c  \
 ../../../../../components/profiles/common/ble_prf_utils.c  \
 ../../../../../components/profiles/bas/bas.c  \
 ../../../../../components/profiles/dis/dis.c  \
@@ -279,9 +281,10 @@ mk_path :
 	mkdir -p  $(BUILD_OBJ)
 	mkdir -p  $(BUILD_LST)
 
-flash: $(BUILD)/$(MAKE_TARGET_APP).bin
+flash: $(BUILD)/$(MAKE_TARGET_NAME).bin
 	$(ECHO) "Writing $< to the GR55xx-SK board"
-	programer -t fw -p burn -i $(BUILD)/$(MAKE_TARGET_APP).bin
+	GR5xxx_console.exe eraseall 1 0
+	GR5xxx_console.exe program $(BUILD)/$(MAKE_TARGET_NAME).bin 'y' 0x200000 1024 1 0
 
 clean:
 	rm -rf $(BUILD)

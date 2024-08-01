@@ -371,7 +371,7 @@ typedef struct {
   * @brief HAL_QSPI Callback function definition
   */
 
-typedef struct _qspi_callback
+typedef struct _hal_qspi_callback
 {
     void (*qspi_msp_init)(qspi_handle_t *p_qspi);                   /**< QSPI init MSP callback                 */
     void (*qspi_msp_deinit)(qspi_handle_t *p_qspi);                 /**< QSPI de-init MSP callback              */
@@ -379,7 +379,7 @@ typedef struct _qspi_callback
     void (*qspi_abort_cplt_callback)(qspi_handle_t *p_qspi);        /**< QSPI abort complete callback           */
     void (*qspi_rx_cplt_callback)(qspi_handle_t *p_qspi);           /**< QSPI rx transfer completed callback    */
     void (*qspi_tx_cplt_callback)(qspi_handle_t *p_qspi);           /**< QSPI tx transfer completed callback    */
-} qspi_callback_t;
+} hal_qspi_callback_t;
 
 /** @} */
 

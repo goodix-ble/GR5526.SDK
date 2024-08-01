@@ -114,7 +114,7 @@ typedef struct _pdm_handle
 /**
   * @brief HAL PDM Callback function definition
   */
-typedef struct _pdm_callback
+typedef struct _hal_pdm_callback
 {
     void (*pdm_msp_init)(pdm_handle_t *p_pdm);               /**< PDM init MSP callback      */
     void (*pdm_msp_deinit)(pdm_handle_t *p_pdm);             /**< PDM de-init MSP callback   */
@@ -123,7 +123,7 @@ typedef struct _pdm_callback
     void (*pdm_dma_cplt_callback)(pdm_handle_t *p_pdm);      /**< PDM dma completed callback  */
     void (*pdm_dma_blk_callback)(pdm_handle_t *p_pdm);       /**< PDM dma blocks completed callback   */
     void (*pdm_dma_error_callback)(pdm_handle_t *p_pdm);     /**< PDM error callback          */
-} pdm_callback_t;
+} hal_pdm_callback_t;
 /** @} */
 
 /** @defgroup  HAL_PDM_MACRO Defines

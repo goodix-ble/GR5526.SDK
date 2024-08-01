@@ -60,7 +60,7 @@ lv_obj_t* lv_widgets_test_view_create(void)
 
 
         _widgets_test_layout = lv_obj_create(NULL);
-        lv_obj_set_size(_widgets_test_layout, 454, 454);
+        lv_obj_set_size(_widgets_test_layout, DISP_HOR_RES, DISP_VER_RES);
         lv_obj_set_style_bg_color(_widgets_test_layout, lv_palette_main(LV_PALETTE_GREY), 0);
 
 

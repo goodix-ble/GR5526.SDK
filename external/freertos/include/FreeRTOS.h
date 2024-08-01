@@ -72,6 +72,10 @@
     #include <reent.h>
 #endif
 
+#ifndef configUSE_GOODIX_EXTENSION_FEATURE
+#define configUSE_GOODIX_EXTENSION_FEATURE     1
+#endif
+
 /*
  * Check all the required application specific macros have been defined.
  * These macros are application specific and (as downloaded) are defined
@@ -1173,6 +1177,9 @@ typedef struct xSTATIC_TCB
     uint8_t ucDummy7[ configMAX_TASK_NAME_LEN ];
     #if ( ( portSTACK_GROWTH > 0 ) || ( configRECORD_STACK_HIGH_ADDRESS == 1 ) )
         void * pxDummy8;
+    #endif
+    #if ( configUSE_GOODIX_EXTENSION_FEATURE == 1 )
+        UBaseType_t     uxDummy00;
     #endif
     #if ( portCRITICAL_NESTING_IN_TCB == 1 )
         UBaseType_t uxDummy9;

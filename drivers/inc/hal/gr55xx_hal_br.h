@@ -183,10 +183,10 @@ hal_status_t hal_adc_deinit_ext(adc_handle_t *p_adc);
  *
  * @note This function needs to be called before hal_adc_init.
  *
- * @param[in]  adc_callback: Pointer to callback structure function. @ref adc_callback_t
+ * @param[in]  adc_callback: Pointer to callback structure function. @ref hal_adc_callback_t
  ****************************************************************************************
  */
-void hal_adc_register_callback(adc_callback_t *adc_callback);
+void hal_adc_register_callback(hal_adc_callback_t *adc_callback);
 
 #endif /* HAL_ADC_MODULE_ENABLED */
 
@@ -234,10 +234,10 @@ hal_status_t hal_aes_deinit_ext(aes_handle_t *p_aes);
  *
  * @note This function needs to be called before hal_aes_init.
  *
- * @param[in]  aes_callback: Pointer to callback structure function. @ref aes_callback_t
+ * @param[in]  aes_callback: Pointer to callback structure function. @ref hal_aes_callback_t
  ****************************************************************************************
  */
-void hal_aes_register_callback(aes_callback_t *aes_callback);
+void hal_aes_register_callback(hal_aes_callback_t *aes_callback);
 
 #endif /* HAL_AES_MODULE_ENABLED */
 
@@ -281,10 +281,10 @@ void hal_aon_gpio_deinit_ext(uint32_t aon_gpio_pin);
  *
  * @note This function needs to be called before hal_aon_gpio_init.
  *
- * @param[in]  aon_gpio_callback: Pointer to callback structure function. @ref aon_gpio_callback_t
+ * @param[in]  aon_gpio_callback: Pointer to callback structure function. @ref hal_aon_gpio_callback_t
  ****************************************************************************************
  */
-void hal_aon_gpio_register_callback(aon_gpio_callback_t *aon_gpio_callback);
+void hal_aon_gpio_register_callback(hal_aon_gpio_callback_t *aon_gpio_callback);
 
 #endif /* HAL_AON_GPIO_MODULE_ENABLED */
 
@@ -331,10 +331,10 @@ hal_status_t hal_aon_wdt_deinit_ext(aon_wdt_handle_t *p_aon_wdt);
  *
  * @note This function needs to be called before hal_aon_wdt_init.
  *
- * @param[in]  aon_wdt_callback: Pointer to callback structure function. @ref aon_wdt_callback_t.
+ * @param[in]  aon_wdt_callback: Pointer to callback structure function. @ref hal_aon_wdt_callback_t.
  ****************************************************************************************
  */
-void hal_aon_wdt_register_callback(aon_wdt_callback_t *aon_wdt_callback);
+void hal_aon_wdt_register_callback(hal_aon_wdt_callback_t *aon_wdt_callback);
 
 #endif /* HAL_AON_WDT_MODULE_ENABLED */
 
@@ -381,10 +381,10 @@ hal_status_t hal_calendar_deinit_ext(calendar_handle_t *p_calendar);
  *
  * @note This function needs to be called before hal_calendar_init.
  *
- * @param[in]  calendar_callback: Pointer to callback structure function. @ref calendar_callback_t
+ * @param[in]  calendar_callback: Pointer to callback structure function. @ref hal_calendar_callback_t
  ****************************************************************************************
  */
-void hal_calendar_register_callback(calendar_callback_t *calendar_callback);
+void hal_calendar_register_callback(hal_calendar_callback_t *calendar_callback);
 
 #endif /* HAL_CALENDAR_MODULE_ENABLED */
 
@@ -432,10 +432,10 @@ hal_status_t hal_rtc_deinit_ext(rtc_handle_t *p_rtc);
  *
  * @note This function needs to be called before hal_rtc_init.
  *
- * @param[in]  rtc_callback: Pointer to callback structure function. @ref rtc_callback_t
+ * @param[in]  rtc_callback: Pointer to callback structure function. @ref hal_rtc_callback_t
  ****************************************************************************************
  */
-void hal_rtc_register_callback(rtc_callback_t *rtc_callback);
+void hal_rtc_register_callback(hal_rtc_callback_t *rtc_callback);
 
 #endif /* HAL_RTC_MODULE_ENABLED */
 
@@ -480,10 +480,10 @@ hal_status_t hal_dual_timer_base_deinit_ext(dual_timer_handle_t *p_dual_timer);
  *
  * @note This function needs to be called before hal_dual_timer_base_init.
  *
- * @param[in]  dual_timer_callback: Pointer to callback structure function. @ref dual_timer_callback_t
+ * @param[in]  dual_timer_callback: Pointer to callback structure function. @ref hal_dual_timer_callback_t
  ****************************************************************************************
  */
-void hal_dual_timer_register_callback(dual_timer_callback_t *dual_timer_callback);
+void hal_dual_timer_register_callback(hal_dual_timer_callback_t *dual_timer_callback);
 
 #endif /* HAL_DUAL_TIMER_MODULE_ENABLED */
 
@@ -539,10 +539,10 @@ void hal_gpio_deinit_ext(gpio_regs_t *GPIOx, uint32_t gpio_pin);
  *
  * @note This function needs to be called before hal_gpio_init.
  *
- * @param[in]  gpio_callback: Pointer to callback structure function. @ref gpio_callback_t
+ * @param[in]  gpio_callback: Pointer to callback structure function. @ref hal_gpio_callback_t
  ****************************************************************************************
  */
-void hal_gpio_register_callback(gpio_callback_t *gpio_callback);
+void hal_gpio_register_callback(hal_gpio_callback_t *gpio_callback);
 
 #endif /* HAL_GPIO_MODULE_ENABLED */
 
@@ -588,10 +588,10 @@ hal_status_t hal_hmac_deinit_ext(hmac_handle_t *p_hmac);
  *
  * @note This function needs to be called before hal_hmac_init.
  *
- * @param[in]  hmac_callback: Pointer to callback structure function. @ref hmac_callback_t
+ * @param[in]  hmac_callback: Pointer to callback structure function. @ref hal_hmac_callback_t
  ****************************************************************************************
  */
-void hal_hmac_register_callback(hmac_callback_t *hmac_callback);
+void hal_hmac_register_callback(hal_hmac_callback_t *hmac_callback);
 
 #endif /* HAL_HMAC_MODULE_ENABLED */
 
@@ -638,10 +638,10 @@ hal_status_t hal_i2c_deinit_ext(i2c_handle_t *p_i2c);
  *
  * @note This function needs to be called before hal_i2c_init.
  *
- * @param[in]  i2c_callback: Pointer to callback structure function. @ref i2c_callback_t
+ * @param[in]  i2c_callback: Pointer to callback structure function. @ref hal_i2c_callback_t
  ****************************************************************************************
  */
-void hal_i2c_register_callback(i2c_callback_t *i2c_callback);
+void hal_i2c_register_callback(hal_i2c_callback_t *i2c_callback);
 
 #endif /* HAL_I2C_MODULE_ENABLED */
 
@@ -687,10 +687,10 @@ hal_status_t hal_i2s_deinit_ext(i2s_handle_t *p_i2s);
  *
  * @note This function needs to be called before hal_i2s_init.
  *
- * @param[in]  i2s_callback: Pointer to callback structure function. @ref i2s_callback_t
+ * @param[in]  i2s_callback: Pointer to callback structure function. @ref hal_i2s_callback_t
  ****************************************************************************************
  */
-void hal_i2s_register_callback(i2s_callback_t *i2s_callback);
+void hal_i2s_register_callback(hal_i2s_callback_t *i2s_callback);
 
 #endif /* HAL_I2S_MODULE_ENABLED */
 
@@ -735,10 +735,10 @@ void hal_msio_deinit_ext(msio_pad_t MSIOx, uint32_t msio_pin);
  *
  * @note This function needs to be called before hal_msio_init.
  *
- * @param[in]  msio_callback: Pointer to callback structure function. @ref msio_callback_t
+ * @param[in]  msio_callback: Pointer to callback structure function. @ref hal_msio_callback_t
  ****************************************************************************************
  */
-void hal_msio_register_callback(msio_callback_t *msio_callback);
+void hal_msio_register_callback(hal_msio_callback_t *msio_callback);
 
 #endif /* HAL_MSIO_MODULE_ENABLED */
 
@@ -786,10 +786,10 @@ hal_status_t hal_pkc_deinit_ext(pkc_handle_t *p_pkc);
  *
  * @note This function needs to be called before hal_pkc_init.
  *
- * @param[in]  pkc_callback: Pointer to callback structure function. @ref pkc_callback_t
+ * @param[in]  pkc_callback: Pointer to callback structure function. @ref hal_pkc_callback_t
  ****************************************************************************************
  */
-void hal_pkc_register_callback(pkc_callback_t *pkc_callback);
+void hal_pkc_register_callback(hal_pkc_callback_t *pkc_callback);
 
 #endif /* HAL_PKC_MODULE_ENABLED */
 
@@ -835,10 +835,10 @@ hal_status_t hal_pwm_deinit_ext(pwm_handle_t *p_pwm);
  *
  * @note This function needs to be called before hal_pwm_init.
  *
- * @param[in]  pwm_callback: Pointer to callback structure function. @ref pwm_callback_t
+ * @param[in]  pwm_callback: Pointer to callback structure function. @ref hal_pwm_callback_t
  ****************************************************************************************
  */
-void hal_pwm_register_callback(pwm_callback_t *pwm_callback);
+void hal_pwm_register_callback(hal_pwm_callback_t *pwm_callback);
 
 #endif /* HAL_PWM_MODULE_ENABLED */
 
@@ -922,10 +922,10 @@ hal_status_t hal_qspi_deinit_ext(qspi_handle_t *p_qspi);
  *
  * @note This function needs to be called before hal_qspi_init.
  *
- * @param[in]  qspi_callback: Pointer to callback structure function. @ref qspi_callback_t
+ * @param[in]  qspi_callback: Pointer to callback structure function. @ref hal_qspi_callback_t
  ****************************************************************************************
  */
-void hal_qspi_register_callback(qspi_callback_t *qspi_callback);
+void hal_qspi_register_callback(hal_qspi_callback_t *qspi_callback);
 
 #endif /* HAL_QSPI_MODULE_ENABLED */
 
@@ -971,10 +971,10 @@ hal_status_t hal_spi_deinit_ext(spi_handle_t *p_spi);
  *
  * @note This function needs to be called before hal_spi_init.
  *
- * @param[in]  spi_callback: Pointer to callback structure function. @ref spi_callback_t
+ * @param[in]  spi_callback: Pointer to callback structure function. @ref hal_spi_callback_t
  ****************************************************************************************
  */
-void hal_spi_register_callback(spi_callback_t *spi_callback);
+void hal_spi_register_callback(hal_spi_callback_t *spi_callback);
 
 #endif /* HAL_SPI_MODULE_ENABLED */
 
@@ -1022,10 +1022,10 @@ hal_status_t hal_timer_base_deinit_ext(timer_handle_t *p_timer);
  *
  * @note This function needs to be called before hal_timer_base_init.
  *
- * @param[in]  timer_base_callback: Pointer to callback structure function. @ref timer_base_callback_t
+ * @param[in]  timer_base_callback: Pointer to callback structure function. @ref hal_timer_base_callback_t
  ****************************************************************************************
  */
-void hal_timer_register_callback(timer_base_callback_t *timer_base_callback);
+void hal_timer_register_callback(hal_timer_base_callback_t *timer_base_callback);
 
 #endif /* HAL_TIMER_MODULE_ENABLED */
 
@@ -1073,10 +1073,10 @@ hal_status_t hal_uart_deinit_ext (uart_handle_t *p_uart);
  *
  * @note This function needs to be called before hal_uart_init.
  *
- * @param[in]  uart_callback: Pointer to callback structure function. @ref uart_callback_t
+ * @param[in]  uart_callback: Pointer to callback structure function. @ref hal_uart_callback_t
  ****************************************************************************************
  */
-void hal_uart_register_callback(uart_callback_t *uart_callback);
+void hal_uart_register_callback(hal_uart_callback_t *uart_callback);
 
 #endif /* HAL_UART_MODULE_ENABLED */
 
@@ -1123,10 +1123,10 @@ hal_status_t hal_wdt_deinit_ext(wdt_handle_t *p_wdt);
  *
  * @note This function needs to be called before hal_wdt_init.
  *
- * @param[in]  wdt_callback: Pointer to callback structure function. @ref wdt_callback_t
+ * @param[in]  wdt_callback: Pointer to callback structure function. @ref hal_wdt_callback_t
  ****************************************************************************************
  */
-void hal_wdt_register_callback(wdt_callback_t *wdt_callback);
+void hal_wdt_register_callback(hal_wdt_callback_t *wdt_callback);
 
 #endif /* HAL_WDT_MODULE_ENABLED */
 
@@ -1172,10 +1172,10 @@ hal_status_t hal_xqspi_deinit_ext(xqspi_handle_t *p_xqspi);
  *
  * @note This function needs to be called before hal_wdt_init.
  *
- * @param[in]  xqspi_callback: Pointer to callback structure function. @ref xqspi_callback_t
+ * @param[in]  xqspi_callback: Pointer to callback structure function. @ref hal_xqspi_callback_t
  ****************************************************************************************
  */
-void hal_xqspi_register_callback(xqspi_callback_t *xqspi_callback);
+void hal_xqspi_register_callback(hal_xqspi_callback_t *xqspi_callback);
 
 #endif /* HAL_XQSPI_MODULE_ENABLED */
 
@@ -1219,10 +1219,10 @@ hal_status_t hal_exflash_deinit_ext(void);
  *
  * @note This function needs to be called before hal_exflash_init.
  *
- * @param[in]  exflash_callback: Pointer to callback structure function. @ref exflash_callback_t
+ * @param[in]  exflash_callback: Pointer to callback structure function. @ref hal_exflash_callback_t
  ****************************************************************************************
  */
-void hal_exflash_register_callback(exflash_callback_t *exflash_callback);
+void hal_exflash_register_callback(hal_exflash_callback_t *exflash_callback);
 
 #endif /* HAL_EXFLASH_MODULE_ENABLED */
 
@@ -1268,10 +1268,10 @@ hal_status_t hal_efuse_deinit_ext(efuse_handle_t *p_efuse);
  *
  * @note This function needs to be called before hal_efuse_init.
  *
- * @param[in]  efuse_callback: Pointer to callback structure function. @ref efuse_callback_t
+ * @param[in]  efuse_callback: Pointer to callback structure function. @ref hal_efuse_callback_t
  ****************************************************************************************
  */
-void hal_efuse_register_callback(efuse_callback_t *efuse_callback);
+void hal_efuse_register_callback(hal_efuse_callback_t *efuse_callback);
 
 #endif /* HAL_EFUSE_MODULE_ENABLED */
 
@@ -1318,10 +1318,10 @@ hal_status_t hal_rng_deinit_ext(rng_handle_t *p_rng);
  *
  * @note This function needs to be called before hal_rng_init.
  *
- * @param[in]  rng_callback: Pointer to callback structure function. @ref rng_callback_t
+ * @param[in]  rng_callback: Pointer to callback structure function. @ref hal_rng_callback_t
  ****************************************************************************************
  */
-void hal_rng_register_callback(rng_callback_t *rng_callback);
+void hal_rng_register_callback(hal_rng_callback_t *rng_callback);
 
 #endif /* HAL_RNG_MODULE_ENABLED */
 
@@ -1369,10 +1369,10 @@ hal_status_t hal_comp_deinit_ext(comp_handle_t *p_comp);
  *
  * @note This function needs to be called before hal_comp_init.
  *
- * @param[in]  comp_callback: Pointer to callback structure function. @ref comp_callback_t
+ * @param[in]  comp_callback: Pointer to callback structure function. @ref hal_comp_callback_t
  ****************************************************************************************
  */
-void hal_comp_register_callback(comp_callback_t *comp_callback);
+void hal_comp_register_callback(hal_comp_callback_t *comp_callback);
 
 #endif /* HAL_COMP_MODULE_ENABLED */
 
@@ -1421,10 +1421,10 @@ hal_status_t hal_iso7816_deinit_ext(iso7816_handle_t *p_iso7816);
  *
  * @note This function needs to be called before hal_iso7816_init.
  *
- * @param[in]  iso7816_callback: Pointer to callback structure function. @ref iso7816_callback_t
+ * @param[in]  iso7816_callback: Pointer to callback structure function. @ref hal_iso7816_callback_t
  ****************************************************************************************
  */
-void hal_iso7816_register_callback(iso7816_callback_t *iso7816_callback);
+void hal_iso7816_register_callback(hal_iso7816_callback_t *iso7816_callback);
 
 #endif /* HAL_ISO7816_MODULE_ENABLED */
 
@@ -1472,10 +1472,10 @@ hal_status_t hal_pdm_deinit_ext(pdm_handle_t *p_pdm);
  *
  * @note This function needs to be called before hal_pdm_init.
  *
- * @param[in]  pdm_callback: Pointer to callback structure function. @ref pdm_callback_t
+ * @param[in]  pdm_callback: Pointer to callback structure function. @ref hal_pdm_callback_t
  ****************************************************************************************
  */
-void hal_pdm_register_callback(pdm_callback_t *pdm_callback);
+void hal_pdm_register_callback(hal_pdm_callback_t *pdm_callback);
 
 #endif /* HAL_PDM_MODULE_ENABLED */
 
@@ -1521,10 +1521,10 @@ hal_status_t hal_dspi_deinit_ext(dspi_handle_t *p_dspi);
  *
  * @note This function needs to be called before hal_dspi_init.
  *
- * @param[in]  dspi_callback: Pointer to callback structure function. @ref dspi_callback_t
+ * @param[in]  dspi_callback: Pointer to callback structure function. @ref hal_dspi_callback_t
  ****************************************************************************************
  */
-void hal_dspi_register_callback(dspi_callback_t *dspi_callback);
+void hal_dspi_register_callback(hal_dspi_callback_t *dspi_callback);
 
 #endif /* HAL_DSPI_MODULE_ENABLED */
 
@@ -1573,7 +1573,7 @@ hal_status_t hal_gpadc_deinit_ext(gpadc_handle_t *p_gpadc);
  *
  * @note This function needs to be called before hal_gpadc_init.
  *
- * @param[in]  gpadc_callback: Pointer to callback structure function. @ref gpadc_callback_t
+ * @param[in]  gpadc_callback: Pointer to callback structure function. @ref hal_gpadc_callback_t
  ****************************************************************************************
  */
 void hal_gpadc_register_callback(gpadc_callback_t *gpadc_callback);
@@ -1622,10 +1622,10 @@ hal_status_t hal_usb_deinit_ext(usb_handle_t *p_usb);
  *
  * @note This function needs to be called before hal_usb_init.
  *
- * @param[in]  usb_callback: Pointer to callback structure function. @ref usb_callback_t
+ * @param[in]  usb_callback: Pointer to callback structure function. @ref hal_usb_callback_t
  ****************************************************************************************
  */
-void hal_usb_register_callback(usb_callback_t *usb_callback);
+void hal_usb_register_callback(hal_usb_callback_t *usb_callback);
 
 #endif /* HAL_USB_MODULE_ENABLED */
 
@@ -1668,10 +1668,10 @@ hal_status_t hal_bod_deinit_ext(bod_handle_t *p_bod);
  *
  * @note This function needs to be called before hal_bod__init.
  *
- * @param[in]  bod_callback: Pointer to callback structure function. @ref bod_callback_t
+ * @param[in]  bod_callback: Pointer to callback structure function. @ref hal_bod_callback_t
  ****************************************************************************************
  */
-void hal_bod_register_callback(bod_callback_t *bod_callback);
+void hal_bod_register_callback(hal_bod_callback_t *bod_callback);
 #endif
 
 /** @} */

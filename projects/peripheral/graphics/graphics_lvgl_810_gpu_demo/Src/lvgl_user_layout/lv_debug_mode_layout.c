@@ -77,7 +77,7 @@ lv_obj_t* lv_debug_mode_setting_view_create(void)
         lv_obj_t* roller1 = lv_roller_create(switch_layout);
         lv_obj_set_style_bg_color(roller1, lv_color_black(), 0);
         lv_obj_set_pos(roller1, 0, 120);
-        lv_obj_set_size(roller1, 454, 250);
+        lv_obj_set_size(roller1, DISP_HOR_RES, 250);
 
         lv_roller_set_options(roller1,
                             "开\n"                    

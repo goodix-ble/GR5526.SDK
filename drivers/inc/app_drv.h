@@ -44,4 +44,17 @@
 #endif
 #endif
 
+#ifndef HAL_MAX_DELAY
+    /* 20000ms is the max delay time in 96MHz system clock. */
+    #define  APP_DRV_MAX_TIMEOUT  (20000U)
+#else
+    #define APP_DRV_MAX_TIMEOUT  HAL_MAX_DELAY
+#endif
+
+#ifndef HAL_NEVER_TIMEOUT
+    #define APP_DRV_NEVER_TIMEOUT  (0xFFFFFFFFU)
+#else
+    #define APP_DRV_NEVER_TIMEOUT  HAL_NEVER_TIMEOUT
+#endif
+
 #endif /* __APP_DRV_H__ */

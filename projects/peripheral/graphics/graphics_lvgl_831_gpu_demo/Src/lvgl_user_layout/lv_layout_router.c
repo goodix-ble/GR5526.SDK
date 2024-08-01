@@ -115,6 +115,15 @@ void lv_layout_router_init(void)
     lv_obj_set_size(&s_root_tileview->obj, LV_PCT(100), LV_PCT(100));
     s_root_tileview->default_effect = WMS_DEFAULT_CARD_EFFECT;
     s_top_scrollbar = lv_enhanced_scrollbar_create(lv_disp_get_layer_top(NULL));
+    lv_enhanced_scrollbar_style_t scrollbar_style = {
+        .type = SCROLLBAR_TYPE_ARC,
+        .styles.arc = {
+            .start_angle = 315,
+            .end_angle = 405,
+            .radius = 202,
+        },
+    };
+    lv_enhanced_scrollbar_set_style(s_top_scrollbar, &scrollbar_style);
 }
 
 lv_obj_t * lv_layout_router_get_active_obj(void) {

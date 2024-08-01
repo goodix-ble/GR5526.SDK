@@ -183,7 +183,7 @@ uint16_t app_dspi_dma_command_transmit_async(app_dspi_command_t *p_cmd, uint8_t 
 {
     hal_status_t err_code = HAL_OK;
 
-    if ((p_dspi_env == NULL) || (p_dspi_env->dspi_state == APP_DSPI_INVALID))
+    if ((p_dspi_env == NULL) || (p_dspi_env->dspi_dma_state == APP_DSPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -221,7 +221,7 @@ uint16_t app_dspi_dma_command_async(app_dspi_command_t *p_cmd)
 {
     hal_status_t err_code = HAL_ERROR;
 
-    if ((p_dspi_env == NULL) || (p_dspi_env->dspi_state == APP_DSPI_INVALID))
+    if ((p_dspi_env == NULL) || (p_dspi_env->dspi_dma_state == APP_DSPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -259,7 +259,7 @@ uint16_t app_dspi_dma_transmit_async(uint8_t *p_data, uint32_t length)
 {
     hal_status_t err_code = HAL_OK;
 
-    if ((p_dspi_env == NULL) || (p_dspi_env->dspi_state == APP_DSPI_INVALID))
+    if ((p_dspi_env == NULL) || (p_dspi_env->dspi_dma_state == APP_DSPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -297,7 +297,7 @@ uint16_t app_dspi_dma_sg_llp_transmit_async(uint8_t *p_data, uint32_t length, dm
 {
     hal_status_t err_code = HAL_OK;
 
-    if ((p_dspi_env == NULL) || sg_llp_config == NULL || (p_dspi_env->dspi_state == APP_DSPI_INVALID))
+    if ((p_dspi_env == NULL) || sg_llp_config == NULL || (p_dspi_env->dspi_dma_state == APP_DSPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }

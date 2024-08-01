@@ -133,13 +133,13 @@ typedef struct _comp_handle
 /**
   * @brief HAL COMP Callback function definition
   */
-typedef struct _comp_callback
+typedef struct _hal_comp_callback
 {
     void (*comp_msp_init)(comp_handle_t *p_comp);           /**< COMP init MSP callback                  */
     void (*comp_msp_deinit)(comp_handle_t *p_comp);         /**< COMP de-init MSP callback               */
     void (*comp_rising_trigger_callback)(comp_handle_t *p_comp);   /**< COMP rising trigger callback                     */
     void (*comp_falling_trigger_callback)(comp_handle_t *p_comp);   /**< COMP falling trigger callback                     */
-} comp_callback_t;
+} hal_comp_callback_t;
 
 /** @} */
 

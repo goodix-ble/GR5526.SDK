@@ -200,17 +200,17 @@ static void dfu_m_send_data(uint8_t *data, uint16_t len)
  * @param[in]  size: The read size.
  *****************************************************************************************
  */
-static uint32_t dfu_m_fw_read(const uint32_t addr, uint8_t *p_buf, const uint32_t size)
-{
-    if (s_p_func_cfg->dfu_m_fw_read != NULL)
-    {
-        return s_p_func_cfg->dfu_m_fw_read(addr, p_buf, size);
-    }
-    else
-    {
-        return 0;
-    }
-}
+//static uint32_t dfu_m_fw_read(const uint32_t addr, uint8_t *p_buf, const uint32_t size)
+//{
+//    if (s_p_func_cfg->dfu_m_fw_read != NULL)
+//    {
+//        return s_p_func_cfg->dfu_m_fw_read(addr, p_buf, size);
+//    }
+//    else
+//    {
+//        return 0;
+//    }
+//}
 
 /**
  *****************************************************************************************
@@ -548,11 +548,12 @@ void dfu_m_program_start(bool security, bool run_fw)
 
     dfu_m_get_img_info(&s_now_img_info);
 
-    if (((s_now_img_info.boot_info.load_addr >= s_bootloader_boot_info.load_addr) && \
+    if ((s_now_img_info.boot_info.load_addr < s_bootloader_boot_info.load_addr) || ((s_now_img_info.boot_info.load_addr >= s_bootloader_boot_info.load_addr) && \
         (s_now_img_info.boot_info.load_addr <=  s_bootloader_boot_info.load_addr + s_bootloader_boot_info.bin_size + 48 + 856)) || \
          (s_now_img_info.boot_info.load_addr >= s_dfu_save_addr && s_now_img_info.boot_info.load_addr <= s_dfu_save_addr + s_now_img_info.boot_info.bin_size + 48 + 856))
     {
         dfu_m_event_handler(IMG_INFO_LOAD_ADDR_ERROR, 0);
+        return;
     }
 
     if((s_now_img_info.pattern != PATTERN_VALUE) || \
@@ -572,7 +573,7 @@ void dfu_m_program_start(bool security, bool run_fw)
     else
     {
         fw_sign_flag_addr = s_page_start_addr + s_now_img_info.boot_info.bin_size + 48 + FW_SIGN_FLAG_OFFSET;
-        dfu_m_fw_read(fw_sign_flag_addr, fw_sign_flag, sizeof(fw_sign_flag));
+        dfu_m_get_img_data(fw_sign_flag_addr, fw_sign_flag, sizeof(fw_sign_flag));
 
         if (fw_sign_flag[0] == 0x53 && fw_sign_flag[1] == 0x49 && fw_sign_flag[2] == 0x47 && fw_sign_flag[3] == 0x4E)
         {
@@ -806,7 +807,7 @@ void  dfu_m_schedule(dfu_m_rev_cmd_cb_t rev_cmd_cb)
 
                     if (((s_dfu_save_addr >= s_app_info.boot_info.load_addr) && \
                         (s_dfu_save_addr <= s_app_info.boot_info.load_addr + s_app_info.boot_info.bin_size + 48 + 856)) || \
-                         ((s_dfu_save_addr >= s_bootloader_boot_info.load_addr) && (s_dfu_save_addr <= s_bootloader_boot_info.load_addr + 48 + 856))) 
+                         ((s_dfu_save_addr >= s_bootloader_boot_info.load_addr) && (s_dfu_save_addr <= s_bootloader_boot_info.load_addr + s_bootloader_boot_info.bin_size + 48 + 856))) 
                     {
                         dfu_m_event_handler(DFU_FW_SAVE_ADDR_CONFLICT, 0);
                     }

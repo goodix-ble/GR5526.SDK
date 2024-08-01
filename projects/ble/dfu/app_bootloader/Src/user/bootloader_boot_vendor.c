@@ -70,7 +70,7 @@ static bool                 s_is_app_fw_valid;
 static dfu_image_info_t     s_app_img_info;
 static uint8_t              s_flash_read_buff[DFU_FLASH_SECTOR_SIZE];
 
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
 static bool                 s_flash_security_status = false;
 #endif
 
@@ -91,9 +91,9 @@ static void fw_boot_info_print(dfu_boot_info_t *p_boot_info)
     APP_LOG_DEBUG("    CheckSum     = 0x%08x", p_boot_info->check_sum);
 }
 
-static void security_disable(void)
+void security_disable(void)
 {
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     uint32_t sys_security = sys_security_enable_status_check();
     if(sys_security)
     {
@@ -103,9 +103,9 @@ static void security_disable(void)
 #endif
 }
 
-static void security_state_recovery(void)
+void security_state_recovery(void)
 {
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     uint32_t sys_security = sys_security_enable_status_check();
     if(sys_security)
     {
@@ -114,35 +114,8 @@ static void security_state_recovery(void)
 #endif
 }
 
-static bool check_image_crc(const uint8_t * p_data, uint32_t len, uint32_t check)
+static bool check_image_crc(const uint8_t * p_data,uint32_t len, uint32_t check)
 {
-
-#if defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
-    uint32_t sum      = 0;
-    uint32_t once_len = 0;
-    uint32_t cksum    = 0;
-    const uint32_t once_max   = sizeof(s_flash_read_buff);
-    const uint32_t start_addr = (uint32_t)p_data;
-
-    while(sum < len) {
-
-        once_len = ((len - sum) >= once_max) ? once_max : (len - sum);
-        dfu_portable_flash_read(start_addr + sum, s_flash_read_buff, once_len);
-        sum += once_len;
-
-        for(int i = 0; i < once_len; i++) {
-            cksum += s_flash_read_buff[i];
-        }
-    }
-
-    if(cksum == check) {
-        return true;
-    }
-    APP_LOG_ERROR("    CheckSum Error, [0x%08x : %d] Expected: 0x%08x, Actual:0x%08x", start_addr, len, check, cksum);
-
-    return false;
-
-#else
     uint32_t cksum=0;
 
     for (int i = 0; i < len; i++)
@@ -151,7 +124,6 @@ static bool check_image_crc(const uint8_t * p_data, uint32_t len, uint32_t check
     }
 
     return (check == cksum);
-#endif
 }
 
 static uint32_t hal_flash_read_judge_security(const uint32_t addr, uint8_t *buf, const uint32_t size)
@@ -163,38 +135,38 @@ static uint32_t hal_flash_read_judge_security(const uint32_t addr, uint8_t *buf,
     return read_bytes;
 }
 
-static bool bootloader_firmware_verify(uint32_t bin_addr, uint32_t bin_size, uint32_t check_sum_store)
+static bool bootloader_firmware_verify(uint32_t bin_addr, uint32_t bin_size, uint32_t check_sum_store, bool is_in_load_addr)
 {
     extern bool check_image_crc(const uint8_t * p_data, uint32_t len, uint32_t check);
 
-#ifndef SOC_GR5332
-    if (!sys_security_enable_status_check() && !check_image_crc((uint8_t *)bin_addr, bin_size, check_sum_store))
-    {
-        APP_LOG_DEBUG("    Firmware checksum invalid");
-        return false;
-    }
+#if BOOTLOADER_SIGN_ENABLE
+    bool security_enable = false;
+    #ifndef SOC_GR533X
+    security_enable = sys_security_enable_status_check();
+    #endif
 
-    #if BOOTLOADER_SIGN_ENABLE
         uint8_t public_key_hash[] = {BOOTLOADER_PUBLIC_KEY_HASH};
-        security_disable();
-        if (!sign_verify(bin_addr, bin_size, public_key_hash, sys_security_enable_status_check()))
+        if (!sign_verify(bin_addr, bin_size, public_key_hash, security_enable))
         {
-            security_state_recovery();
             APP_LOG_DEBUG("    Signature verify check fail.");
             return false;
         }
-        security_state_recovery();
         APP_LOG_DEBUG("    Signature verify check success.");
-    #endif
-
-#else
-
-    if (!check_image_crc((uint8_t *)bin_addr, bin_size, check_sum_store))
-    {
-        APP_LOG_DEBUG("    Firmware checksum invalid");
-        return false;
-    }
 #endif
+
+#ifndef SOC_GR533X
+    if (!sys_security_enable_status_check() || is_in_load_addr)
+    {
+#else
+    {
+#endif
+        if (!check_image_crc((uint8_t *)bin_addr, bin_size, check_sum_store))
+        {
+            APP_LOG_DEBUG("    Firmware checksum invalid");
+            return false;
+        }
+        APP_LOG_DEBUG("    Firmware checksum check success.");
+    }
 
     return true;
 }
@@ -212,16 +184,13 @@ static void bootloader_fw_boot_info_get(void)
 
 static bool bootloader_app_dfu_fw_verify(void)
 {
-
     if (s_dfu_info.dfu_img_info.boot_info.load_addr < (s_bootloader_info.load_addr + s_bootloader_info.bin_size))
     {
-        APP_LOG_DEBUG("    App dfu firmware load address overload bootloader firmware, 0x%08x, 0x%08x, %d",
-
-        s_dfu_info.dfu_img_info.boot_info.load_addr, s_bootloader_info.load_addr, s_bootloader_info.bin_size);
+        APP_LOG_DEBUG("    App dfu firmware load address overload bootloader firmware");
         return false;
     }
 
-    return bootloader_firmware_verify(s_dfu_info.dfu_fw_save_addr, s_dfu_info.dfu_img_info.boot_info.bin_size, s_dfu_info.dfu_img_info.boot_info.check_sum);
+    return bootloader_firmware_verify(s_dfu_info.dfu_fw_save_addr, s_dfu_info.dfu_img_info.boot_info.bin_size, s_dfu_info.dfu_img_info.boot_info.check_sum, false);
 }
 
 static bool bootloader_dfu_info_verify(void)
@@ -264,17 +233,21 @@ SECTION_RAM_CODE static void bootloader_dfu_fw_copy(uint32_t dst_addr, uint32_t 
 
     APP_LOG_DEBUG("    App dfu firmware start copy.");
 
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     if (sys_security_enable_status_check())
     {
         temp_size += 856;
     }
     else
     {
-#if BOOTLOADER_SIGN_ENABLE
+    #if BOOTLOADER_SIGN_ENABLE
         temp_size += 856;
-#endif
+    #endif
     }
+#else
+    #if BOOTLOADER_SIGN_ENABLE
+        temp_size += 856;
+    #endif
 #endif
 
     copy_page = temp_size / DFU_FLASH_SECTOR_SIZE;
@@ -284,9 +257,9 @@ SECTION_RAM_CODE static void bootloader_dfu_fw_copy(uint32_t dst_addr, uint32_t 
     {
         copy_page++;
     }
-#if !(defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u))
+
     __disable_irq();
-#endif
+
     bootloader_wdt_refresh();
 
     security_disable();
@@ -301,11 +274,7 @@ SECTION_RAM_CODE static void bootloader_dfu_fw_copy(uint32_t dst_addr, uint32_t 
             copy_size = DFU_FLASH_SECTOR_SIZE;
         }
         hal_flash_erase(dst_addr + i * DFU_FLASH_SECTOR_SIZE, DFU_FLASH_SECTOR_SIZE);
-#if defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
-        dfu_portable_flash_read(src_addr + i * DFU_FLASH_SECTOR_SIZE, s_flash_read_buff, copy_size);
-#else
         hal_flash_read(src_addr + i * DFU_FLASH_SECTOR_SIZE, s_flash_read_buff, copy_size);
-#endif
         hal_flash_write(dst_addr + i * DFU_FLASH_SECTOR_SIZE, s_flash_read_buff, copy_size);
     }
     security_state_recovery();
@@ -328,7 +297,7 @@ static bool bootloader_app_fw_verify()
     hal_flash_read_judge_security(APP_INFO_START_ADDR, (uint8_t*)&s_app_img_info, sizeof(s_app_img_info));
 
     if (0 == memcmp(s_app_img_info.comments, APP_FW_COMMENTS, strlen(APP_FW_COMMENTS)) &&
-        bootloader_firmware_verify(s_app_img_info.boot_info.load_addr, s_app_img_info.boot_info.bin_size, s_app_img_info.boot_info.check_sum))
+        bootloader_firmware_verify(s_app_img_info.boot_info.load_addr, s_app_img_info.boot_info.bin_size, s_app_img_info.boot_info.check_sum, true))
     {
         APP_LOG_DEBUG("    Found app firmware image info in APP INFO AREA");
         return true;
@@ -339,7 +308,7 @@ static bool bootloader_app_fw_verify()
         hal_flash_read(i * sizeof(s_app_img_info) + SCA_IMG_INFO_ADDR, (uint8_t *)&s_app_img_info, sizeof(s_app_img_info));
 
         if (0 == memcmp(s_app_img_info.comments, APP_FW_COMMENTS, strlen(APP_FW_COMMENTS)) &&
-            bootloader_firmware_verify(s_app_img_info.boot_info.load_addr, s_app_img_info.boot_info.bin_size, s_app_img_info.boot_info.check_sum))
+            bootloader_firmware_verify(s_app_img_info.boot_info.load_addr, s_app_img_info.boot_info.bin_size, s_app_img_info.boot_info.check_sum, true))
         {
             bootloader_app_img_info_update(&s_app_img_info);
             APP_LOG_DEBUG("    Found app firmware image info in SYSTEM CONFIG AREA");
@@ -348,6 +317,7 @@ static bool bootloader_app_fw_verify()
         }
     }
 
+    APP_LOG_DEBUG("    Not found app firmware image info in APP INFO AREA and SYSTEM CONFIG AREA");
     return false;
 }
 

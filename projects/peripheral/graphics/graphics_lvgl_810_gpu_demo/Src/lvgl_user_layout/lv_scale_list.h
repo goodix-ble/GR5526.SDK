@@ -38,8 +38,8 @@ typedef struct {
     scale_list_attribute_t attribute;
 } lv_scale_list_t;
 
-#define SCREEN_WIDTH       (454)
-#define SCREEN_HEIGHT      (454)
+#define SCREEN_WIDTH       (DISP_HOR_RES)
+#define SCREEN_HEIGHT      (DISP_VER_RES)
 
 #define GW_MATH_ABS(x)     ((x) > 0 ? (x) : (-(x)))
 #define SCALE_NORMAL_MODE            0                      //scale normal

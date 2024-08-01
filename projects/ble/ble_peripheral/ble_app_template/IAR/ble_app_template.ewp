@@ -1099,6 +1099,9 @@
 <file>
 <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\fault_trace\fault_trace.c</name>
 </file>
+<file>
+<name>$PROJ_DIR$\..\..\..\..\..\components\sdk\ble.c</name>
+</file>
 </group>
 <group>
 <name>gr_profiles</name>

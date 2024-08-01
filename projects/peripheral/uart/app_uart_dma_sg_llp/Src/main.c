@@ -129,12 +129,14 @@ void app_uart_callback(app_uart_evt_t *p_evt)
 /*             Two blocks, llp head &block0*/
 void app_uart_transmit_dma_sg_llp_test(void)
 {
-    uint16_t ret = 0;
+    uint16_t ret = APP_DRV_SUCCESS;
     app_uart_tx_buf_t uart_buffer = {0};
 
     uart_buffer.tx_buf = g_ring_buffer;
     uart_buffer.tx_buf_size = sizeof(g_ring_buffer);
 
+    /* Please initialize DMA in the following order. */
+    /* Note: Initialization is not allowed during the transmission process. */
     ret = app_uart_init(&uart_params, app_uart_callback, &uart_buffer);
     if (ret != APP_DRV_SUCCESS) 
     {
@@ -231,8 +233,10 @@ void app_uart_transmit_dma_sg_llp_test(void)
         printf("uart_transmit_dma_sg_llp write back success\r\n");
     }
     app_log_flush();
-    app_uart_deinit(UART_ID);
+
+    /* Please deinitialize DMA in the following order. */
     app_uart_dma_deinit(UART_ID);
+    app_uart_deinit(UART_ID);
 }
 
 /* The test case is from RX to memory, checking whether the data sent by TX meets expectations. */
@@ -243,12 +247,14 @@ void app_uart_transmit_dma_sg_llp_test(void)
 /*             Two blocks, llp head &block0*/
 void app_uart_receive_dma_sg_llp_test(void)
 {
-    uint16_t ret = 0;
+    uint16_t ret = APP_DRV_SUCCESS;
     app_uart_tx_buf_t uart_buffer = {0};
 
     uart_buffer.tx_buf = g_ring_buffer;
     uart_buffer.tx_buf_size = sizeof(g_ring_buffer);
 
+    /* Please initialize DMA in the following order. */
+    /* Note: Initialization is not allowed during the transmission process. */
     ret = app_uart_init(&uart_params, app_uart_callback, &uart_buffer);
     if (ret != APP_DRV_SUCCESS) 
     {
@@ -361,8 +367,10 @@ void app_uart_receive_dma_sg_llp_test(void)
         printf("app_uart_receive_dma_sg_llp_test write back success\r\n");
     }
     app_log_flush();
-    app_uart_deinit(UART_ID);
+
+    /* Please deinitialize DMA in the following order. */
     app_uart_dma_deinit(UART_ID);
+    app_uart_deinit(UART_ID);
 }
 
 int main(void)

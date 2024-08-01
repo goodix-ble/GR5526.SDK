@@ -113,7 +113,9 @@ typedef void (*app_rng_evt_handler_t)(app_rng_evt_t *p_evt);
 /** @addtogroup APP_RNG_ENUM Enumerations
   * @{
   */
-/**@brief App rng state types. */
+/**
+  * @brief App rng state types.
+  */
 typedef enum
 {
     APP_RNG_INVALID = 0,
@@ -218,8 +220,9 @@ uint16_t app_rng_gen_async(uint16_t *p_seed);
  */
 rng_handle_t *app_rng_get_handle(void);
 
-#endif
 /** @} */
+
+#endif
 
 #ifdef __cplusplus
 }
@@ -229,6 +232,4 @@ rng_handle_t *app_rng_get_handle(void);
 
 /** @} */
 /** @} */
-
 /** @} */
-

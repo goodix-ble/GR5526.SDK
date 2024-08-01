@@ -1102,6 +1102,9 @@
 <file>
 <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\virt_key\uart_simu_key_init.c</name>
 </file>
+<file>
+<name>$PROJ_DIR$\..\..\..\..\..\components\sdk\ble.c</name>
+</file>
 </group>
 <group>
 <name>gr_profiles</name>

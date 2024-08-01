@@ -270,13 +270,15 @@ static uint16_t app_spi_config_dma(app_spi_params_t *p_params)
  */
 uint16_t app_spi_dma_init(app_spi_params_t *p_params)
 {
-    app_spi_id_t id = p_params->id;
+    app_spi_id_t id;
     app_drv_err_t err_code = APP_DRV_SUCCESS;
 
     if (NULL == p_params)
     {
         return APP_DRV_ERR_POINTER_NULL;
     }
+
+    id = p_params->id;
 
     if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
     {
@@ -329,7 +331,7 @@ uint16_t app_spim_dma_transmit_with_ia(app_spi_id_t id, uint8_t instruction, uin
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -371,7 +373,7 @@ uint16_t app_spim_dma_transmit_with_ia_32addr(app_spi_id_t id, uint8_t instructi
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -415,7 +417,7 @@ uint16_t app_spim_dma_receive_with_ia(app_spi_id_t id, uint8_t instruction, uint
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -471,7 +473,7 @@ uint16_t app_spi_dma_receive_async(app_spi_id_t id, uint8_t *p_data, uint16_t si
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -516,7 +518,7 @@ uint16_t app_spi_dma_receive_high_speed_sync(app_spi_id_t id, uint8_t *p_data, u
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -570,7 +572,7 @@ uint16_t app_spi_dma_transmit_high_speed_sync(app_spi_id_t id, uint8_t *p_data, 
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -626,7 +628,7 @@ uint16_t app_spi_dma_transmit_async(app_spi_id_t id, uint8_t *p_data, uint16_t s
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -670,7 +672,7 @@ uint16_t app_spi_dma_transmit_receive_async(app_spi_id_t id, uint8_t *p_tx_data,
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -714,7 +716,7 @@ uint16_t app_spi_dma_read_eeprom_async(app_spi_id_t id, uint8_t *p_tx_data, uint
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -758,7 +760,7 @@ uint16_t app_spi_dma_read_memory_async(app_spi_id_t id, uint8_t *p_cmd_data, uin
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }
@@ -809,7 +811,7 @@ uint16_t app_spi_dma_write_memory_async(app_spi_id_t id, uint8_t *p_cmd_data, ui
         return APP_DRV_ERR_INVALID_ID;
     }
 
-    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_state == APP_SPI_INVALID))
+    if ((p_spi_env[id] == NULL) || (p_spi_env[id]->spi_dma_state == APP_SPI_DMA_INVALID))
     {
         return APP_DRV_ERR_NOT_INIT;
     }

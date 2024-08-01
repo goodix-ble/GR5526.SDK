@@ -113,7 +113,7 @@ static void bootloader_wdt_init(void)
 
 void app_periph_init(void)
 {
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     // Turn on the clock of encryption module.
     app_boot_turn_on_encrypt_clock();
 #endif

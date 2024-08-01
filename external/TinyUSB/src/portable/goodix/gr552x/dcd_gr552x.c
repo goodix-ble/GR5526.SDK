@@ -459,8 +459,12 @@ static void fill_tx_fifo(xfer_ctl_t * xfer)
             }
         }
     }
-    /*MCU has write all data to IN FIFO, then inform USB controller */
-    hal_usb_ep_write_end(&g_usb_handle,(hal_usb_ep_t)epnum);
+    if(!(((epnum == USB_EP2) || (epnum == USB_EP3)) && left_to_send == 64))
+    {
+        /*If len=64, EP2 and EP3 will auto inform USB controller by hardware. */
+        /*MCU has write all data to IN FIFO, then inform USB controller */
+        hal_usb_ep_write_end(&g_usb_handle,(hal_usb_ep_t)epnum);
+    }
 }
 
 static void usbd_ep_write(xfer_ctl_t * xfer)

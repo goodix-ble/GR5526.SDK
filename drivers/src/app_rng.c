@@ -41,6 +41,7 @@
 #include "app_pwr_mgmt.h"
 #include "string.h"
 #include "gr_soc.h"
+#include "app_drv.h"
 
 #ifdef HAL_RNG_MODULE_ENABLED
 

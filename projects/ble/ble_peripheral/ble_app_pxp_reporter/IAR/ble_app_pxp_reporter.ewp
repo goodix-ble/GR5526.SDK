@@ -1093,6 +1093,9 @@
 <file>
 <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\app_key\app_key_core.c</name>
 </file>
+<file>
+<name>$PROJ_DIR$\..\..\..\..\..\components\sdk\ble.c</name>
+</file>
 </group>
 <group>
 <name>gr_profiles</name>

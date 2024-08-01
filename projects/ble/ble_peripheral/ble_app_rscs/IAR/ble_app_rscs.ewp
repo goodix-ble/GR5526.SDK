@@ -1066,6 +1066,9 @@
 <file>
 <name>$PROJ_DIR$\..\..\..\..\..\drivers\src\app_uart_dma.c</name>
 </file>
+<file>
+<name>$PROJ_DIR$\..\..\..\..\..\drivers\src\app_rtc.c</name>
+</file>
 </group>
 <group>
 <name>gr_libraries</name>
@@ -1110,6 +1113,9 @@
 </file>
 <file>
 <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\app_assert\app_assert.c</name>
+</file>
+<file>
+<name>$PROJ_DIR$\..\..\..\..\..\components\sdk\ble.c</name>
 </file>
 </group>
 <group>

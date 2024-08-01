@@ -181,7 +181,7 @@ typedef struct _i2s_handle
   * @brief HAL_I2S Callback function definition
   */
 
-typedef struct _i2s_callback
+typedef struct _hal_i2s_callback
 {
     void (*i2s_msp_init)(i2s_handle_t *p_i2s);              /**< I2S init MSP callback                  */
     void (*i2s_msp_deinit)(i2s_handle_t *p_i2s);            /**< I2S de-init MSP callback               */
@@ -189,7 +189,7 @@ typedef struct _i2s_callback
     void (*i2s_rx_cplt_callback)(i2s_handle_t *p_i2s);      /**< I2S rx transfer completed callback     */
     void (*i2s_tx_cplt_callback)(i2s_handle_t *p_i2s);      /**< I2S tx transfer completed callbac      */
     void (*i2s_tx_rx_cplt_callback)(i2s_handle_t *p_i2s);   /**< I2S tx/rx transfer completed callback  */
-} i2s_callback_t;
+} hal_i2s_callback_t;
 
 /** @} */
 

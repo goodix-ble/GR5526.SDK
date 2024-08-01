@@ -71,7 +71,7 @@ static bool                 s_is_app_fw_valid;
 static dfu_image_info_t     s_app_img_info;
 static uint8_t              s_flash_read_buff[DFU_FLASH_SECTOR_SIZE];
 
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
 static bool                 s_flash_security_status = false;
 #endif
 
@@ -94,7 +94,7 @@ static void fw_boot_info_print(dfu_boot_info_t *p_boot_info)
 
 static void security_disable(void)
 {
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     uint32_t sys_security = sys_security_enable_status_check();
     if(sys_security)
     {
@@ -106,7 +106,7 @@ static void security_disable(void)
 
 static void security_state_recovery(void)
 {
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     uint32_t sys_security = sys_security_enable_status_check();
     if(sys_security)
     {
@@ -140,7 +140,7 @@ static bool bootloader_firmware_verify(uint32_t bin_addr, uint32_t bin_size, uin
 {
     extern bool check_image_crc(const uint8_t * p_data, uint32_t len, uint32_t check);
 
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     if (!sys_security_enable_status_check() && !check_image_crc((uint8_t *)bin_addr, bin_size, check_sum_store))
     {
         APP_LOG_DEBUG("    Firmware checksum invalid");
@@ -234,7 +234,7 @@ SECTION_RAM_CODE static void bootloader_dfu_fw_copy(uint32_t dst_addr, uint32_t 
 
     APP_LOG_DEBUG("    App dfu firmware start copy.");
 
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     if (sys_security_enable_status_check())
     {
         temp_size += 856;

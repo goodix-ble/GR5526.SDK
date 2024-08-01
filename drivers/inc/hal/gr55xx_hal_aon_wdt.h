@@ -120,10 +120,10 @@ typedef struct _aon_wdt_handle
   * @brief HAL_AON_WDT Callback function definition
   */
 
-typedef struct _aon_wdt_callback
+typedef struct _hal_aon_wdt_callback
 {
     void (*aon_wdt_alarm_callback)(aon_wdt_handle_t *p_aon_wdt);    /**< AON_WDT count complete callback */
-} aon_wdt_callback_t;
+} hal_aon_wdt_callback_t;
 
 /** @} */
 

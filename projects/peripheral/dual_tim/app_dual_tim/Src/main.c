@@ -94,7 +94,7 @@ app_dual_tim_params_t p_params_tim1 = {
  */
 volatile uint32_t g_tim0_cnt = 0;
 volatile uint32_t g_tim1_cnt = 0;
-uint8_t g_tim1_done_flag = 0;
+volatile uint8_t g_tim1_done_flag = 0;
 
 /*
  * GLOBAL FUNCTION DEFINITIONS

@@ -54,32 +54,6 @@
  * DEFINES
  *****************************************************************************************
  */
-
-#if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR551X)
-#define QSPI_SMART_CS_LOW(id)                                           \
-    do {                                                                \
-            if(p_qspi_env[id]->p_pin_cfg->cs.enable == APP_QSPI_PIN_ENABLE) \
-            {                                                           \
-                app_io_write_pin(p_qspi_env[id]->p_pin_cfg->cs.type,    \
-                                p_qspi_env[id]->p_pin_cfg->cs.pin,      \
-                                APP_IO_PIN_RESET);                      \
-            }                                                           \
-        } while(0)
-
-#define QSPI_SMART_CS_HIGH(id)                                          \
-    do {                                                                \
-            if(p_qspi_env[id]->p_pin_cfg->cs.enable == APP_QSPI_PIN_ENABLE) \
-            {                                                           \
-                app_io_write_pin(p_qspi_env[id]->p_pin_cfg->cs.type,    \
-                                 p_qspi_env[id]->p_pin_cfg->cs.pin,     \
-                                 APP_IO_PIN_SET);                       \
-            }                                                           \
-    } while(0)
-#else
-#define QSPI_SMART_CS_LOW(id)
-#define QSPI_SMART_CS_HIGH(id)
-#endif
-
 #define REG(x)                              (*(volatile uint32_t*)(x))
 
 #define APP_QSPI_EXCEPT_DEBUG_EN            1u
@@ -172,9 +146,9 @@ const qspi_memorymapped_t g_flash_typical_mmap_read_cmd[FLASH_MMAP_CMD_READ_MAX]
         .x_address_size                 = QSPI_CONCURRENT_XIP_ADDRSIZE_24BIT,
         .x_inst_addr_transfer_format    = QSPI_CONCURRENT_XIP_INST_IN_SPI_ADDR_IN_SPIFRF,
         .x_mode_bits_en                 = QSPI_CONCURRENT_XIP_MODE_BITS_ENABLE,
-        .x_mode_bits_length             = QSPI_CONCURRENT_XIP_MBL_8,
+        .x_mode_bits_length             = QSPI_CONCURRENT_XIP_MBL_4,
         .x_mode_bits_data               = 0x20,
-        .x_dummy_cycles                 = 0,
+        .x_dummy_cycles                 = 2,
         .x_continous_xfer_toc           = 0,
         .x_sioo_mode                    = QSPI_CONCURRENT_XIP_INST_SENT_ONLY_FIRST_ACCESS,
         .x_data_frame_format            = QSPI_CONCURRENT_XIP_FRF_DUAL_SPI,
@@ -487,7 +461,7 @@ QSPI_HANDLER(2, APP_QSPI_ID_2)
  */
 uint16_t app_qspi_init(app_qspi_params_t *p_params, app_qspi_evt_handler_t evt_handler)
 {
-    app_qspi_id_t id = p_params->id;
+    app_qspi_id_t id;
     app_drv_err_t app_err_code;
     hal_status_t  hal_err_code;
 
@@ -495,6 +469,8 @@ uint16_t app_qspi_init(app_qspi_params_t *p_params, app_qspi_evt_handler_t evt_h
     {
         return APP_DRV_ERR_POINTER_NULL;
     }
+
+    id = p_params->id;
 
     if (id >= APP_QSPI_ID_MAX)
     {
@@ -750,6 +726,11 @@ uint16_t app_qspi_command_receive_sync(app_qspi_id_t id, app_qspi_command_t *p_c
         return APP_DRV_ERR_POINTER_NULL;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     qspi_wake_up(id);
 #endif
@@ -825,6 +806,11 @@ uint16_t app_qspi_command_transmit_sync(app_qspi_id_t id, app_qspi_command_t *p_
     if (p_cmd == NULL || p_data == NULL)
     {
         return APP_DRV_ERR_POINTER_NULL;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
     }
 
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
@@ -903,6 +889,11 @@ uint16_t app_qspi_command_sync(app_qspi_id_t id, app_qspi_command_t *p_cmd, uint
     if (p_cmd == NULL)
     {
         return APP_DRV_ERR_POINTER_NULL;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
     }
 
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
@@ -989,6 +980,11 @@ uint16_t app_qspi_transmit_sync_ex(app_qspi_id_t id, uint32_t qspi_mode, uint32_
     }
 
     if (p_data == NULL || length == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }
@@ -1100,6 +1096,11 @@ uint16_t app_qspi_receive_sync_ex(app_qspi_id_t id, uint32_t qspi_mode, uint32_t
     }
 
     if (p_data == NULL || length == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }
@@ -1330,22 +1331,21 @@ static uint16_t qspi_gpio_config(app_qspi_pin_cfg_t *p_pin_cfg)
 
     if (p_pin_cfg->cs.enable == APP_QSPI_PIN_ENABLE)
     {
-#if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5526X) || (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR5525X)
+#if QSPI_SMART_CS_ENABLE
+        io_init.pull = p_pin_cfg->cs.pull;
+        io_init.mode = APP_IO_MODE_OUTPUT;
+        io_init.pin  = p_pin_cfg->cs.pin;
+        io_init.mux  = APP_IO_MUX;
+        err_code = app_io_init(p_pin_cfg->cs.type, &io_init);
+        APP_DRV_ERR_CODE_CHECK(err_code);
+        app_io_write_pin(p_pin_cfg->cs.type, p_pin_cfg->cs.pin, APP_IO_PIN_SET);
+#else
         io_init.pull = p_pin_cfg->cs.pull;
         io_init.pin  = p_pin_cfg->cs.pin;
         io_init.mux  = p_pin_cfg->cs.mux;
         io_init.mode = p_pin_cfg->cs.mode;
         err_code = app_io_init(p_pin_cfg->cs.type, &io_init);
         APP_DRV_ERR_CODE_CHECK(err_code);
-#endif
-#if (APP_DRIVER_CHIP_TYPE == APP_DRIVER_GR551X)
-        io_init.pull = p_pin_cfg->cs.pull;
-        io_init.mode = APP_IO_MODE_OUTPUT;
-        io_init.pin  = p_pin_cfg->cs.pin;
-        io_init.mux  = APP_IO_MUX_7;
-        err_code = app_io_init(p_pin_cfg->cs.type, &io_init);
-        APP_DRV_ERR_CODE_CHECK(err_code);
-        app_io_write_pin(p_pin_cfg->cs.type, p_pin_cfg->cs.pin, APP_IO_PIN_SET);
 #endif
     }
     if (p_pin_cfg->clk.enable == APP_QSPI_PIN_ENABLE)

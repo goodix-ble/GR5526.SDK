@@ -285,14 +285,14 @@ typedef struct _pkc_big_number_add
   * @brief HAL_PKC Callback function definition
   */
 
-typedef struct _pkc_callback
+typedef struct _hal_pkc_callback
 {
     void (*pkc_msp_init)(pkc_handle_t *p_pkc);              /**< PKC init MSP callback                  */
     void (*pkc_msp_deinit)(pkc_handle_t *p_pkc);            /**< PKC de-init MSP callback               */
     void (*pkc_done_callback)(pkc_handle_t *p_pkc);         /**< PKC calculate done callback            */
     void (*pkc_error_callback)(pkc_handle_t *p_pkc);        /**< PKC error callback                     */
     void (*pkc_overflow_callback)(pkc_handle_t *p_pkc);     /**< PKC over flow callback                 */
-} pkc_callback_t;
+} hal_pkc_callback_t;
 
 /** @} */
 

@@ -293,6 +293,11 @@ uint16_t app_iso7816_receive_sync(uint16_t size, uint32_t timeout)
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     iso7816_wake_up();
 #endif
@@ -357,6 +362,11 @@ uint16_t app_iso7816_transmit_sync(uint16_t size, uint32_t timeout)
     }
 
     if (size == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }
@@ -478,6 +488,11 @@ uint16_t app_iso7816_transmit_receive_sync(uint16_t tx_size, uint16_t rx_size, u
     }
 
     if (tx_size == 0 || rx_size == 0)
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
     {
         return APP_DRV_ERR_INVALID_PARAM;
     }

@@ -39,7 +39,7 @@ lv_obj_t* lv_graphics_tsc4_layout_create(void)
         graphics_tsc4_layout = lv_obj_create(NULL);
         lv_obj_t* graphics_circle = lv_graphics_draw_obj_create(graphics_tsc4_layout);
         lv_set_graphics_draw_type(GRAPHICS_TYPE_TSC4_COMP);
-        lv_obj_set_size(graphics_circle, 454, 454);
+        lv_obj_set_size(graphics_circle, DISP_HOR_RES, DISP_VER_RES);
     }
     lv_wms_init(graphics_tsc4_layout);
     lv_wms_self_destroy_func_set(graphics_tsc4_layout, lv_graphics_tsc4_layout_destroy);

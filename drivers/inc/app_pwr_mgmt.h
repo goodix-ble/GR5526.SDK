@@ -84,7 +84,7 @@ typedef enum
     ADC_PWR_ID,
     COMP_PWR_ID,
     RNG_PWR_ID,
-#if defined SOC_GR5515 || defined SOC_GR5525 || defined SOC_GR5526
+#if defined SOC_GR5515 || defined SOC_GR5X25 || defined SOC_GR5526
     QSPI_PWR_ID,
     I2S_PWR_ID,
     PKC_PWR_ID,
@@ -94,7 +94,7 @@ typedef enum
 #if defined SOC_GR5515 || defined SOC_GR5526
     ISO7816_PWR_ID,
 #endif
-#if defined SOC_GR5525 || defined SOC_GR5526
+#if defined SOC_GR5X25 || defined SOC_GR5526
     DSPI_PWR_ID,
     PDM_PWR_ID,
 #endif

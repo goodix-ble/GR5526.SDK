@@ -110,6 +110,7 @@ typedef enum
     OTAS_EVT_NOTIFY_COMPLETE,                   /**< notify complete event for ota service. */
     OTAS_EVT_DFU_TASK_ENTER,                    /**< set dfu task enter event for ota service. */
     OTAS_EVT_DFU_MODE_SET,                      /**< set dfu mode for ota service. */
+    OTAS_EVT_DISCONNECT,                        /**< link disconnected. */
 } otas_evt_type_t;
 /** @} */
 
@@ -142,8 +143,7 @@ typedef void (*otas_evt_handler_t)(otas_evt_t *p_evt);
  */
 /**@brief OTA Service initialization variable. */
 typedef struct
-{
-    uint32_t           dfu_fw_save_addr;     /**< Address of bank1 for dfu firmware save. */
+{ 
     otas_evt_handler_t evt_handler;          /**< Handler to handle otas event. */
 } otas_init_t;
 /** @} */
@@ -166,15 +166,6 @@ sdk_err_t otas_service_init(otas_init_t *p_otas_init);
 
 /**
  *****************************************************************************************
- * @brief DFU Firmware save address set.
- *
- * @param[in] dfu_fw_save_addr: DFU firmware save addrss..
- *****************************************************************************************
- */
-void ota_fw_save_addr_set(uint32_t dfu_fw_save_addr);
-
-/**
- *****************************************************************************************
  * @brief Send data to peer device
  *
  * @param[in] conn_idx: Connection index
@@ -185,6 +176,15 @@ void ota_fw_save_addr_set(uint32_t dfu_fw_save_addr);
  *****************************************************************************************
  */
 sdk_err_t otas_notify_tx_data(uint8_t conn_idx, uint8_t *p_data,uint16_t length);
+
+/**
+ *****************************************************************************************
+ * @brief Provide the interface for other modules to obtain the ots service start handle .
+ *
+ * @return The ots service start handle.
+ *****************************************************************************************
+ */
+uint16_t otas_service_start_handle_get(void);
 /** @} */
 
 #endif

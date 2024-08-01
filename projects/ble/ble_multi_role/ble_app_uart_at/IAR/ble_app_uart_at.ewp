@@ -1099,6 +1099,9 @@
 <file>
 <name>$PROJ_DIR$\..\..\..\..\..\components\libraries\app_log\app_log.c</name>
 </file>
+<file>
+<name>$PROJ_DIR$\..\..\..\..\..\components\sdk\ble.c</name>
+</file>
 </group>
 <group>
 <name>gr_profiles</name>

@@ -31,4 +31,12 @@ extern xqspi_handle_t g_xqspi_handle;
 typedef void (*FuncVector_t)(void);
 typedef void (*FUNC_t)(void);
 
+#ifndef GR_SOC_ASSERT_DISABLE
+#ifndef GR_SOC_ASSERT
+    #define GR_SOC_ASSERT(x)  if(!(x)) { while(1); }
+#else
+    #define GR_SOC_ASSERT(x)  ((void)0)
 #endif
+#endif
+
+#endif /* GR_SOC_H */

@@ -101,6 +101,10 @@ static void bootloader_wdt_init(void)
     bootloader_wdt_handle.init.counter = 32768 * 20;
     bootloader_wdt_handle.init.alarm_counter = 0;
 
+#if defined(SOC_GR5526) || defined(SOC_GR5X25) || defined(SOC_GR533X)
+    bootloader_wdt_handle.SystemCoreLowClock = &SystemSlowClock;
+#endif
+
     hal_aon_wdt_init(&bootloader_wdt_handle);
     
     SystemCoreUpdateClock();
@@ -113,7 +117,7 @@ static void bootloader_wdt_init(void)
 
 void app_periph_init(void)
 {
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     // Turn on the clock of encryption module.
     app_boot_turn_on_encrypt_clock();
 #endif

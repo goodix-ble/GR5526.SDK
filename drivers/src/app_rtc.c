@@ -92,11 +92,11 @@ extern float SystemRtcSlowClock;
 
 /*
 * NOTE:
-* This defined value is only for SOC GR5332
+* This defined value is only for SOC GR533X
 * 1.RTC is fully functional without FreeRTOS
 * 2.In FreeRTOS, only init time and get time work.
 */
-#if defined(ENV_USE_FREERTOS) && defined(SOC_GR5332)
+#if defined(ENV_USE_FREERTOS) && defined(SOC_GR533X)
 
 /*
  * GLOBAL FUNCTION DEFINITIONS

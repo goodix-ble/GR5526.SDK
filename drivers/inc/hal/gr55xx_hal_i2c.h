@@ -218,8 +218,6 @@ typedef struct _i2c_handle
     __IO uint32_t         error_code;         /**< I2C Error code                             */
 
     uint32_t              retention[13];     /**< I2C important register information. */
-
-    __IO flag_status_t    i2c_dma_req_tx_flag; /**< I2C DMA TX request flag. */
 } i2c_handle_t;
 /** @} */
 
@@ -237,7 +235,7 @@ typedef struct _i2c_handle
   * @brief HAL_I2C Callback function definition
   */
 
-typedef struct _i2c_callback
+typedef struct _hal_i2c_callback
 {
     void (*i2c_msp_init)(i2c_handle_t *p_i2c);                  /**< I2C init MSP callback                      */
     void (*i2c_msp_deinit)(i2c_handle_t *p_i2c);                /**< I2C de-init MSP callback                   */
@@ -247,7 +245,7 @@ typedef struct _i2c_callback
     void (*i2c_slave_rx_cplt_callback)(i2c_handle_t *p_i2c);    /**< I2C slave rx transfer completed callback   */
     void (*i2c_error_callback)(i2c_handle_t *p_i2c);            /**< I2C error callback                         */
     void (*i2c_abort_cplt_callback)(i2c_handle_t *p_i2c);       /**< I2C abort completed callback               */
-} i2c_callback_t;
+} hal_i2c_callback_t;
 
 /** @} */
 

@@ -247,6 +247,8 @@ static void app_dspi_display_init(void)
 
     hal_gpio_write_pin(GPIO0, GPIO_PIN_8 | GPIO_PIN_9, GPIO_PIN_SET);
 
+    /* Please initialize DMA in the following order. */
+    /* Note: Initialization is not allowed during the transmission process. */
     ret = app_dspi_init(&dspi_params, app_dspi_evt_handler);
     if (ret != APP_DRV_SUCCESS)
     {

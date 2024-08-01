@@ -47,6 +47,7 @@ PRJ_C_SRC_FILES:=   \
 ../../../../../components/libraries/ring_buffer/ring_buffer.c  \
 ../../../../../components/libraries/app_log/app_log.c  \
 ../../../../../components/libraries/app_assert/app_assert.c  \
+../../../../../components/sdk/ble.c  \
 ../../../../../components/profiles/common/ble_prf_utils.c  \
 ../../../../../components/profiles/otas_c/otas_c.c  \
 ../../../../../components/drivers_ext/gr55xx/gr55xx_spi_flash.c  \
@@ -275,9 +276,10 @@ mk_path :
 	mkdir -p  $(BUILD_OBJ)
 	mkdir -p  $(BUILD_LST)
 
-flash: $(BUILD)/$(MAKE_TARGET_APP).bin
+flash: $(BUILD)/$(MAKE_TARGET_NAME).bin
 	$(ECHO) "Writing $< to the GR55xx-SK board"
-	programer -t fw -p burn -i $(BUILD)/$(MAKE_TARGET_APP).bin
+	GR5xxx_console.exe eraseall 1 0
+	GR5xxx_console.exe program $(BUILD)/$(MAKE_TARGET_NAME).bin 'y' 0x200000 1024 1 0
 
 clean:
 	rm -rf $(BUILD)

@@ -42,6 +42,7 @@
 #include "app_pwr_mgmt.h"
 #include "grx_sys.h"
 #include "app_adc.h"
+#include "app_drv.h"
 
 #ifdef HAL_ADC_MODULE_ENABLED
 
@@ -236,6 +237,11 @@ uint16_t app_adc_conversion_sync(uint16_t *p_data, uint32_t length, uint32_t tim
         return APP_DRV_ERR_INVALID_PARAM;
     }
 
+    if ((APP_DRV_NEVER_TIMEOUT != timeout) && (APP_DRV_MAX_TIMEOUT < timeout))
+    {
+        return APP_DRV_ERR_INVALID_PARAM;
+    }
+
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     adc_wake_up();
 #endif
@@ -348,6 +354,11 @@ uint16_t app_adc_multi_channel_conversion_async(app_adc_sample_node_t *p_begin_n
 #ifdef APP_DRIVER_WAKEUP_CALL_FUN
     adc_wake_up();
 #endif
+
+    if(HAL_ADC_STATE_READY != hal_adc_get_state(&p_adc_env->handle))
+    {
+        return APP_DRV_ERR_BUSY;
+    }
 
     app_io_init_t io_init = APP_IO_DEFAULT_CONFIG;
     io_init.mode = APP_IO_MODE_ANALOG;
@@ -488,7 +499,8 @@ void hal_adc_conv_cplt_callback(adc_handle_t *p_adc)
     {
         p_adc_env->p_current_sample_node = p_adc_env->p_current_sample_node->next;
         ll_adc_set_channeln(p_adc_env->p_current_sample_node->channel);
-        hal_adc_start_dma(&p_adc_env->handle, p_adc_env->p_current_sample_node->p_buf, p_adc_env->p_current_sample_node->len);
+        hal_status_t hal_status = hal_adc_start_dma(&p_adc_env->handle, p_adc_env->p_current_sample_node->p_buf, p_adc_env->p_current_sample_node->len);
+        APP_DRV_ASSERT(HAL_OK == hal_status);
     }
 }
 

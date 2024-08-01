@@ -81,7 +81,7 @@ static void dfu_m_get_img_info(dfu_img_info_t *img_info)
 
 static void dfu_m_get_img_data(uint32_t addr, uint8_t *p_data, uint16_t length)
 {
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     bool flash_security_status = false;
     uint32_t sys_security = sys_security_enable_status_check();
     if(sys_security)
@@ -93,7 +93,7 @@ static void dfu_m_get_img_data(uint32_t addr, uint8_t *p_data, uint16_t length)
 
     hal_flash_read(addr, p_data, length);
 
-#ifndef SOC_GR5332
+#ifndef SOC_GR533X
     if(sys_security)
     {
         hal_flash_set_security(flash_security_status);

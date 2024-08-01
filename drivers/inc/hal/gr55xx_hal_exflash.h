@@ -186,11 +186,11 @@ typedef ll_xqspi_hp_init_t exflash_hp_init_t;
   * @brief HAL_EXFLASH Callback function definition
   */
 
-typedef struct _exflash_callback
+typedef struct _hal_exflash_callback
 {
     void (*exflash_msp_init)(void);      /**< EXFLASH init MSP callback            */
     void (*exflash_msp_deinit)(void);    /**< EXFLASH de-init MSP callback         */
-} exflash_callback_t;
+} hal_exflash_callback_t;
 
 /** @} */
 

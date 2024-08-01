@@ -215,11 +215,11 @@ typedef struct _xqspi_command_t
   * @brief HAL_XQSPI Callback function definition
   */
 
-typedef struct _xqspi_callback
+typedef struct _hal_xqspi_callback
 {
     void (*xqspi_msp_init)(xqspi_handle_t *p_xqspi);    /**< XQSPI init MSP callback        */
     void (*xqspi_msp_deinit)(xqspi_handle_t *p_xqspi);  /**< XQSPI de-init MSP callback     */
-} xqspi_callback_t;
+} hal_xqspi_callback_t;
 
 /** @} */
 

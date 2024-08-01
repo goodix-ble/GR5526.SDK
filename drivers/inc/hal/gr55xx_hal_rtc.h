@@ -301,12 +301,12 @@ typedef struct _rtc_handle_t
   * @brief HAL_RTC Callback function definition
   */
 
-typedef struct _rtc_callback
+typedef struct _hal_rtc_callback
 {
     void (*rtc_alarm_callback)(rtc_handle_t *p_rtc);        /**< RTC alarm count complete callback */
     void (*rtc_tick_callback)(rtc_handle_t *p_rtc);         /**< RTC tick count complete callback */
     void (*rtc_overflow_callback)(rtc_handle_t *p_rtc);     /**< RTC overflow callback */
-} rtc_callback_t;
+} hal_rtc_callback_t;
 
 /** @} */
 
