@@ -68,6 +68,8 @@ static void _start_transition_with_exit_effect(lv_wms_tileview_t * tv);
 
 static void _finish_transition(lv_wms_tileview_t * tv);
 
+static void _wms_transmit_startup(void);
+
 static lv_wms_tileview_t * _obtain_wms_tileview(lv_obj_t * from_obj);
 
 static lv_obj_t * _try_create_tile(lv_wms_tileview_t * tv);
@@ -140,6 +142,7 @@ lv_wms_tileview_t * lv_wms_tileview_create_with_default(lv_obj_t * parent, lv_wm
 
 lv_wms_tileview_t * lv_wms_tileview_create(lv_obj_t * parent, lv_wms_tileview_create_tile_cb creator_cb)
 {
+    _wms_transmit_startup();
     return lv_wms_tileview_create_with_default(parent, creator_cb, 0, 0, 0, LV_WMS_TILEVIEW_EFFECT_LINEAR);
 }
 
@@ -781,6 +784,26 @@ static void _start_transition_with_exit_effect(lv_wms_tileview_t * tv)
     _start_transition(tv, runing_effect);
 }
 
+static void _wms_transmit_startup(void) {
+    static bool is_init = false;
+
+    if(!is_init) {
+        lv_disp_t * disp = lv_disp_get_default();
+
+        if(disp) {
+            // 压缩保存当前的帧缓存
+            lv_transit_config_t config;
+            config.fb_format = FB_FORMART_DRAW_BUF;
+            config.scrn_res_w = lv_disp_get_hor_res(disp);  // TODO 换为obj的尺寸
+            config.scrn_res_h = lv_disp_get_ver_res(disp);  // TODO
+            lv_wms_transit_starup(&config);
+            
+            is_init = true;
+        }
+    }
+    
+}
+
 static void _start_transition(lv_wms_tileview_t * tv, lv_wms_tileview_transition_effect_t runing_effect)
 {
     tv->runing_effect = runing_effect;
@@ -803,12 +826,7 @@ static void _start_transition(lv_wms_tileview_t * tv, lv_wms_tileview_transition
         //puts("lv_timer_pause(disp->refr_timer);");
     }
 
-    // 压缩保存当前的帧缓存
-    lv_transit_config_t config;
-    config.fb_format = FB_FORMART_DRAW_BUF;
-    config.scrn_res_w = lv_disp_get_hor_res(disp);  // TODO 换为obj的尺寸
-    config.scrn_res_h = lv_disp_get_ver_res(disp);  // TODO
-    lv_wms_transit_starup(&config);
+    _wms_transmit_startup();
 
     lv_wms_transit_screen_cache(LV_TRANSIT_CACHE_SCRN_CURRENT, (uint32_t)(draw_buf->buf_act == draw_buf->buf1 ? draw_buf->buf2 : draw_buf->buf1));
 
@@ -845,7 +863,7 @@ static void _start_transition(lv_wms_tileview_t * tv, lv_wms_tileview_transition
 
     // 由于压缩特性，单个FrameBuffer只需要RGB565的一半，故尽可能多的让Transition Buffer在SRAM上（理想情况下两个都在SRAM上）
     s_trans_fb.buf1 = draw_buf->buf1;
-    s_trans_fb.buf2 = ((uint8_t *)draw_buf->buf1) + hal_gfx_texture_size(FB_FORMART_SNAPSHOT, 0, config.scrn_res_w, config.scrn_res_h);
+    s_trans_fb.buf2 = ((uint8_t *)draw_buf->buf1) + hal_gfx_texture_size(FB_FORMART_SNAPSHOT, 0, lv_disp_get_hor_res(disp), lv_disp_get_ver_res(disp));
     s_trans_fb.buf_act = s_trans_fb.buf1;
 
     // 开始过渡动画的刷新定时器

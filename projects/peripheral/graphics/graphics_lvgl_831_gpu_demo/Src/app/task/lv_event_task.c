@@ -23,6 +23,7 @@ typedef enum {
     WMS_GUI_EVT_KEY0_LONG_PRESSED,
     WMS_GUI_EVT_KEY1_PRESSED,
     WMS_GUI_EVT_KEY1_LONG_PRESSED,
+    WMS_GUI_EVT_KEY1_CONTINUE_PRESS,
     WMS_GUI_EVT_GESTURE_HORI,
 } lv_wms_gui_evt_e;
 
@@ -34,6 +35,30 @@ static void _lv_gui_goto_applist(void* user_data) {
 
 static void _lv_gui_goto_root(void* user_data) {
     app_ui_mgr_goto_root();
+}
+
+static lv_img_dsc_t*    p_snapshot = NULL;
+extern void             lv_scr_load_anim_rotate(lv_obj_t * cur, uint32_t src, uint32_t time, uint32_t delay, uint32_t start, uint32_t end, uint32_t anim, void * data);
+extern lv_img_dsc_t *   lv_snapshot_take_ext(lv_obj_t *obj, lv_img_cf_t cf);
+
+static uint32_t s_anim  = 0; 
+bool volatile is_gui_win_rotated = false;
+static void _lv_gui_rotate_win(void * data) {
+
+    lv_obj_t * p_cur_obj = lv_layout_router_get_active_obj();
+
+    printf("ACTIVE SCN: 0x%08x \r\n", (uint32_t) p_cur_obj);
+    p_snapshot = lv_snapshot_take_ext(p_cur_obj, LV_IMG_CF_GDX_RGB565);
+
+    if(!is_gui_win_rotated) {
+        printf("Rotate FROM 0 -> 180 \r\n");
+        lv_scr_load_anim_rotate(p_cur_obj, (uint32_t)p_snapshot->data, 500, 0, 0, 1800, s_anim++ % 5, p_snapshot);
+        is_gui_win_rotated = true;
+    } else {
+        printf("Rotate FROM 180 -> 360 \r\n");
+        lv_scr_load_anim_rotate(p_cur_obj, (uint32_t)p_snapshot->data, 500, 0, 1800, 3600, s_anim++ % 5, p_snapshot);
+        is_gui_win_rotated = false;
+    }
 }
 
 static void _lv_gui_goto_power_off(void* user_data) {
@@ -73,8 +98,9 @@ static void app_event_task(void *p_arg) {
                 break;
 
                 case WMS_GUI_EVT_KEY1_PRESSED:
+                case WMS_GUI_EVT_KEY1_CONTINUE_PRESS:
                 {
-
+                    lv_async_call(_lv_gui_rotate_win, NULL);
                 }
                 break;
 
@@ -133,6 +159,8 @@ void app_key_evt_handler(uint8_t key_id, app_key_click_type_t key_click_type)
         lv_gui_evt_send(WMS_GUI_EVT_KEY1_PRESSED, NULL);
     } else if((key_id == 1) && (APP_KEY_LONG_CLICK == key_click_type)) {
         lv_gui_evt_send(WMS_GUI_EVT_KEY1_LONG_PRESSED, NULL);
+    }  else if((key_id == 1) && (APP_KEY_CONTINUE_CLICK == key_click_type)) {
+        lv_gui_evt_send(WMS_GUI_EVT_KEY1_CONTINUE_PRESS, NULL);
     }
 
     // Any Key can wake device from sleep state

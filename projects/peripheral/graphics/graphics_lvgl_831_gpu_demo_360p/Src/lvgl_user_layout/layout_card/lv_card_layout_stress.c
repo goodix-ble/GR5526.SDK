@@ -76,7 +76,6 @@ static uint8_t stress_data[] =
  * STATIC METHODs IMPLEMENT
  *****************************************************************************************
  */
-
 static uint32_t _stress_val_to_y_pos(uint8_t hr_val)
 {
     uint32_t ret = STRESS_CHART_Y + wd_img_table_bg_scaled.header.h - STRESS_CHART_BOTTOM_PAD - hr_val / 220.f * (wd_img_table_bg_scaled.header.h - STRESS_CHART_BOTTOM_PAD);
@@ -196,6 +195,7 @@ lv_obj_t *lv_card_layout_stress_create(lv_obj_t *parent_tv_obj)
     lv_obj_set_pos(_stress_chart_min_ticks, STRESS_CHART_Y_MIN_TICKS_X, STRESS_CHART_Y_MIN_TICKS_Y);
 
     _stress_set_max_min_val(stress_data);
+    
 
     return p_window;
 }

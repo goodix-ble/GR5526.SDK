@@ -239,11 +239,19 @@ void graphics_hybrid_rm69330_set_show_area(uint16_t x1, uint16_t x2, uint16_t y1
     }
 }
 
+
+extern volatile bool is_gui_win_rotated;
+extern bool s_rotate_anim_transit_is_progress ;
+extern void * lv_wms_rotate_rgb565_to_tsc4(void * framebuff_address, bool is_src_tsc4, uint32_t w, uint32_t h, const uint32_t degree);
+
+
+    
+    
 void graphics_hybrid_rm69330_flush(void *buf, uint32_t buf_format, uint16_t w, uint16_t h)
 {
     if (buf_format == GDC_DATA_FORMAT_RGB565)
     {
-        switch_display_interface(DISP_IFCE_QSPI);
+//        switch_display_interface(DISP_IFCE_QSPI);
     }
     else
     {
@@ -252,6 +260,17 @@ void graphics_hybrid_rm69330_flush(void *buf, uint32_t buf_format, uint16_t w, u
 
     if (s_disp_ifce == DISP_IFCE_DC)
     {
+        void * fb = buf;
+        uint32_t fb_format = buf_format;
+        if(is_gui_win_rotated && !s_rotate_anim_transit_is_progress) {
+
+            bool is_tsc4 = (buf_format == GDC_DATA_FORMAT_TSC4) ? true : false;
+
+            fb = lv_wms_rotate_rgb565_to_tsc4(buf, is_tsc4, w, h, 180);
+            fb_format = GDC_DATA_FORMAT_TSC4;
+        }
+        
+    
         app_graphics_dc_cmd_t dc_cmd;
 
         dc_cmd.command = 0x12;
@@ -260,7 +279,7 @@ void graphics_hybrid_rm69330_flush(void *buf, uint32_t buf_format, uint16_t w, u
         dc_cmd.frame_timing = GDC_QSPI_FRAME_TIMING_1;
 
         app_graphics_dc_framelayer_t dc_layer = {
-            .frame_baseaddr = (void *)buf,
+            .frame_baseaddr = (void *)fb,
             .resolution_x = w,
             .resolution_y = h,
             .row_stride = -1,
@@ -270,7 +289,7 @@ void graphics_hybrid_rm69330_flush(void *buf, uint32_t buf_format, uint16_t w, u
             .size_y = h,
             .alpha = 0,
             .blendmode = HAL_GDC_BL_SRC,
-            .data_format = (graphics_dc_data_format_e)buf_format,
+            .data_format = (graphics_dc_data_format_e)fb_format,
         };
 
         app_graphics_dc_send_single_frame(GRAPHICS_DC_LAYER_0, &dc_layer, &dc_cmd, GDC_ACCESS_TYPE_ASYNC);

@@ -18,7 +18,7 @@ typedef struct _lv_card_list_entry_layout_item
 } icon_item_t;
 
 // <NOTICE> DEFINE ICON ITEMS
-static icon_item_t g_icon_items[ICON_COUNT] = {
+icon_item_t g_icon_items[ICON_COUNT] = {
     {NULL, &wd_img_APPLIST_03_HEARTRATE,        WMS_WID_CARD_HR},
     {NULL, &wd_img_APPLIST_04_SPO2,             WMS_WID_NONE},
     {NULL, &wd_img_APPLIST_07_BREATH_TRAINING,  WMS_WID_NONE},
@@ -106,6 +106,8 @@ lv_obj_t *lv_card_list_entry_layout_create(lv_obj_t *parent_tv_obj)
     lv_obj_t *window = lv_obj_create(parent_tv_obj);
 
     lv_card_list_entry_layout_init(window);
+    
+    printf("List win: 0x%08x \r\n", (uint32_t) window);
 
     return window;
 }

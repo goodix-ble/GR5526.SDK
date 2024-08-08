@@ -36,11 +36,14 @@ static void         lv_port_disp_draw_fps(lv_disp_drv_t * disp_drv);
 
 static uint8_t      s_fps_save[LV_FPS_CACHE_NB];
 static uint32_t     s_refresh_fps = 30;
-static bool         s_debug_info_enable = false;
+static bool         s_debug_info_enable = true;
 
 /**********************
  *   GLOBAL FUNCTIONS
  **********************/
+
+void * p_tsc4_fb1 = NULL;
+void * p_rgb_fb1  = NULL;
 
 void lv_port_disp_init(void)
 {
@@ -53,6 +56,9 @@ void lv_port_disp_init(void)
      * Create two fixed frame buffers for drawing and never release it
      *----------------------------*/
     static lv_disp_draw_buf_t draw_buf_dsc;
+    
+    p_tsc4_fb1 = app_graphics_mem_malloc(DISP_HOR_RES * DISP_VER_RES /2);
+    p_rgb_fb1  = app_graphics_mem_malloc(DISP_HOR_RES * DISP_VER_RES * 2);
 
     lv_color_t* _draw_buf1 = app_graphics_mem_malloc(DISP_HOR_RES * DISP_VER_RES * DISP_PIXEL_DEPTH);
     lv_color_t* _draw_buf2 = app_graphics_mem_malloc(DISP_HOR_RES * DISP_VER_RES * DISP_PIXEL_DEPTH);
@@ -167,7 +173,7 @@ static void drv_disp_flush(lv_disp_drv_t * disp_drv, const lv_area_t * area, lv_
 
     drv_adapter_disp_wait_to_flush();
     drv_adapter_disp_set_show_area(area->x1, area->y1, area->x2, area->y2);
-    drv_adapter_disp_wait_te();
+    //drv_adapter_disp_wait_te();
     drv_adapter_disp_flush((void *) draw_buf->buf_act, data_format, area->x2 - area->x1 + 1, area->y2 - area->y1 + 1);
 
     return;

@@ -160,8 +160,22 @@ void graphics_dc_st77916_set_show_area(uint16_t x1, uint16_t x2, uint16_t y1, ui
     dc_spi_send_sync(0x2B, data_2b, 4);
 }
 
+extern volatile bool is_gui_win_rotated;
+extern bool s_rotate_anim_transit_is_progress ;
+extern void * lv_wms_rotate_rgb565_to_tsc4(void * framebuff_address, bool is_src_tsc4, uint32_t w, uint32_t h, const uint32_t degree);
+
 void graphics_dc_st77916_flush(void *buf, uint32_t buf_format, uint16_t w, uint16_t h)
 {
+    void * fb = buf;
+    uint32_t fb_format = buf_format;
+    if(is_gui_win_rotated && !s_rotate_anim_transit_is_progress) {
+
+        bool is_tsc4 = (buf_format == GDC_DATA_FORMAT_TSC4) ? true : false;
+
+        fb = lv_wms_rotate_rgb565_to_tsc4(buf, is_tsc4, w, h, 180);
+        fb_format = GDC_DATA_FORMAT_TSC4;
+    }
+
     app_graphics_dc_cmd_t dc_cmd = {
         .command = ST77916_INST_WR_I1A4D4,
         .address = 0x002C00,
@@ -170,7 +184,7 @@ void graphics_dc_st77916_flush(void *buf, uint32_t buf_format, uint16_t w, uint1
     };
 
     app_graphics_dc_framelayer_t dc_layer = {
-        .frame_baseaddr = buf,
+        .frame_baseaddr = fb,
         .resolution_x = w,
         .resolution_y = h,
         .row_stride = -1,
@@ -180,7 +194,7 @@ void graphics_dc_st77916_flush(void *buf, uint32_t buf_format, uint16_t w, uint1
         .size_y = h,
         .alpha = 0,
         .blendmode = HAL_GDC_BL_SRC,
-        .data_format = (graphics_dc_data_format_e)buf_format,
+        .data_format = (graphics_dc_data_format_e)fb_format,
     };
 
     app_graphics_dc_send_single_frame(GRAPHICS_DC_LAYER_0, &dc_layer, &dc_cmd, GDC_ACCESS_TYPE_ASYNC);

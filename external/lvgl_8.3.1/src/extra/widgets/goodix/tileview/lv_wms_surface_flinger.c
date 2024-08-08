@@ -97,9 +97,11 @@ void lv_wms_transit_shutdown(void) {
     memset(&_trans_env, 0, sizeof(lv_transit_context_t));
 }
 
+extern void * p_tsc4_fb1 ;
+
 void lv_wms_transit_mem_alloc(void) {
     if(NULL == _trans_env._scrn_cache_1) {
-        _trans_env._scrn_cache_1 = app_graphics_mem_malloc(_trans_env._cachebuffer_size);
+        _trans_env._scrn_cache_1 = p_tsc4_fb1;//app_graphics_mem_malloc(_trans_env._cachebuffer_size);
     }
 
     if(NULL == _trans_env._scrn_cache_2) {
@@ -327,6 +329,71 @@ lv_transit_frame_t * lv_wms_transit_frame_render(void * dest_address, const lv_t
     s_lv_transit_frame.transit_scrn_res_h   = _trans_env._cachebuffer_height;
     return &s_lv_transit_frame;
 }
+
+
+lv_transit_frame_t * lv_wms_transit_frame_rotate(void * dest_address, const uint32_t degree) {
+
+    uint16_t ver_res       = _trans_env._framebuffer_height;
+    uint16_t hor_res       = _trans_env._framebuffer_width;
+    uint32_t _cb_address_1 = (uint32_t)_trans_env._scrn_cache_1;
+
+    void * p_dest_buff = dest_address;
+
+    hal_gfx_cmdlist_t cmd = hal_gfx_cl_le_create();
+    hal_gfx_cl_bind_circular(&cmd);
+
+    uint8_t *p_now_screen_cache_buf  = _trans_env._scrn_cache_1;
+
+    hal_gfx_set_clip(0, 0,                                  _trans_env._cachebuffer_width, _trans_env._cachebuffer_height);
+    hal_gfx_bind_dst_tex((uint32_t)p_dest_buff,             _trans_env._cachebuffer_width, _trans_env._cachebuffer_height, HAL_GFX_TSC4, -1);
+    hal_gfx_bind_src_tex((uint32_t)p_now_screen_cache_buf,  _trans_env._cachebuffer_width, _trans_env._cachebuffer_height, HAL_GFX_TSC4, -1, HAL_GFX_FILTER_BL);
+
+    hal_gfx_set_blend_blit(HAL_GFX_BL_SRC_OVER);
+    hal_gfx_blit_rotate_pivot(hor_res/2, ver_res/2, hor_res/2, ver_res/2, degree * 1.0f);
+
+    hal_gfx_cl_submit(&cmd);
+    hal_gfx_cl_wait(&cmd);
+    hal_gfx_cl_le_destroy(&cmd);
+
+    s_lv_transit_frame.transit_scrn_addr   = p_dest_buff;
+    s_lv_transit_frame.transit_scrn_res_w  = _trans_env._cachebuffer_width;
+    s_lv_transit_frame.transit_scrn_res_h  = _trans_env._cachebuffer_height;
+
+    return &s_lv_transit_frame;
+}
+
+
+void * lv_wms_rotate_rgb565_to_tsc4(void * framebuff_address, bool is_src_tsc4, uint32_t w, uint32_t h, const uint32_t degree) {
+    uint16_t hor_res       = w;
+    uint16_t ver_res       = h;
+
+    static void * p_dest_buff = NULL;
+
+    if(p_dest_buff == NULL) {
+        p_dest_buff = app_graphics_mem_malloc(w*h*2);
+    }
+
+    hal_gfx_cmdlist_t cmd = hal_gfx_cl_le_create();
+    hal_gfx_cl_bind_circular(&cmd);
+
+    hal_gfx_set_clip(0, 0,                             w, h);
+    hal_gfx_bind_dst_tex((uint32_t)p_dest_buff,        w, h, HAL_GFX_TSC4,   -1);
+    if(is_src_tsc4) {
+        hal_gfx_bind_src_tex((uint32_t)framebuff_address,  w, h, HAL_GFX_TSC4, -1, HAL_GFX_FILTER_BL);
+    } else {
+        hal_gfx_bind_src_tex((uint32_t)framebuff_address,  w, h, HAL_GFX_RGB565, -1, HAL_GFX_FILTER_BL);
+    }
+
+    hal_gfx_set_blend_blit(HAL_GFX_BL_SRC_OVER);
+    hal_gfx_blit_rotate_pivot(w/2, h/2, w/2, h/2, degree * 1.0f);
+
+    hal_gfx_cl_submit(&cmd);
+    hal_gfx_cl_wait(&cmd);
+    hal_gfx_cl_le_destroy(&cmd);
+
+    return p_dest_buff;
+}
+
 
 void lv_wms_transit_effect_set(lv_transit_effect_e e) {
     s_global_transit_effect = e;

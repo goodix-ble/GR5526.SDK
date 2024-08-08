@@ -16,7 +16,7 @@
         <TargetCommonOption>
           <Device>ARMCM4_FP</Device>
           <Vendor>ARM</Vendor>
-          <PackID>ARM.CMSIS.5.6.0</PackID>
+          <PackID>ARM.CMSIS.5.9.0</PackID>
           <PackURL>http://www.keil.com/pack/</PackURL>
           <Cpu>IROM(0x00000000,0x80000) IRAM(0x20000000,0x20000) CPUTYPE("Cortex-M4") FPU2 CLOCK(12000000) ESEL ELITTLE</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
@@ -1967,6 +1967,16 @@
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Src\app\main.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_snapshot.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\external\lvgl_8.3.1\src\extra\others\snapshot\lv_snapshot.c</FilePath>
+            </File>
+            <File>
+              <FileName>lv_enhanced_anim_rotate.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\..\..\..\..\external\lvgl_8.3.1\src\extra\widgets\goodix\anim\lv_enhanced_anim_rotate.c</FilePath>
             </File>
           </Files>
         </Group>

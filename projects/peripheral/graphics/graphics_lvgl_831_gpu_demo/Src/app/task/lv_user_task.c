@@ -118,6 +118,7 @@ void app_indev_read_task(void * args)
                 } else {
                     /* no tp-press event, wait in period-semaphore */
                     osal_sema_take(s_sleep_mgnt_sem, 500);
+                    break;
                     if(sys_state_calc_delta_time() >= SYS_SCREEN_OFF_WAIT_TIME_MS) {
 
                         bool    is_aod_off = false;

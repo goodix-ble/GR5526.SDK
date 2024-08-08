@@ -12,6 +12,10 @@
 #include <stdbool.h>
 #include "../../../core/lv_disp.h"
 #include "../../../core/lv_refr.h"
+
+#if LV_USE_GPU_GR552x
+#include "app_graphics_mem.h"
+#endif // LV_USE_GPU_GR552x
 /*********************
  *      DEFINES
  *********************/
@@ -53,6 +57,10 @@ uint32_t lv_snapshot_buf_size_needed(lv_obj_t * obj, lv_img_cf_t cf)
         case LV_IMG_CF_ALPHA_2BIT:
         case LV_IMG_CF_ALPHA_4BIT:
         case LV_IMG_CF_ALPHA_8BIT:
+#if LV_USE_GPU_GR552x
+        case LV_IMG_CF_GDX_RGB565:
+        case LV_IMG_CF_GDX_RGBA8888:
+#endif // LV_USE_GPU_GR552x
             break;
         default:
             return 0;
@@ -94,6 +102,10 @@ lv_res_t lv_snapshot_take_to_buf(lv_obj_t * obj, lv_img_cf_t cf, lv_img_dsc_t * 
         case LV_IMG_CF_ALPHA_2BIT:
         case LV_IMG_CF_ALPHA_4BIT:
         case LV_IMG_CF_ALPHA_8BIT:
+#if LV_USE_GPU_GR552x
+        case LV_IMG_CF_GDX_RGB565:
+        case LV_IMG_CF_GDX_RGBA8888:
+#endif // LV_USE_GPU_GR552x
             break;
         default:
             return LV_RES_INV;
@@ -138,6 +150,12 @@ lv_res_t lv_snapshot_take_to_buf(lv_obj_t * obj, lv_img_cf_t cf, lv_img_dsc_t * 
     draw_ctx->buf = (void *)buf;
     driver.draw_ctx = draw_ctx;
 
+#if LV_USE_GPU_GR552x
+    // Enable transform buff for partial rendering
+    draw_ctx->is_transform_buff = true;
+    draw_ctx->transform_buff_pixel_bytes = lv_img_cf_get_px_size(cf) >> 3;
+#endif // LV_USE_GPU_GR552x
+
     lv_disp_t * refr_ori = _lv_refr_get_disp_refreshing();
     _lv_refr_set_disp_refreshing(&fake_disp);
 
@@ -153,6 +171,51 @@ lv_res_t lv_snapshot_take_to_buf(lv_obj_t * obj, lv_img_cf_t cf, lv_img_dsc_t * 
     dsc->header.cf = cf;
     return LV_RES_OK;
 }
+
+
+#if LV_USE_GPU_GR552x
+
+lv_img_dsc_t *lv_snapshot_take(lv_obj_t *obj, lv_img_cf_t cf)
+{
+    LV_ASSERT_NULL(obj);
+    uint32_t buff_size = lv_snapshot_buf_size_needed(obj, cf);
+
+    extern void * p_rgb_fb1;
+    
+    void *buf = app_graphics_mem_malloc(buff_size);
+    LV_ASSERT_MALLOC(buf);
+    if(buf == NULL) {
+        return NULL;
+    }
+
+    lv_img_dsc_t * dsc = lv_mem_alloc(sizeof(lv_img_dsc_t));
+    LV_ASSERT_MALLOC(buf);
+    if(dsc == NULL) {
+        lv_mem_free(buf);
+        return NULL;
+    }
+
+    if(lv_snapshot_take_to_buf(obj, cf, dsc, buf, buff_size) == LV_RES_INV) {
+        lv_mem_free(buf);
+        lv_mem_free(dsc);
+        return NULL;
+    }
+
+    return dsc;
+}
+
+void lv_snapshot_free(lv_img_dsc_t * dsc)
+{
+    if(!dsc)
+        return;
+
+    if(dsc->data)
+        app_graphics_mem_free((void *)dsc->data);
+
+    lv_mem_free(dsc);
+}
+
+#else
 
 /** Take snapshot for object with its children, alloc the memory needed.
  *
@@ -205,6 +268,8 @@ void lv_snapshot_free(lv_img_dsc_t * dsc)
 
     lv_mem_free(dsc);
 }
+
+#endif // LV_USE_GPU_GR552x
 
 /**********************
  *   STATIC FUNCTIONS

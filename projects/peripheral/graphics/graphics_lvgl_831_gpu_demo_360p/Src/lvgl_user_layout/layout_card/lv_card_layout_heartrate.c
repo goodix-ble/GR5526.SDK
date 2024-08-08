@@ -140,7 +140,6 @@ if (e->code == LV_EVENT_READY)
     }
 }
 
-
 /*
  * GLOBAL METHODS IMPLEMENT
  *****************************************************************************************
@@ -150,61 +149,76 @@ lv_obj_t *lv_card_layout_heartrate_create(lv_obj_t *parent_tv_obj)
     lv_obj_t *p_window = lv_obj_create(parent_tv_obj);
     lv_obj_set_size(p_window, DISP_HOR_RES, DISP_VER_RES);
 
+    
+    lv_obj_t *p_con_img = lv_img_create(p_window);
+    lv_obj_set_size(p_con_img, DISP_HOR_RES, DISP_VER_RES);
+    lv_obj_set_pos(p_con_img, 0, 0);
+    lv_obj_add_flag(p_con_img, LV_OBJ_FLAG_HIDDEN);
+    
+    p_container_img = p_con_img;
+
+
+    lv_obj_t *p_con_win = lv_obj_create(p_window);
+    lv_obj_set_size(p_con_win, DISP_HOR_RES, DISP_VER_RES);
+    lv_obj_set_pos(p_con_win, 0, 0);
+    p_container_layout  = p_con_win;
+
+
     // title
-    lv_obj_t *_heart_title = lv_label_create(p_window);
+    lv_obj_t *_heart_title = lv_label_create(p_con_win);
     lv_obj_set_style_text_font(_heart_title, &lv_font_montserrat_26, LV_STATE_DEFAULT); // 30
     lv_label_set_text_static(_heart_title, "Heart Rate");
     lv_obj_set_pos(_heart_title, HR_TITLE_X, HR_TITLE_Y);
 
     // heart icon
-    _heart_icon = lv_img_create(p_window);
+    _heart_icon = lv_img_create(p_con_win);
     lv_img_set_src(_heart_icon, HR_ICON_ANIM_LIST[0]);
     lv_obj_set_pos(_heart_icon, HR_ICON_X, HR_ICON_Y);
 
     // heart value
-    _heart_val = lv_label_create(p_window);
+    _heart_val = lv_label_create(p_con_win);
     lv_obj_set_style_text_font(_heart_val, &lv_font_montserrat_48_gdx, LV_STATE_DEFAULT); // 60
     lv_obj_set_style_text_color(_heart_val, lv_color_white(), LV_STATE_DEFAULT);
     lv_label_set_text_fmt(_heart_val, "%d", 80);
     lv_obj_set_pos(_heart_val, HR_VAL_X, HR_VAL_Y);
 
     // heart unit
-    lv_obj_t *_heart_unit = lv_label_create(p_window);
+    lv_obj_t *_heart_unit = lv_label_create(p_con_win);
     lv_obj_set_style_text_font(_heart_unit, &lv_font_montserrat_26, LV_STATE_DEFAULT); // 30
     lv_obj_set_style_text_color(_heart_unit, lv_color_make(0xA0, 0xA0, 0xA0), LV_STATE_DEFAULT);
     lv_label_set_text_static(_heart_unit, "BPM");
     lv_obj_set_pos(_heart_unit, HR_UNIT_X, HR_UNIT_Y);
 
     // measure time
-    _heart_meas_time = lv_label_create(p_window);
+    _heart_meas_time = lv_label_create(p_con_win);
     lv_obj_set_style_text_font(_heart_meas_time, &lv_font_montserrat_26, LV_STATE_DEFAULT); // 30
     lv_obj_set_style_text_color(_heart_meas_time, lv_color_make(0xA0, 0xA0, 0xA0), LV_STATE_DEFAULT);
     lv_label_set_text_fmt(_heart_meas_time, "%s", "5 Mins Ago");
     lv_obj_set_pos(_heart_meas_time, HR_MEAS_TIME_X, HR_MEAS_TIME_Y);
 
     // chart
-    _heart_chart = lv_img_create(p_window);
+    _heart_chart = lv_img_create(p_con_win);
     lv_img_set_src(_heart_chart, &wd_img_table_bg_scaled);
     lv_obj_set_pos(_heart_chart, HR_CHART_X, HR_CHART_Y);
 
     // heart max icon
-    lv_obj_t *_heart_max_icon = lv_img_create(p_window);
+    lv_obj_t *_heart_max_icon = lv_img_create(p_con_win);
     lv_img_set_src(_heart_max_icon, &wd_img_hr_max);
     lv_obj_set_pos(_heart_max_icon, HR_MAX_ICON_X, HR_MAX_ICON_Y);
 
     // heart max value
-    _heart_max = lv_label_create(p_window);
+    _heart_max = lv_label_create(p_con_win);
     lv_obj_set_style_text_font(_heart_max, &lv_font_montserrat_26, LV_STATE_DEFAULT); // 30
     lv_label_set_text_fmt(_heart_max, "%d", 100);
     lv_obj_set_pos(_heart_max, HR_MAX_VAL_X, HR_MAX_VAL_Y);
 
     // heart min icon
-    lv_obj_t *_heart_min_icon = lv_img_create(p_window);
+    lv_obj_t *_heart_min_icon = lv_img_create(p_con_win);
     lv_img_set_src(_heart_min_icon, &wd_img_hr_min);
     lv_obj_set_pos(_heart_min_icon, HR_MIN_ICON_X, HR_MIN_ICON_Y);
 
     // heart min value
-    _heart_min = lv_label_create(p_window);
+    _heart_min = lv_label_create(p_con_win);
     lv_obj_set_style_text_font(_heart_min, &lv_font_montserrat_26, LV_STATE_DEFAULT); // 30
     lv_label_set_text_fmt(_heart_min, "%d", 47);
     lv_obj_set_pos(_heart_min, HR_MIN_VAL_X, HR_MIN_VAL_Y);
@@ -212,7 +226,7 @@ lv_obj_t *lv_card_layout_heartrate_create(lv_obj_t *parent_tv_obj)
     // heart line
     for (uint8_t i = 0; i < 24; i++)
     {
-        _heart_val_line[i] = lv_line_create(p_window);
+        _heart_val_line[i] = lv_line_create(p_con_win);
         lv_obj_set_style_line_rounded(_heart_val_line[i], true, 0);
         lv_obj_set_style_line_width(_heart_val_line[i], 4, 0);
         lv_obj_set_style_line_color(_heart_val_line[i], lv_color_make(255, 45, 54), 0);
@@ -220,13 +234,13 @@ lv_obj_t *lv_card_layout_heartrate_create(lv_obj_t *parent_tv_obj)
     }
 
     // heart ticks
-    _heart_chart_max_ticks = lv_label_create(p_window);
+    _heart_chart_max_ticks = lv_label_create(p_con_win);
     lv_obj_set_style_text_font(_heart_chart_max_ticks, &lv_font_montserrat_20, LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(_heart_chart_max_ticks, lv_color_make(0xA0, 0xA0, 0xA0), LV_STATE_DEFAULT);
     lv_label_set_text_fmt(_heart_chart_max_ticks, "200");
     lv_obj_set_pos(_heart_chart_max_ticks, HR_CHART_Y_MAX_TICKS_X, HR_CHART_Y_MAX_TICKS_Y);
 
-    _heart_chart_min_ticks = lv_label_create(p_window);
+    _heart_chart_min_ticks = lv_label_create(p_con_win);
     lv_obj_set_style_text_font(_heart_chart_min_ticks, &lv_font_montserrat_20, LV_STATE_DEFAULT);
     lv_obj_set_style_text_color(_heart_chart_min_ticks, lv_color_make(0xA0, 0xA0, 0xA0), LV_STATE_DEFAULT);
     lv_label_set_text_fmt(_heart_chart_min_ticks, "0");
