@@ -54,6 +54,8 @@
 #define DEFAULT_QSPI_CONFIG                 {2, QSPI_CLOCK_MODE_3, 0}
 #define DEFAULT_PARAM_CONFIG                {APP_QSPI_ID_0, g_qspi_pin_groups[QSPI0_PIN_GROUP_0], DEFAULT_MODE_CONFIG, DEFAULT_QSPI_CONFIG}
 
+#define ENABLE_4BYTES_ADDRESS_MODE          0u      /* SET 1 IF USING 4-Byte Address NorFlash */
+
 
 /********************************************************************************************
  *                       Static Declarations
@@ -278,6 +280,23 @@ bool qspi_norf_wakeup(void)
     return true;
 }
 
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+bool qspi_norf_enter_4b_mode(void)
+{
+    uint16_t ret = 0;
+    uint8_t control_frame[1] = {0xB7};
+
+    s_qspi_tx_done = 0;
+    ret = app_qspi_dma_transmit_async_ex(s_qspi_params.id, QSPI_DATA_MODE_SPI, QSPI_DATASIZE_08_BITS, control_frame, sizeof(control_frame));
+    if(0 == ret) {
+        while(s_qspi_tx_done == 0);
+    } else {
+        return false;
+    }
+
+    return true;
+}
+#endif
 
 void qspi_norf_unprotect(void)
 {
@@ -653,12 +672,22 @@ bool qspi_norf_dev_erase(uint32_t addr, norf_emode_e emode) {
 
 void qspi_norf_set_mmap(bool mmap) {
     if(mmap) {
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+        app_qspi_mmap_device_t q_dev = {
+            .dev_type    = APP_QSPI_DEVICE_FLASH,
+            .rd.flash_rd = FLASH_MMAP_CMD_4READ4B_ECH,
+        };
+
+        qspi_norf_enable_quad();
+        qspi_norf_enter_4b_mode();
+#else
         app_qspi_mmap_device_t q_dev = {
             .dev_type    = APP_QSPI_DEVICE_FLASH,
             .rd.flash_rd = FLASH_MMAP_CMD_4READ_EBH,
         };
 
         qspi_norf_enable_quad();
+#endif
         app_qspi_config_memory_mappped(s_qspi_params.id,  q_dev);
         app_qspi_mmap_set_endian_mode(s_qspi_params.id,   APP_QSPI_MMAP_ENDIAN_MODE_1);
     } else {

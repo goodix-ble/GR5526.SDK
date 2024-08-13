@@ -223,6 +223,9 @@ typedef enum {
     FLASH_MMAP_CMD_QREAD_6BH         = 0x03,    /**< 6BH in QRead */
     FLASH_MMAP_CMD_4READ_EBH         = 0x04,    /**< EBH in 4Read */
     FLASH_MMAP_CMD_4READ_EBH_SIOO    = 0x05,    /**< EBH in 4Read with SIOO mode */
+
+    FLASH_MMAP_CMD_QREAD4B_6CH       = 0x06,
+    FLASH_MMAP_CMD_4READ4B_ECH       = 0x07,
     FLASH_MMAP_CMD_READ_MAX,
 } app_qspi_flash_mmap_rd_cmd_e;
 
