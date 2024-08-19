@@ -271,7 +271,7 @@ static bool _norflash_drv_erase(norflash_drv_t * dev, uint32_t addr, uint32_t mo
         {
             adjust_addr = addr & 0xFFFFFF00;
 #if ENABLE_4BYTES_ADDRESS_MODE > 0u
-            emode       = NORF_EMODE_4B_SECTOR;
+            emode       = NORF_EMODE_PAGE;
 #else
             emode       = NORF_EMODE_4B_PAGE;
 #endif
