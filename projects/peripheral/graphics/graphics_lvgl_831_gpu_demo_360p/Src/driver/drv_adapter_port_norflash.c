@@ -38,9 +38,13 @@ static __align(4) uint8_t  s_norf_sector_buff[4096];
  ***********************************************************************************/
 
 void drv_adapter_norflash_register(void) {
-
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+    s_norf_port_param.read_mode       = NORF_RMODE_2xIO_4B_READ;
+    s_norf_port_param.write_mode      = NORF_WMODE_4B_PP;
+#else
     s_norf_port_param.read_mode       = NORF_RMODE_2xIO_READ;
     s_norf_port_param.write_mode      = NORF_WMODE_PP;
+#endif
     s_norf_port_param.data_xfer_width = NORF_XFER_WIDTH_BYTE;
     s_norf_port_param.is_mmap_mode    = false;
 
@@ -266,21 +270,33 @@ static bool _norflash_drv_erase(norflash_drv_t * dev, uint32_t addr, uint32_t mo
         case ADAPTER_NORFFLASH_ERASE_PAGE:
         {
             adjust_addr = addr & 0xFFFFFF00;
-            emode       = NORF_EMODE_PAGE;
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+            emode       = NORF_EMODE_4B_SECTOR;
+#else
+            emode       = NORF_EMODE_4B_PAGE;
+#endif
         }
         break;
 
         case ADAPTER_NORFFLASH_ERASE_SECTOR:
         {
             adjust_addr = addr & 0xFFFFF000;
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+            emode       = NORF_EMODE_4B_SECTOR;
+#else
             emode       = NORF_EMODE_SECTOR;
+#endif
         }
         break;
 
         case ADAPTER_NORFFLASH_ERASE_BLOCK:
         {
             adjust_addr = addr & 0xFFFF8000;
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+            emode       = NORF_EMODE_4B_BLOCK_32K;
+#else
             emode       = NORF_EMODE_BLOCK_32K;
+#endif
         }
         break;
 
@@ -301,6 +317,9 @@ static bool _norflash_drv_erase(norflash_drv_t * dev, uint32_t addr, uint32_t mo
 }
 
 static bool _norflash_drv_set_mmap_mode(norflash_drv_t * dev, bool mmap) {
+#if 1
+    qspi_norf_set_mmap(mmap);
+#else
     _norf_port_param_t * np = (_norf_port_param_t*) dev->user_data;
 
     if(mmap) {
@@ -308,7 +327,7 @@ static bool _norflash_drv_set_mmap_mode(norflash_drv_t * dev, bool mmap) {
     } else {
         app_qspi_active_memory_mappped(np->qspi_id, false);
     }
-
+#endif
     return true;
 }
 

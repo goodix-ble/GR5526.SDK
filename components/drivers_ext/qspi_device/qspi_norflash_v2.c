@@ -54,8 +54,6 @@
 #define DEFAULT_QSPI_CONFIG                 {2, QSPI_CLOCK_MODE_3, 0}
 #define DEFAULT_PARAM_CONFIG                {APP_QSPI_ID_0, g_qspi_pin_groups[QSPI0_PIN_GROUP_0], DEFAULT_MODE_CONFIG, DEFAULT_QSPI_CONFIG}
 
-#define ENABLE_4BYTES_ADDRESS_MODE          0u      /* SET 1 IF USING 4-Byte Address NorFlash */
-
 
 /********************************************************************************************
  *                       Static Declarations
@@ -284,7 +282,7 @@ bool qspi_norf_wakeup(void)
 bool qspi_norf_enter_4b_mode(void)
 {
     uint16_t ret = 0;
-    uint8_t control_frame[1] = {0xB7};
+    uint8_t control_frame[1] = {QSPI_NORF_CMD_4B_ENTER};
 
     s_qspi_tx_done = 0;
     ret = app_qspi_dma_transmit_async_ex(s_qspi_params.id, QSPI_DATA_MODE_SPI, QSPI_DATASIZE_08_BITS, control_frame, sizeof(control_frame));
@@ -296,6 +294,23 @@ bool qspi_norf_enter_4b_mode(void)
 
     return true;
 }
+
+bool qspi_norf_exit_4b_mode(void)
+{
+    uint16_t ret = 0;
+    uint8_t control_frame[1] = {QSPI_NORF_CMD_4B_EXIT};
+
+    s_qspi_tx_done = 0;
+    ret = app_qspi_dma_transmit_async_ex(s_qspi_params.id, QSPI_DATA_MODE_SPI, QSPI_DATASIZE_08_BITS, control_frame, sizeof(control_frame));
+    if(0 == ret) {
+        while(s_qspi_tx_done == 0);
+    } else {
+        return false;
+    }
+
+    return true;
+}
+
 #endif
 
 void qspi_norf_unprotect(void)
@@ -518,6 +533,69 @@ bool qspi_norf_dev_read(uint32_t addr, uint8_t *buffer, uint32_t nbytes, norf_rm
         }
         break;
 
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+
+        case NORF_RMODE_4B_READ :
+        {
+            command.address_size             = QSPI_ADDRSIZE_32_BITS;
+            command.instruction              = QSPI_NORF_CMD_4B_READ;
+            command.dummy_cycles             = 0;
+            command.instruction_address_mode = QSPI_INST_ADDR_ALL_IN_SPI;
+            command.data_mode                = QSPI_DATA_MODE_SPI;
+        }
+        break;
+
+        case NORF_RMODE_FAST_4B_READ:
+        {
+            command.address_size             = QSPI_ADDRSIZE_32_BITS;
+            command.instruction              = QSPI_NORF_CMD_4B_FREAD;
+            command.dummy_cycles             = 8;
+            command.instruction_address_mode = QSPI_INST_ADDR_ALL_IN_SPI;
+            command.data_mode                = QSPI_DATA_MODE_SPI;
+        }
+        break;
+
+        case NORF_RMODE_DUAL_4B_READ:
+        {
+            command.address_size             = QSPI_ADDRSIZE_32_BITS;
+            command.instruction              = QSPI_NORF_CMD_4B_DOFR;
+            command.dummy_cycles             = 8;
+            command.instruction_address_mode = QSPI_INST_ADDR_ALL_IN_SPI;
+            command.data_mode                = QSPI_DATA_MODE_DUALSPI;
+        }
+        break;
+
+        case NORF_RMODE_2xIO_4B_READ:
+        {
+            command.address_size             = QSPI_ADDRSIZE_32_BITS;
+            command.instruction              = QSPI_NORF_CMD_4B_DIOFR;
+            command.dummy_cycles             = 4;
+            command.instruction_address_mode = QSPI_INST_IN_SPI_ADDR_IN_SPIFRF;
+            command.data_mode                = QSPI_DATA_MODE_DUALSPI;
+        }
+        break;
+
+        case NORF_RMODE_QUAD_4B_READ:
+        {
+            command.address_size             = QSPI_ADDRSIZE_32_BITS;
+            command.instruction              = QSPI_NORF_CMD_4B_QOFR;
+            command.dummy_cycles             = 8;
+            command.instruction_address_mode = QSPI_INST_ADDR_ALL_IN_SPI;
+            command.data_mode                = QSPI_DATA_MODE_QUADSPI;
+        }
+        break;
+
+        case NORF_RMODE_4xIO_4B_READ:
+        {
+            command.address_size             = QSPI_ADDRSIZE_32_BITS;
+            command.instruction              = QSPI_NORF_CMD_4B_QIOFR;
+            command.dummy_cycles             = 6;
+            command.instruction_address_mode = QSPI_INST_IN_SPI_ADDR_IN_SPIFRF;
+            command.data_mode                = QSPI_DATA_MODE_QUADSPI;
+        }
+        break;
+#endif
+
         default:
         {
             return false;
@@ -578,6 +656,34 @@ bool qspi_norf_dev_write(uint32_t addr, uint8_t *buffer, uint32_t nbytes, norf_w
         }
         break;
 
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+
+        case NORF_WMODE_4B_PP:
+        {
+            command.instruction  = QSPI_NORF_CMD_4B_PP;
+            command.address_size = QSPI_ADDRSIZE_32_BITS;
+            command.data_mode    = QSPI_DATA_MODE_SPI;
+        }
+        break;
+
+        case NORF_WMODE_DUAL_4B_PP:
+        {
+            command.instruction = QSPI_NORF_CMD_4B_DPP;
+            command.address_size = QSPI_ADDRSIZE_32_BITS;
+            command.data_mode   = QSPI_DATA_MODE_DUALSPI;
+        }
+        break;
+
+        case NORF_WMODE_QUAD_4B_PP:
+        {
+            command.instruction = QSPI_NORF_CMD_4B_QPP;
+            command.address_size = QSPI_ADDRSIZE_32_BITS;
+            command.data_mode   = QSPI_DATA_MODE_QUADSPI;
+        }
+        break;
+
+#endif
+
         default:
         {
             return false;
@@ -604,7 +710,7 @@ bool qspi_norf_dev_erase(uint32_t addr, norf_emode_e emode) {
 
     uint16_t ret = 0;
     uint16_t cmd_len = 4;
-    uint8_t erase_cmd[4];
+    uint8_t erase_cmd[8];
     erase_cmd[0] = 0x00;
     erase_cmd[1] = (addr >> 16) & 0xFF;
     erase_cmd[2] = (addr >>  8) & 0xFF;
@@ -646,6 +752,54 @@ bool qspi_norf_dev_erase(uint32_t addr, norf_emode_e emode) {
             cmd_len      = 1;
         }
         break;
+
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+
+        case NORF_EMODE_4B_PAGE:
+        {
+            erase_cmd[0] = QSPI_NORF_CMD_4B_PE;
+            erase_cmd[1] = (addr >> 24) & 0xFF;
+            erase_cmd[2] = (addr >> 16) & 0xFF;
+            erase_cmd[3] = (addr >>  8) & 0xFF;
+            erase_cmd[4] = (addr >>  0) & 0xFF;
+            cmd_len      = 5;
+        }
+        break;
+
+        case NORF_EMODE_4B_SECTOR:
+        {
+            erase_cmd[0] = QSPI_NORF_CMD_4B_SE;
+            erase_cmd[1] = (addr >> 24) & 0xFF;
+            erase_cmd[2] = (addr >> 16) & 0xFF;
+            erase_cmd[3] = (addr >>  8) & 0xFF;
+            erase_cmd[4] = (addr >>  0) & 0xFF;
+            cmd_len      = 5;
+        }
+        break;
+
+        case NORF_EMODE_4B_BLOCK_32K:
+        {
+            erase_cmd[0] = QSPI_NORF_CMD_4B_BE_32;
+            erase_cmd[1] = (addr >> 24) & 0xFF;
+            erase_cmd[2] = (addr >> 16) & 0xFF;
+            erase_cmd[3] = (addr >>  8) & 0xFF;
+            erase_cmd[4] = (addr >>  0) & 0xFF;
+            cmd_len      = 5;
+        }
+        break;
+
+        case NORF_EMODE_4B_BLOCK_64K:
+        {
+            erase_cmd[0] = QSPI_NORF_CMD_4B_BE_64;
+            erase_cmd[1] = (addr >> 24) & 0xFF;
+            erase_cmd[2] = (addr >> 16) & 0xFF;
+            erase_cmd[3] = (addr >>  8) & 0xFF;
+            erase_cmd[4] = (addr >>  0) & 0xFF;
+            cmd_len      = 5;
+        }
+        break;
+
+#endif
 
         default:
         {

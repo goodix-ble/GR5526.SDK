@@ -41,6 +41,8 @@
 #include "app_qspi.h"
 #include "app_qspi_dma.h"
 
+#define ENABLE_4BYTES_ADDRESS_MODE        1u      /* SET 1 IF USING 4-Byte Address NorFlash */
+
 
 #define QSPI_NORF_CMD_WRSR              0x01
 #define QSPI_NORF_CMD_WRSR1             0x31
@@ -49,25 +51,52 @@
 #define QSPI_NORF_CMD_WREN              0x06
 #define QSPI_NORF_CMD_WRDI              0x04
 
+/* 3Bytes Address Read */
 #define QSPI_NORF_CMD_READ              0x03
 #define QSPI_NORF_CMD_FREAD             0x0B
 #define QSPI_NORF_CMD_DOFR              0x3B
 #define QSPI_NORF_CMD_DIOFR             0xBB
 #define QSPI_NORF_CMD_QOFR              0x6B
 #define QSPI_NORF_CMD_QIOFR             0xEB
-#define QSPI_NORF_CMD_READ_RESET        0xFF
 
-#define QSPI_NORF_CMD_PP                0x02
+
 #define QSPI_NORF_CMD_PE                0x81
 #define QSPI_NORF_CMD_SE                0x20
 #define QSPI_NORF_CMD_BE_32             0x52
 #define QSPI_NORF_CMD_BE_64             0xD8
 #define QSPI_NORF_CMD_CE                0xC7
-#define QSPI_NORF_CMD_PES               0x75
-#define QSPI_NORF_CMD_PER               0x7A
-
+#define QSPI_NORF_CMD_PP                0x02
 #define QSPI_NORF_CMD_DPP               0xA2
 #define QSPI_NORF_CMD_QPP               0x32
+
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+    /* 4Bytes Address Read £º Review & update with actual Datasheet */
+    #define QSPI_NORF_CMD_4B_READ           0x13
+    #define QSPI_NORF_CMD_4B_FREAD          0x0C
+    #define QSPI_NORF_CMD_4B_DOFR           0x3C
+    #define QSPI_NORF_CMD_4B_DIOFR          0xBC
+    #define QSPI_NORF_CMD_4B_QOFR           0x6C
+    #define QSPI_NORF_CMD_4B_QIOFR          0xEC
+
+    #define QSPI_NORF_CMD_4B_PE             0x81
+    #define QSPI_NORF_CMD_4B_SE             0x21
+    #define QSPI_NORF_CMD_4B_BE_32          0x5C
+    #define QSPI_NORF_CMD_4B_BE_64          0xDC
+    #define QSPI_NORF_CMD_4B_CE             0xC7
+    #define QSPI_NORF_CMD_4B_PP             0x12
+    #define QSPI_NORF_CMD_4B_DPP            0xA2
+    #define QSPI_NORF_CMD_4B_QPP            0x34
+
+    #define QSPI_NORF_CMD_4B_ENTER          0xB7
+    #define QSPI_NORF_CMD_4B_EXIT           0xE9
+#endif
+
+/* Other Common Instructions */
+
+#define QSPI_NORF_CMD_READ_RESET        0xFF
+
+#define QSPI_NORF_CMD_PES               0x75
+#define QSPI_NORF_CMD_PER               0x7A
 
 #define QSPI_NORF_CMD_RDI               0xAB
 #define QSPI_NORF_CMD_REMS              0x90
@@ -100,12 +129,21 @@
   * @brief QSPI flash data size Enumerations definition
   */
 typedef enum {
+    /* 3Bytes Address Mode*/
     NORF_RMODE_READ = 0,        /**< SPI Mode with Read CMD : 03H */
     NORF_RMODE_FAST_READ,       /**< SPI Mode with Read CMD : 0BH */
     NORF_RMODE_DUAL_READ,       /**< DualSPI Mode with Read CMD : 3BH */
     NORF_RMODE_2xIO_READ,       /**< DualSPI Mode with Read CMD : BBH */
     NORF_RMODE_QUAD_READ,       /**< QuadSPI Mode with Read CMD : 6BH */
     NORF_RMODE_4xIO_READ,       /**< QuadSPI Mode with Read CMD : EBH */
+
+    /* 4Bytes Address Mode*/
+    NORF_RMODE_4B_READ,         /**< SPI Mode with 4Bytes Read CMD : 13H */
+    NORF_RMODE_FAST_4B_READ,    /**< SPI Mode with 4Bytes Read CMD : 0CH */
+    NORF_RMODE_DUAL_4B_READ,    /**< DualSPI Mode with 4Bytes Read CMD : 3CH */
+    NORF_RMODE_2xIO_4B_READ,    /**< DualSPI Mode with 4Bytes Read CMD : BCH */
+    NORF_RMODE_QUAD_4B_READ,    /**< QuadSPI Mode with 4Bytes Read CMD : 6CH */
+    NORF_RMODE_4xIO_4B_READ,    /**< QuadSPI Mode with 4Bytes Read CMD : ECH */
 } norf_rmode_e;
 
 
@@ -113,6 +151,11 @@ typedef enum {
     NORF_WMODE_PP = 0,          /**< Page Program CMD : 02H */
     NORF_WMODE_DUAL_PP,         /**< Dual Page Program CMD : A2H */
     NORF_WMODE_QUAD_PP,         /**< Quad Page Program CMD : 32H */
+
+    /* 4Bytes Address Mode*/
+    NORF_WMODE_4B_PP,           /**< Page Program 4Bytes CMD : 12H */
+    NORF_WMODE_DUAL_4B_PP,      /**< Dual Page Program 4Bytes CMD : A2H */
+    NORF_WMODE_QUAD_4B_PP,      /**< Quad Page Program 4Bytes CMD : 34H */
 } norf_wmode_e;
 
 typedef enum {
@@ -121,6 +164,12 @@ typedef enum {
     NORF_EMODE_BLOCK_32K,       /**< Erase Mode in 32K Block */
     NORF_EMODE_BLOCK_64K,       /**< Erase Mode in STD Block */
     NORF_EMODE_CHIP,            /**< Erase Mode in CHIP */
+
+    /* 4Bytes Address Mode*/
+    NORF_EMODE_4B_PAGE,         /**< Erase Mode in Page */
+    NORF_EMODE_4B_SECTOR,       /**< 4Bytes Erase Mode in Sector */
+    NORF_EMODE_4B_BLOCK_32K,    /**< 4Bytes Erase Mode in 32K Block */
+    NORF_EMODE_4B_BLOCK_64K,    /**< 4Bytes Erase Mode in STD Block */
 } norf_emode_e;
 
 
@@ -149,5 +198,10 @@ bool        qspi_norf_dev_write(uint32_t addr, uint8_t *buffer, uint32_t nbytes,
 bool        qspi_norf_dev_erase(uint32_t addr, norf_emode_e emode);
 void        qspi_norf_set_mmap(bool mmap);
 void        qspi_norf_set_sleep(bool is_sleep);
+
+#if ENABLE_4BYTES_ADDRESS_MODE > 0u
+    bool        qspi_norf_enter_4b_mode(void);
+    bool        qspi_norf_exit_4b_mode(void);
+#endif
 
 #endif /* __QSPI_NORFLASH_V2_H__ */
