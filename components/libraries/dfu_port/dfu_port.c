@@ -131,7 +131,14 @@ extern uint16_t get_conn_hdl_by_idx(uint16_t conn_idx);
 extern void send_frame_state(dfu_receive_frame_t *p_frame, uint8_t state);
 extern uint32_t dfu_flash_cal_check_sum(uint32_t start_addr, uint16_t len);
 extern uint32_t dfu_flash_programe(uint32_t address, uint8_t *p_write_buf, uint16_t write_len);
+
+#if (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
+    static bool portable_flash_erase(const uint32_t addr, const uint32_t size);
+    static bool portable_flash_erase_chip(void);
 #endif
+
+#endif
+
 
 #if defined(SOC_GR533X) || defined(SOC_GR5405)
 extern void dfu_programing_start(uint32_t all_size);
@@ -218,10 +225,17 @@ static dfu_func_t    s_dfu_func =
 {
     .dfu_ble_send_data      = ble_send_data,
     .dfu_uart_send_data     = NULL,
+#if defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
+    .dfu_flash_read         = dfu_portable_flash_read,
+    .dfu_flash_write        = dfu_portable_flash_write,
+    .dfu_flash_erase        = portable_flash_erase,
+    .dfu_flash_erase_chip   = portable_flash_erase_chip,
+#else
     .dfu_flash_read         = hal_flash_read,
     .dfu_flash_write        = hal_flash_write,
     .dfu_flash_erase        = hal_flash_erase,
     .dfu_flash_erase_chip   = hal_flash_erase_chip,
+#endif
     .dfu_flash_set_security = hal_flash_set_security,
     .dfu_flash_get_security = hal_flash_get_security,
     .dfu_flash_get_info     = hal_flash_get_info,
@@ -1149,8 +1163,11 @@ static void program_end_replace(dfu_receive_frame_t *p_frame)
             s_dfu_info.dfu_fw_save_addr =  s_now_img_info.boot_info.load_addr;
 
             uint32_t fw_img_info_addr = s_dfu_info.dfu_fw_save_addr + s_now_img_info.boot_info.bin_size;
+#if defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
+            dfu_portable_flash_read(fw_img_info_addr, (uint8_t *)&s_dfu_info.dfu_img_info, sizeof(dfu_image_info_t));
+#else
             hal_flash_read(fw_img_info_addr, (uint8_t *)&s_dfu_info.dfu_img_info, sizeof(dfu_image_info_t));
-
+#endif
             hal_flash_erase(DFU_INFO_START_ADDR, DFU_FLASH_SECTOR_SIZE);
 
 #ifdef BOOTLOADER_ENABLE
@@ -1462,4 +1479,114 @@ void dfu_mode_update(uint32_t mode_pattern)
         s_ota_conn_index = 0;
     }
 }
+
+
+#if defined(SOC_GR5526) && (DFU_SUPPORT_EXTERN_FLASH_FOR_GR5526 > 0u)
+
+#include "drv_adapter_norflash.h"
+
+static volatile bool is_internal_flash = false;
+static volatile bool is_external_flash = false;
+
+static bool check_internal_flash(const uint32_t addr, uint32_t size) {
+    if(((addr >= 0x00200000) && (addr + size < 0x01200000)) ||
+       ((addr >= 0x02200000) && (addr + size < 0x03200000))) {
+        is_internal_flash = true;
+        is_external_flash = false;
+        return true;
+    }
+
+    return false;
+}
+
+static bool check_external_flash(const uint32_t addr, uint32_t size, uint32_t * base_addr) {
+
+    bool ret = false;
+
+    if((addr >= 0xC0000000) && (addr + size < 0xC4000000)) {
+        * base_addr       = 0xC0000000;
+        is_internal_flash = false;
+        is_external_flash = true;
+        ret               = true;
+    } else if((addr >= 0xC4000000) && (addr + size < 0xC8000000)) {
+        * base_addr       = 0xC4000000;
+        is_internal_flash = false;
+        is_external_flash = true;
+        ret               = true;
+    } else if((addr >= 0xC8000000) && (addr + size < 0xCC000000)) {
+        * base_addr       = 0xC8000000;
+        is_internal_flash = false;
+        is_external_flash = true;
+        ret               = true;
+    }
+
+    return ret;
+}
+
+uint32_t dfu_portable_flash_read(const uint32_t addr, uint8_t * buff, const uint32_t size) {
+    bool ret ;
+    uint32_t base = 0;
+
+    if(check_internal_flash(addr, size)) {
+        return hal_flash_read(addr, buff, size);
+    } else if(check_external_flash(addr, size, &base)) {
+        ret = drv_adapter_norflash_read(addr - base, buff, size);
+        if(ret) {
+            return size;
+        }
+    }
+
+    return 0;
+}
+
+uint32_t dfu_portable_flash_write(const uint32_t addr, const uint8_t * buff, const uint32_t size) {
+    bool ret ;
+    uint32_t base = 0;
+
+    if(check_internal_flash(addr, size)) {
+        return hal_flash_write(addr, buff, size);
+    } else if(check_external_flash(addr, size, &base)) {
+        ret = drv_adapter_norflash_write(addr - base, (uint8_t *)buff, size);
+        if(ret) {
+            return size;
+        }
+    }
+
+    return 0;
+}
+
+static bool portable_flash_erase(const uint32_t addr, const uint32_t size) {
+    uint32_t base = 0;
+    bool ret = false;
+
+    if(check_internal_flash(addr, size)) {
+        return hal_flash_erase(addr, size);
+    } else if(check_external_flash(addr, size, &base)) {
+        uint32_t dev_addr         = addr - base;
+        uint32_t sec_aligned_addr = dev_addr & 0xFFFFF000;
+        uint32_t adjust_size      = (dev_addr - sec_aligned_addr) + size;
+        uint32_t era_sectors      = (adjust_size/4096) + ((adjust_size%4096 > 0) ? 1 : 0);
+
+        for(int i = 0; i < era_sectors; i++) {
+            ret |= drv_adapter_norflash_erase(sec_aligned_addr + i * 4096, ADAPTER_NORFFLASH_ERASE_SECTOR);
+        }
+
+    }
+
+    return ret;
+}
+
+static bool portable_flash_erase_chip(void) {
+    if(is_internal_flash) {
+        return hal_flash_erase_chip();
+    }
+
+    if(is_external_flash) {
+        return drv_adapter_norflash_erase(0x00000000, ADAPTER_NORFFLASH_ERASE_CHIP);
+    }
+
+    return false;
+}
+
+#endif
 
