@@ -137,7 +137,7 @@ extern          dcdc_dcore_info_t g_dcdc_dcore_set_for_ble;
 extern          bool g_gpu_is_working;
 
 static psram_reload_func_t          s_psram_reload_func;
-static app_ospi_work_state_e        s_app_ospi_sleep_state = OSPI_STATE_HALF_SLEEP;
+static app_ospi_work_state_e        s_app_ospi_sleep_state = OSPI_STATE_DEEP_SLEEP;
 static app_graphics_ospi_t          s_graphics_ospi_env;
 static ospi_irq_handler             s_ospi_handler   = NULL;
 const app_graphics_ospi_config_t    s_ospi_config[4] = {
@@ -447,7 +447,7 @@ void app_graphics_adjust_dcore_policy(void) {
  */
 static hal_status_t ospi_regs_resume(void * p_ospi_handle)
 {
-    ospi_init_light();
+    ospi_psram_reinit(); //ospi_init_light();
     return HAL_OK;
 }
 
