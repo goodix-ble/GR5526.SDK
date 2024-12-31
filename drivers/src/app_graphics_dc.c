@@ -146,6 +146,7 @@ static app_graphics_dc_t                s_graphics_dc_env;
 static volatile int                     s_dc_sem_give_cnt = 0;
 static volatile int                     s_dc_sem_take_cnt = 0;
 #endif
+static graphics_dc_power_state_e        s_dc_power_state = GDC_POWER_STATE_SLEEP;
 /*
  * PUBLIC METHODS
  *****************************************************************************************
@@ -185,6 +186,7 @@ uint16_t graphics_dc_init(app_graphics_dc_params_t * dc_params, graphics_dc_irq_
     s_graphics_dc_env.is_async_mark = 0;
     _dc_irq_sem_init();
     _dc_irq_sem_give();
+    s_dc_power_state = GDC_POWER_STATE_ACTIVE;
 
 #if GRAPHICS_MCU_CONF_ENABLE > 0u
     // This configuration could be changed to save energy
@@ -218,6 +220,7 @@ void app_graphics_dc_set_power_state(graphics_dc_power_state_e state) {
 #if !CONFIG_ZEPHYR_OS
             GLOBAL_EXCEPTION_DISABLE();
             hal_pwr_mgmt_set_extra_device_state(EXTRA_DEVICE_NUM_DC, IDLE);  
+            s_dc_power_state = GDC_POWER_STATE_SLEEP;
             GLOBAL_EXCEPTION_ENABLE();
 #endif
             break;
@@ -234,6 +237,7 @@ void app_graphics_dc_set_power_state(graphics_dc_power_state_e state) {
             hal_pwr_mgmt_set_extra_device_state(EXTRA_DEVICE_NUM_DC, ACTIVE);
             NVIC_ClearPendingIRQ(TSI_DC_IRQn);
             NVIC_EnableIRQ(TSI_DC_IRQn);
+            s_dc_power_state = GDC_POWER_STATE_ACTIVE;
             GLOBAL_EXCEPTION_ENABLE();
 #endif
             break;
@@ -242,6 +246,11 @@ void app_graphics_dc_set_power_state(graphics_dc_power_state_e state) {
             break;
         }
     }
+}
+
+graphics_dc_power_state_e app_graphics_dc_get_power_state(void)
+{
+    return s_dc_power_state;
 }
 
 void app_graphics_dc_freq_set(graphics_dc_clock_freq_e clock_freq){
@@ -267,6 +276,22 @@ void app_graphics_dc_spi_send(uint8_t cmd_8bit, uint32_t address_24bit, uint8_t 
 
     GDC_CLR_Bit(HAL_GDC_REG_DBIB_CFG, MIPICFG_SPI_HOLD);
     dc_wait_cmd_irq();
+
+    return;
+}
+
+void app_graphics_dc_spi_send_isr(uint8_t cmd_8bit, uint32_t address_24bit, uint8_t * data, uint32_t length) {
+    hal_gdc_MIPI_CFG_out(s_graphics_dc_env.clock_mode | MIPICFG_QSPI | MIPICFG_SPI4 | MIPICFG_DBI_EN  | MIPICFG_RESX | s_graphics_dc_env.init_params.mipicfg_format | MIPICFG_DIS_TE);
+    GDC_SET_Bit(HAL_GDC_REG_DBIB_CFG, MIPICFG_SPI_HOLD);
+    hal_gdc_MIPI_out (MIPI_DBIB_CMD | MIPI_MASK_QSPI | MIPI_CMD08 | cmd_8bit );            // Command Header 8-bit
+    hal_gdc_MIPI_out (MIPI_DBIB_CMD | MIPI_MASK_QSPI | MIPI_CMD24 | address_24bit );       // Address 24-bit
+    for(uint32_t i = 0; i < length; i++) {
+        hal_gdc_MIPI_out (MIPI_MASK_QSPI | MIPI_CMD08 | data[i] );
+    }
+    GDC_CLR_Bit(HAL_GDC_REG_DBIB_CFG, MIPICFG_SPI_HOLD);
+
+    while ((hal_gdc_reg_read(HAL_GDC_REG_STATUS) & 0x15C00) != 0);
+    delay_us(1);
 
     return;
 }

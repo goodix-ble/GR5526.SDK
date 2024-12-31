@@ -125,18 +125,23 @@ extern void _key_drv_irq_notify(void);
  */
 void app_key_evt_handler(uint8_t key_id, app_key_click_type_t key_click_type)
 {
-    if((key_id == 0) && (APP_KEY_SINGLE_CLICK == key_click_type)) {
-        lv_gui_evt_send(WMS_GUI_EVT_KEY0_PRESSED, NULL);
-    } else if((key_id == 0) && (APP_KEY_LONG_CLICK == key_click_type)) {
-        lv_gui_evt_send(WMS_GUI_EVT_KEY0_LONG_PRESSED, NULL);
-    } else if((key_id == 1) && (APP_KEY_SINGLE_CLICK == key_click_type)) {
-        lv_gui_evt_send(WMS_GUI_EVT_KEY1_PRESSED, NULL);
-    } else if((key_id == 1) && (APP_KEY_LONG_CLICK == key_click_type)) {
-        lv_gui_evt_send(WMS_GUI_EVT_KEY1_LONG_PRESSED, NULL);
+    sys_running_state_e sys_state = sys_state_get();
+    if(SYS_STATE_SLEEP == sys_state || SYS_STATE_SCREEN_OFF == sys_state) {
+        // Wake up, but do not trigger event
+        _key_drv_irq_notify();
     }
-
-    // Any Key can wake device from sleep state
-    _key_drv_irq_notify();
+    else
+    {
+        if((key_id == 0) && (APP_KEY_SINGLE_CLICK == key_click_type)) {
+            lv_gui_evt_send(WMS_GUI_EVT_KEY0_PRESSED, NULL);
+        } else if((key_id == 0) && (APP_KEY_LONG_CLICK == key_click_type)) {
+            lv_gui_evt_send(WMS_GUI_EVT_KEY0_LONG_PRESSED, NULL);
+        } else if((key_id == 1) && (APP_KEY_SINGLE_CLICK == key_click_type)) {
+            lv_gui_evt_send(WMS_GUI_EVT_KEY1_PRESSED, NULL);
+        } else if((key_id == 1) && (APP_KEY_LONG_CLICK == key_click_type)) {
+            lv_gui_evt_send(WMS_GUI_EVT_KEY1_LONG_PRESSED, NULL);
+        }
+    }
 
     return;
 }

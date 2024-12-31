@@ -19,7 +19,7 @@ typedef struct _lv_card_list_entry_layout_item
 
 // <NOTICE> DEFINE ICON ITEMS
 static icon_item_t g_icon_items[ICON_COUNT] = {
-    {NULL, &wd_img_APPLIST_03_HEARTRATE,        WMS_WID_CARD_HR},
+    {NULL, &wd_img_APPLIST_03_HEARTRATE,        WMS_WID_NONE},
     {NULL, &wd_img_APPLIST_04_SPO2,             WMS_WID_NONE},
     {NULL, &wd_img_APPLIST_07_BREATH_TRAINING,  WMS_WID_NONE},
     {NULL, &wd_img_APPLIST_00_MENU,             WMS_WID_APP_LIST},

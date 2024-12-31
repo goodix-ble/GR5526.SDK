@@ -185,23 +185,32 @@ void notification_center_clear(void)
     s_notifications = NULL;
 }
 
+void notification_refresh_all_thumbnail(void)
+{
+    notification_info_t *p = s_notifications;
+
+    while (p)
+    {
+        create_content_cache_async(p);
+        p = p->next;
+    }
+}
+
 static void create_content_cache(notification_info_t *info)
 {
-    if (info->thumbnail)
+    if (!info->thumbnail)
     {
-        return;
+        osal_enter_critical();
+        info->thumbnail = osal_heap_malloc(sizeof(lv_img_dsc_t));
+        info->thumbnail->data_size = NOTIFICATION_ITEM_WIDTH * NOTIFICATION_ITEM_HEIGHT * 2;
+        info->thumbnail->data = app_graphics_mem_malloc(info->thumbnail->data_size);
+        osal_exit_critical();
+
+        info->thumbnail->header.always_zero = 0;
+        info->thumbnail->header.cf = LV_IMG_CF_GDX_RGB565;
+        info->thumbnail->header.w = NOTIFICATION_ITEM_WIDTH;
+        info->thumbnail->header.h = NOTIFICATION_ITEM_HEIGHT;
     }
-
-    osal_enter_critical();
-    info->thumbnail = osal_heap_malloc(sizeof(lv_img_dsc_t));
-    info->thumbnail->data_size = NOTIFICATION_ITEM_WIDTH * NOTIFICATION_ITEM_HEIGHT * 2;
-    info->thumbnail->data = app_graphics_mem_malloc(info->thumbnail->data_size);
-    osal_exit_critical();
-
-    info->thumbnail->header.always_zero = 0;
-    info->thumbnail->header.cf = LV_IMG_CF_GDX_RGB565;
-    info->thumbnail->header.w = NOTIFICATION_ITEM_WIDTH;
-    info->thumbnail->header.h = NOTIFICATION_ITEM_HEIGHT;
 
     // Create item cache
     hal_gfx_cmdlist_t cmd = hal_gfx_cl_le_create();

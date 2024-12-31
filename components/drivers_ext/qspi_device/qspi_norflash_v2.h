@@ -41,7 +41,7 @@
 #include "app_qspi.h"
 #include "app_qspi_dma.h"
 
-#define ENABLE_4BYTES_ADDRESS_MODE        1u      /* SET 1 IF USING 4-Byte Address NorFlash */
+#define ENABLE_4BYTES_ADDRESS_MODE        0u      /* SET 1 IF USING 4-Byte Address NorFlash */
 
 
 #define QSPI_NORF_CMD_WRSR              0x01
@@ -70,7 +70,7 @@
 #define QSPI_NORF_CMD_QPP               0x32
 
 #if ENABLE_4BYTES_ADDRESS_MODE > 0u
-    /* 4Bytes Address Read £º Review & update with actual Datasheet */
+    /* 4Bytes Address Read ï¿½ï¿½ Review & update with actual Datasheet */
     #define QSPI_NORF_CMD_4B_READ           0x13
     #define QSPI_NORF_CMD_4B_FREAD          0x0C
     #define QSPI_NORF_CMD_4B_DOFR           0x3C

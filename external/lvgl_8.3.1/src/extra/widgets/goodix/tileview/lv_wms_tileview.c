@@ -70,6 +70,8 @@ static void _finish_transition(lv_wms_tileview_t * tv);
 
 static lv_wms_tileview_t * _obtain_wms_tileview(lv_obj_t * from_obj);
 
+static void _delete_tile(lv_wms_tileview_t * tv, lv_obj_t * obj);
+
 static lv_obj_t * _try_create_tile(lv_wms_tileview_t * tv);
 
 static void _lv_wms_tileview_start_translation_animator(lv_wms_tileview_t * tv, uint32_t anim_compensation);
@@ -367,6 +369,32 @@ void lv_wms_tileview_pop(lv_obj_t * from_obj)
     }
 
     return ;
+}
+
+void lv_wms_tileview_suspend(lv_obj_t *from_obj)
+{
+    lv_wms_tileview_t * tv = _obtain_wms_tileview(from_obj);
+    if (tv == NULL) return;
+    if (tv->is_animating) return;
+    if (tv->is_scrolling) return;
+    if (tv->p_tile_creator == NULL) return;
+    _delete_tile(tv, tv->p_current_tile_obj);
+    lv_wms_tileview_clear_retain(tv);
+}
+
+void lv_wms_tileview_resume(lv_obj_t *from_obj)
+{
+    lv_wms_tileview_t * tv = _obtain_wms_tileview(from_obj);
+    if (tv == NULL) return;
+    if (tv->is_animating) return;
+    if (tv->is_scrolling) return;
+    if (tv->p_tile_creator == NULL) return;
+
+    tv->next_tile_info = tv->current_tile_info;
+
+    tv->is_creating = true;
+    tv->p_current_tile_obj = _try_create_tile(tv);
+    tv->is_creating = false;
 }
 
 // Return to the earliest tile.

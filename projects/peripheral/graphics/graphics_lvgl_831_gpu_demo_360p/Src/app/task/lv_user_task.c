@@ -13,6 +13,7 @@
 #include "lv_port_gr5526.h"
 #include "lv_port_indev.h"
 #include "lv_layout_router.h"
+#include "notification_center.h"
 
 #include "app_log.h"
 #include "mock_data.h"
@@ -84,11 +85,6 @@ void app_gui_render_task(void *p_arg)
     }
 }
 
-
-static void _lv_reload_gui(void* user_data) {
-    lv_obj_invalidate(lv_scr_act());
-}
-
 extern bool app_graphics_gpu_is_idle(void);
 
 void app_indev_read_task(void * args)
@@ -124,6 +120,7 @@ void app_indev_read_task(void * args)
                         uint8_t wait_count = 15;
 
                         // Stop Refresh firstly.
+                        drv_adapter_disp_on(false);
                         lv_wms_refresh_enabled_set(false);
                         osal_task_delay_ms(100);
 
@@ -142,11 +139,10 @@ void app_indev_read_task(void * args)
                             printf("GOTO SCREEN OFF, tick: %d \r\n", osal_task_get_tick_count());
                             sys_state_switch(SYS_STATE_SCREEN_OFF);
                             lv_wms_display_enabled_set(false);
-                            drv_adapter_disp_on(false);
                             sys_state_reset_base_time();
                         } else {
                             printf("Fail to Screen Off, keep Active!\r\n ");
-                            lv_wms_refresh_enabled_set(true);
+                            drv_adapter_disp_on(true);
                             sys_state_reset_base_time();
                         }
                     }
@@ -159,6 +155,7 @@ void app_indev_read_task(void * args)
                 //clear tp and show off the display
                 if(OSAL_SUCCESS != osal_sema_take(s_sleep_mgnt_sem, 500)) {
                     if(sys_state_calc_delta_time() >= SYS_SLEEP_WAIT_TIME_MS) {
+                        lv_wms_display_enabled_set(false);
                         sys_state_reset_base_time();
                         sys_state_switch(SYS_STATE_SLEEP);
                         printf("GOTO SLEEP, tick: %d \r\n", osal_task_get_tick_count());
@@ -177,21 +174,24 @@ void app_indev_read_task(void * args)
             case SYS_STATE_SLEEP:
             {
                 printf("GOTO Sleep!\r\n");
+                lv_wms_tileview_suspend(lv_scr_act());
                 sys_peripherals_sleep();
 
                 osal_sema_take(s_sleep_mgnt_sem, OSAL_MAX_DELAY);
 
                 printf("Resume from Sleep!\r\n");
                 sys_peripherals_resume();
+                notification_refresh_all_thumbnail();
+                lv_wms_tileview_resume(lv_scr_act());
                 lv_wms_refresh_enabled_set(true);
                 lv_wms_display_enabled_set(true);
-                drv_adapter_disp_on(true);
-                lv_async_call(_lv_reload_gui, NULL);
+                lv_obj_invalidate(lv_scr_act());
                 osal_sema_give(s_gui_refresh_sem);
 
                 sys_state_reset_base_time();
                 sys_state_switch(SYS_STATE_ACTIVE);
                 printf("GOTO Active, tick: %d \r\n", osal_task_get_tick_count());
+                drv_adapter_disp_on(true);
             }
             break;
 
@@ -208,9 +208,8 @@ void _touchpad_drv_irq_notify(void) {
 }
 
 void _key_drv_irq_notify(void) {
-    if(SYS_STATE_SLEEP == sys_state_get()) {
-        osal_sema_give(s_sleep_mgnt_sem);
-    }
+    osal_sema_give(s_sleep_mgnt_sem);
+    sys_state_reset_base_time();
 }
 
 /**

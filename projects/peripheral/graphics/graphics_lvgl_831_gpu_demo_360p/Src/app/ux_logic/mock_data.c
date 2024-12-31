@@ -31,7 +31,7 @@ void mock_data_init_post_gui(void)
         "Wechat",
     };
 
-    for (int i = 0; i < 20; i++)
+    for (int i = 0; i < 10; i++)
     {
         notification_center_add(i, (void *)ICON_LIST[i % 7], TITLE_LIST[i % 7], strlen(TITLE_LIST[i % 7]), "Hello there, this is GR5526VGBIP LVGL8.3 Demo!", sizeof("Hello there, this is GR5526VGBIP LVGL8.3 Demo!") - 1);
     }

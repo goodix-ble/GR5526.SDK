@@ -32,4 +32,6 @@ void notification_center_delete_by_info(notification_info_t *info);
 
 void notification_center_clear(void);
 
+void notification_refresh_all_thumbnail(void);
+
 #endif // __NOTIFICATION_CENTER_H__

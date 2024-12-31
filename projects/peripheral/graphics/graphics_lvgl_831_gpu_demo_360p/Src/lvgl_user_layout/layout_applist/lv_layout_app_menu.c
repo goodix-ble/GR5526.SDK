@@ -35,6 +35,10 @@ lv_enhanced_menu_item_t app_list_items[] = {
 
 const uint16_t LIST_ITEM_COUNT = ARRAY_SIZE(app_list_items);
 
+#if PSRAM_ICON_CACHE_ENABLED
+static lv_img_dsc_t *s_orig_icon_dsc[ARRAY_SIZE(app_list_items)] = {0};
+#endif // PSRAM_ICON_CACHE_ENABLED
+
 static app_menu_style_t s_menu_style = APP_MENU_STYLE_LINEAR_LIST;
 
 extern lv_obj_t *lv_layout_app_list_create(lv_obj_t *parent, lv_enhanced_menu_item_t *items, uint16_t item_count, bool use_circular);
@@ -130,12 +134,15 @@ static void create_icon_psram_cache()
         lv_enhanced_menu_item_t *item = &app_list_items[i];
         if ((uint32_t)item->icon->data >= OSPI0_XIP_BASE && (uint32_t)item->icon->data <= (OSPI0_XIP_BASE + 0x03FFFFFF))
         {
+            // refresh PSRAM data
+            memcpy((void *)item->icon->data, s_orig_icon_dsc[i]->data, s_orig_icon_dsc[i]->data_size);
             continue;
         }
         lv_img_dsc_t *img_dsc = lv_mem_alloc(sizeof(lv_img_dsc_t));
         memcpy((void *)img_dsc, item->icon, sizeof(lv_img_dsc_t));
         img_dsc->data = app_graphics_mem_malloc(img_dsc->data_size);
         memcpy((void *)img_dsc->data, item->icon->data, img_dsc->data_size);
+        s_orig_icon_dsc[i] = (lv_img_dsc_t *)item->icon;
         item->icon = img_dsc;
     }
 }

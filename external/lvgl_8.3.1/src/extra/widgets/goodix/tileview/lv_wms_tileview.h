@@ -189,6 +189,20 @@ void lv_wms_tileview_pop_all(lv_obj_t * from_obj);
  */
 void lv_wms_tileview_clear_retain(lv_wms_tileview_t * tv);
 
+/**
+ * @brief Suspend tileview layouts before sleep
+ *
+ * @param from_obj automatically search lv_wms_tileview_t from "from_obj".
+ */
+void lv_wms_tileview_suspend(lv_obj_t *from_obj);
+
+/**
+ * @brief Resume tileview layouts after wakeup
+ *
+ * @param from_obj automatically search lv_wms_tileview_t from "from_obj".
+ */
+void lv_wms_tileview_resume(lv_obj_t *from_obj);
+
 /*=====================
  * Other functions
  *====================*/

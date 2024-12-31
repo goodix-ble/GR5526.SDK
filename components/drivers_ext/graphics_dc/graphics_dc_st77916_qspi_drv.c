@@ -35,12 +35,20 @@
 
 #define ST77916_TE_WAIT_TIMEOUT_MS (100)
 
+typedef enum {
+    POST_FLUSH_OP_NONE = 0,
+    POST_FLUSH_OP_TURN_ON_SCREEN,
+    POST_FLUSH_OP_TURN_OFF_SCREEN,
+} post_flush_op_t;
+
 static void dc_spi_send_sync(uint32_t cmd, uint8_t *data, uint32_t len);
 static void st77916_init_sequence(void);
 static void display_te_set_enable(bool enabled);
 static void display_te_evt_callback(app_io_evt_t *p_evt);
+static void display_dc_evt_callback(uint32_t evt);
 
 static bool s_te_valid = true;
+static post_flush_op_t s_post_flush_op = POST_FLUSH_OP_NONE;
 #ifdef USE_OSAL
 static osal_sema_handle_t s_te_sem;
 #else // USE_OSAL
@@ -95,7 +103,7 @@ void graphics_dc_st77916_init(uint16_t screen_w, uint16_t screen_h)
         },
     };
 
-    graphics_dc_init(&dc_params, NULL);
+    graphics_dc_init(&dc_params, display_dc_evt_callback);
 
     // Create semaphore for TE Sync
 #ifdef USE_OSAL
@@ -188,22 +196,18 @@ void graphics_dc_st77916_flush(void *buf, uint32_t buf_format, uint16_t w, uint1
 
 void graphics_dc_st77916_set_on(bool on)
 {
-    app_graphics_dc_set_power_state(GDC_POWER_STATE_ACTIVE);
+    // Turn on & off screen after flush complete
     if (on)
     {
-        printf("Send 29h\n");
-        dc_spi_send_sync(0x29, NULL, 0);
-        printf("Backlight on\n");
-        app_io_write_pin(DISPLAY_BL_IO_TYPE, DISPLAY_BL_IO_PIN, APP_IO_PIN_SET);
+        s_post_flush_op = POST_FLUSH_OP_TURN_ON_SCREEN;
     }
     else
     {
-        printf("Send 28h\n");
-        dc_spi_send_sync(0x28, NULL, 0);
-        printf("Backlight off\n");
-        uint16_t ret = app_io_write_pin(DISPLAY_BL_IO_TYPE, DISPLAY_BL_IO_PIN, APP_IO_PIN_RESET);
-        printf("ret = %d\n", ret);
-        portENABLE_INTERRUPTS();
+        s_post_flush_op = POST_FLUSH_OP_TURN_OFF_SCREEN;
+        if (GDC_POWER_STATE_SLEEP == app_graphics_dc_get_power_state())
+        {
+            display_dc_evt_callback(GDC_IRQ_EVT_FRAME_TRANSMITION_END);
+        }
     }
 }
 
@@ -263,6 +267,16 @@ static void dc_spi_send_sync(uint32_t cmd, uint8_t *data, uint32_t len)
         cmd <<= 8;
     }
     app_graphics_dc_spi_send(ST77916_INST_WR_I1A1D1, cmd, data, len);
+}
+
+static void dc_spi_send_sync_isr(uint32_t cmd, uint8_t *data, uint32_t len)
+{
+    if ((cmd & 0xFF) == cmd)
+    {
+        cmd <<= 8;
+    }
+    extern void app_graphics_dc_spi_send_isr(uint8_t cmd_8bit, uint32_t address_24bit, uint8_t * data, uint32_t length);
+    app_graphics_dc_spi_send_isr(ST77916_INST_WR_I1A1D1, cmd, data, len);
 }
 
 static void st77916_init_sequence(void)
@@ -1253,4 +1267,30 @@ static void display_te_evt_callback(app_io_evt_t *p_evt)
     xSemaphoreGiveFromISR(s_te_sem, &xHigherPriorityTaskWoken);
     portYIELD_FROM_ISR(xHigherPriorityTaskWoken);
 #endif // USE_OSAL
+}
+
+static void display_dc_evt_callback(uint32_t evt)
+{
+    if (evt == GDC_IRQ_EVT_FRAME_TRANSMITION_END)
+    {
+        switch (s_post_flush_op)
+        {
+            case POST_FLUSH_OP_TURN_ON_SCREEN:
+                dc_spi_send_sync_isr(0x29, NULL, 0);
+                app_io_write_pin(DISPLAY_BL_IO_TYPE, DISPLAY_BL_IO_PIN, APP_IO_PIN_SET);
+                printf("Send 0x29 & Backlight ON\n");
+                break;
+
+            case POST_FLUSH_OP_TURN_OFF_SCREEN:
+                dc_spi_send_sync_isr(0x28, NULL, 0);
+                app_io_write_pin(DISPLAY_BL_IO_TYPE, DISPLAY_BL_IO_PIN, APP_IO_PIN_RESET);
+                printf("Send 0x28 & Backlight OFF\n");
+                break;
+
+            default:
+                break;
+        }
+        s_post_flush_op = POST_FLUSH_OP_NONE;
+
+    }
 }

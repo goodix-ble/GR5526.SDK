@@ -1,5 +1,6 @@
 #include "stdio.h"
 #include "app_sys_manager.h"
+#include "gr55xx_pwr.h"
 
 
 sys_task_handle_t g_task_handle = {
@@ -36,6 +37,14 @@ uint32_t sys_state_calc_delta_time(void) {
 
 void sys_state_switch(sys_running_state_e new_state) {
     g_sys_running_rec.running_state = new_state;
+    if (new_state == SYS_STATE_ACTIVE)
+    {
+        pwr_mgmt_mode_set(PMR_MGMT_IDLE_MODE);
+    }
+    else if (new_state == SYS_STATE_SLEEP)
+    {
+        pwr_mgmt_mode_set(PMR_MGMT_SLEEP_MODE);
+    }
 }
 
 sys_running_state_e sys_state_get(void) {

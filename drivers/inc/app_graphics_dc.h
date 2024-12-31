@@ -434,6 +434,15 @@ void app_graphics_dc_set_power_state(graphics_dc_power_state_e state);
 
 /**
  *****************************************************************************************
+ * @brief Get power state for DC module
+ *
+ * @return DC power state
+ *****************************************************************************************
+ */
+graphics_dc_power_state_e app_graphics_dc_get_power_state(void);
+
+/**
+ *****************************************************************************************
  * @brief DC clock frequency set
  *
  * @param[in] clock_freq: DC clock frequency
